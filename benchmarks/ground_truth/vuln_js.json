@@ -1,0 +1,233 @@
+{
+ "repo": "vuln_js",
+ "planted": [
+  {
+   "id": "next_public_secret_env",
+   "file": ".env.local",
+   "line": 2,
+   "category": "secret-exposed-to-browser",
+   "cwe": "CWE-200",
+   "expected_detect": true
+  },
+  {
+   "id": "next_public_secret_code",
+   "file": "pages/index.js",
+   "line": 3,
+   "category": "secret-exposed-to-browser",
+   "cwe": "CWE-200",
+   "expected_detect": true
+  },
+  {
+   "id": "react_dangerously",
+   "file": "src/Widget.jsx",
+   "line": 6,
+   "category": "xss",
+   "cwe": "CWE-79",
+   "expected_detect": true
+  },
+  {
+   "id": "innerhtml",
+   "file": "src/Widget.jsx",
+   "line": 17,
+   "category": "xss",
+   "cwe": "CWE-79",
+   "expected_detect": true
+  },
+  {
+   "id": "cors_true_credentials",
+   "file": "src/server.js",
+   "line": 15,
+   "category": "cors-misconfig",
+   "cwe": "CWE-942",
+   "expected_detect": true
+  },
+  {
+   "id": "sqli_template",
+   "file": "src/server.js",
+   "line": 22,
+   "category": "sql-injection",
+   "cwe": "CWE-89",
+   "expected_detect": true
+  },
+  {
+   "id": "sqli_concat",
+   "file": "src/server.js",
+   "line": 28,
+   "category": "sql-injection",
+   "cwe": "CWE-89",
+   "expected_detect": true
+  },
+  {
+   "id": "reflected_xss",
+   "file": "src/server.js",
+   "line": 40,
+   "category": "xss",
+   "cwe": "CWE-79",
+   "expected_detect": true
+  },
+  {
+   "id": "reflected_xss_template",
+   "file": "src/server.js",
+   "line": 45,
+   "category": "xss",
+   "cwe": "CWE-79",
+   "expected_detect": true
+  },
+  {
+   "id": "eval",
+   "file": "src/server.js",
+   "line": 50,
+   "category": "code-injection",
+   "cwe": "CWE-95",
+   "expected_detect": true
+  },
+  {
+   "id": "cmd_exec_template",
+   "file": "src/server.js",
+   "line": 55,
+   "category": "command-injection",
+   "cwe": "CWE-78",
+   "expected_detect": true
+  },
+  {
+   "id": "open_redirect",
+   "file": "src/server.js",
+   "line": 65,
+   "category": "open-redirect",
+   "cwe": "CWE-601",
+   "expected_detect": true
+  },
+  {
+   "id": "path_sendfile",
+   "file": "src/server.js",
+   "line": 70,
+   "category": "path-traversal",
+   "cwe": "CWE-22",
+   "expected_detect": true
+  },
+  {
+   "id": "path_readfile",
+   "file": "src/server.js",
+   "line": 75,
+   "category": "path-traversal",
+   "cwe": "CWE-22",
+   "expected_detect": true
+  },
+  {
+   "id": "ssrf_fetch",
+   "file": "src/server.js",
+   "line": 85,
+   "category": "ssrf",
+   "cwe": "CWE-918",
+   "expected_detect": true
+  },
+  {
+   "id": "tls_reject_unauthorized",
+   "file": "src/server.js",
+   "line": 90,
+   "category": "tls-verification",
+   "cwe": "CWE-295",
+   "expected_detect": true
+  },
+  {
+   "id": "math_random_token",
+   "file": "src/server.js",
+   "line": 94,
+   "category": "weak-random",
+   "cwe": "CWE-338",
+   "expected_detect": true
+  },
+  {
+   "id": "jwt_decode_auth",
+   "file": "src/server.js",
+   "line": 105,
+   "category": "jwt-verification",
+   "cwe": "CWE-347",
+   "expected_detect": true
+  },
+  {
+   "id": "proto_pollution_merge",
+   "file": "src/server.js",
+   "line": 119,
+   "category": "prototype-pollution",
+   "cwe": "CWE-1321",
+   "expected_detect": false
+  },
+  {
+   "id": "proto_pollution_assign",
+   "file": "src/server.js",
+   "line": 126,
+   "category": "prototype-pollution",
+   "cwe": "CWE-1321",
+   "expected_detect": false
+  },
+  {
+   "id": "nosql_injection",
+   "file": "src/server.js",
+   "line": 133,
+   "category": "nosql-injection",
+   "cwe": "CWE-943",
+   "expected_detect": false
+  },
+  {
+   "id": "noauth_delete",
+   "file": "src/server.js",
+   "line": 138,
+   "category": "missing-auth",
+   "cwe": "CWE-306",
+   "expected_detect": true
+  },
+  {
+   "id": "insecure_cookie",
+   "file": "src/server.js",
+   "line": 145,
+   "category": "insecure-cookie",
+   "cwe": "CWE-614",
+   "expected_detect": true
+  }
+ ],
+ "safe_lookalikes": [
+  {
+   "id": "safe_dompurify_dangerously",
+   "file": "src/Widget.jsx",
+   "line": 11,
+   "category": "xss"
+  },
+  {
+   "id": "safe_textcontent",
+   "file": "src/Widget.jsx",
+   "line": 23,
+   "category": "xss"
+  },
+  {
+   "id": "safe_sql_param",
+   "file": "src/server.js",
+   "line": 34,
+   "category": "sql-injection"
+  },
+  {
+   "id": "safe_execfile_array",
+   "file": "src/server.js",
+   "line": 60,
+   "category": "command-injection"
+  },
+  {
+   "id": "safe_sendfile_basename",
+   "file": "src/server.js",
+   "line": 80,
+   "category": "path-traversal"
+  },
+  {
+   "id": "safe_crypto_random",
+   "file": "src/server.js",
+   "line": 100,
+   "category": "weak-random"
+  },
+  {
+   "id": "safe_jwt_verify",
+   "file": "src/server.js",
+   "line": 112,
+   "category": "jwt-verification"
+  }
+ ]
+}

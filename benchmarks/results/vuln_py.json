@@ -1,0 +1,1116 @@
+{
+ "findings": [
+  {
+   "tool": "semgrep",
+   "rule_id": "py-sql-injection-string-build",
+   "category": "security",
+   "severity": "critical",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "SQL query is built with string formatting/concatenation and passed to a database call",
+   "file": "app/main.py",
+   "line": 30,
+   "end_line": 30,
+   "evidence": "    # GT:sqli_fstring|sql-injection|CWE-89|yes\n    cur.execute(f\"SELECT * FROM users WHERE id = {uid}\")\n    return jsonify(cur.fetchall())",
+   "explanation": "SQL query is built with string formatting/concatenation and passed to a database call. (CWE-89). Detected by Semgrep pattern matching; the code shown matched rule `py-sql-injection-string-build`.",
+   "impact": "An attacker who controls any interpolated value can read or modify arbitrary data.",
+   "remediation": "Use parameterised queries, e.g. cursor.execute(\"SELECT ... WHERE id = %s\", (user_id,)).",
+   "principle": "sql-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/89.html"
+   ],
+   "fingerprint": "aa6bfd11c49910d542dfd3fe78280914"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-sql-injection-string-build",
+   "category": "security",
+   "severity": "critical",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "SQL query is built with string formatting/concatenation and passed to a database call",
+   "file": "app/main.py",
+   "line": 39,
+   "end_line": 39,
+   "evidence": "    # GT:sqli_percent|sql-injection|CWE-89|yes\n    cur.execute(\"SELECT * FROM users WHERE id = %s\" % uid)\n    return jsonify(cur.fetchall())",
+   "explanation": "SQL query is built with string formatting/concatenation and passed to a database call. (CWE-89). Detected by Semgrep pattern matching; the code shown matched rule `py-sql-injection-string-build`.",
+   "impact": "An attacker who controls any interpolated value can read or modify arbitrary data.",
+   "remediation": "Use parameterised queries, e.g. cursor.execute(\"SELECT ... WHERE id = %s\", (user_id,)).",
+   "principle": "sql-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/89.html"
+   ],
+   "fingerprint": "dddc3f5159c6646c626cd2a1b52a5ec7"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-sql-injection-string-build",
+   "category": "security",
+   "severity": "critical",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "SQL query is built with string formatting/concatenation and passed to a database call",
+   "file": "app/main.py",
+   "line": 48,
+   "end_line": 48,
+   "evidence": "    # GT:sqli_plus|sql-injection|CWE-89|yes\n    cur.execute(\"SELECT * FROM users WHERE name = '\" + name + \"'\")\n    return jsonify(cur.fetchall())",
+   "explanation": "SQL query is built with string formatting/concatenation and passed to a database call. (CWE-89). Detected by Semgrep pattern matching; the code shown matched rule `py-sql-injection-string-build`.",
+   "impact": "An attacker who controls any interpolated value can read or modify arbitrary data.",
+   "remediation": "Use parameterised queries, e.g. cursor.execute(\"SELECT ... WHERE id = %s\", (user_id,)).",
+   "principle": "sql-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/89.html"
+   ],
+   "fingerprint": "355530634166b9a2b106135c2443344b"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-sql-injection-string-build",
+   "category": "security",
+   "severity": "critical",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "SQL query is built with string formatting/concatenation and passed to a database call",
+   "file": "app/main.py",
+   "line": 57,
+   "end_line": 57,
+   "evidence": "    # GT:sqli_format|sql-injection|CWE-89|yes\n    cur.execute(\"SELECT * FROM users WHERE name = '{}'\".format(name))\n    return jsonify(cur.fetchall())",
+   "explanation": "SQL query is built with string formatting/concatenation and passed to a database call. (CWE-89). Detected by Semgrep pattern matching; the code shown matched rule `py-sql-injection-string-build`.",
+   "impact": "An attacker who controls any interpolated value can read or modify arbitrary data.",
+   "remediation": "Use parameterised queries, e.g. cursor.execute(\"SELECT ... WHERE id = %s\", (user_id,)).",
+   "principle": "sql-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/89.html"
+   ],
+   "fingerprint": "9a971604b4dd1d843849c3baf9c2c0dd"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-sql-injection-string-build",
+   "category": "security",
+   "severity": "critical",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "SQL query is built with string formatting/concatenation and passed to a database call",
+   "file": "app/main.py",
+   "line": 64,
+   "end_line": 67,
+   "evidence": "    name = request.args.get(\"name\")\n    query = \"SELECT * FROM users WHERE name = '\" + name + \"'\"\n    cur = db.cursor()",
+   "explanation": "SQL query is built with string formatting/concatenation and passed to a database call. (CWE-89). Detected by Semgrep pattern matching; the code shown matched rule `py-sql-injection-string-build`.",
+   "impact": "An attacker who controls any interpolated value can read or modify arbitrary data.",
+   "remediation": "Use parameterised queries, e.g. cursor.execute(\"SELECT ... WHERE id = %s\", (user_id,)).",
+   "principle": "sql-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/89.html"
+   ],
+   "fingerprint": "a7fc71ceaafdc8a911ccb671c4fcf6ca"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-sql-injection-string-build",
+   "category": "security",
+   "severity": "critical",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "SQL query is built with string formatting/concatenation and passed to a database call",
+   "file": "app/main.py",
+   "line": 75,
+   "end_line": 75,
+   "evidence": "    # GT:sqli_text|sql-injection|CWE-89|yes\n    stmt = text(f\"SELECT * FROM users WHERE name = '{name}'\")\n    return str(stmt)",
+   "explanation": "SQL query is built with string formatting/concatenation and passed to a database call. (CWE-89). Detected by Semgrep pattern matching; the code shown matched rule `py-sql-injection-string-build`.",
+   "impact": "An attacker who controls any interpolated value can read or modify arbitrary data.",
+   "remediation": "Use parameterised queries, e.g. cursor.execute(\"SELECT ... WHERE id = %s\", (user_id,)).",
+   "principle": "sql-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/89.html"
+   ],
+   "fingerprint": "2a6afdf7f483d1cc37284c2efc8bb2e6"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-sql-injection-string-build",
+   "category": "security",
+   "severity": "critical",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "SQL query is built with string formatting/concatenation and passed to a database call",
+   "file": "app/main.py",
+   "line": 82,
+   "end_line": 85,
+   "evidence": "    term = request.args.get(\"q\")\n    q = f\"SELECT * FROM items WHERE title LIKE '%{term}%'\"\n    cur = db.cursor()",
+   "explanation": "SQL query is built with string formatting/concatenation and passed to a database call. (CWE-89). Detected by Semgrep pattern matching; the code shown matched rule `py-sql-injection-string-build`.",
+   "impact": "An attacker who controls any interpolated value can read or modify arbitrary data.",
+   "remediation": "Use parameterised queries, e.g. cursor.execute(\"SELECT ... WHERE id = %s\", (user_id,)).",
+   "principle": "sql-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/89.html"
+   ],
+   "fingerprint": "4b18ede1ae6d5bb48ae97e48c0e3cc30"
+  },
+  {
+   "tool": "osv-scanner",
+   "rule_id": "vulnerable-dependency",
+   "category": "security",
+   "severity": "critical",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "pyjwt 2.9.0 has 32 known vulnerabilities",
+   "file": "requirements.txt",
+   "line": null,
+   "end_line": null,
+   "evidence": "PyPI package pyjwt@2.9.0\n\u2022 PYSEC-2025-183 [high] pyjwt v2.10.1 was discovered to contain weak encryption. NOTE: this is disputed by the Supplier because the ke\n\u2022 PYSEC-2026-120 [high] PyJWT is a JSON Web Token implementation in Python. Prior to 2.12.0, PyJWT does not validate the crit (Critica\n\u2022 PYSEC-2026-175 [medium] PyJWT is a JSON Web Token implementation in Python. Prior to 2.13.0, PyJWKClient passes its uri argument direc\n\u2022 PYSEC-2026-176 [medium] PyJWT is a JSON Web Token implementation in Python. From 2.9.0 to 2.12.1, there is a verifier-side algorithm a\n\u2022 PYSEC-2026-177 [low] PyJWT is a JSON Web Token implementation in Python. Prior to 2.13.0, PyJWKClient.get_signing_key() forces a fr\n\u2022 PYSEC-2026-178 [medium] PyJWT is a JSON Web Token implementation in Python. From 2.8.0 to 2.12.1, when verifying detached JWS tokens u\n\u2022 PYSEC-2026-179 [high] PyJWT is a JSON Web Token implementation in Python. Prior to 2.13.0, when the verifier is decoding JSON Web To\n\u2022 PYSEC-2026-4140 [medium] PyJWT: PyJWKClient still amplifies unauthenticated JWKS fetches on unknown kid values (incomplete fix of CVE-2\n\u2022 PYSEC-2026-4141 [medium] PyJWT: Unauthenticated RecursionError DoS in pre-verification payload parse (PyJWKClient.get_signing_key_from_\n\u2022 PYSEC-2026-4144 [high] PyJWT: PyJWKClient follows redirects when fetching JWKS\n\u2022 PYSEC-2026-4145 [critical] PyJWT: Asymmetric-PEM detection bypass: whitespace/line-ending-mutated public keys skip the HS/asymmetric conf\n\u2022 PYSEC-2026-4147 [medium] PyJWT: Non-canonical signature segments enable raw-token revocation bypass\n\u2026 and 20 more",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. This is a direct runtime dependency.",
+   "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
+   "remediation": "Upgrade pyjwt to 2.15.0 or later, then re-run the audit.",
+   "principle": null,
+   "references": [
+    "https://osv.dev/vulnerability/PYSEC-2025-183"
+   ],
+   "fingerprint": "9bb4f5be7a453fc14a905220f168fefe"
+  },
+  {
+   "tool": "osv-scanner",
+   "rule_id": "vulnerable-dependency",
+   "category": "security",
+   "severity": "critical",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "anyio 4.9.0 has 4 known vulnerabilities (transitive)",
+   "file": "requirements.txt",
+   "line": null,
+   "end_line": null,
+   "evidence": "PyPI package anyio@4.9.0\n\u2022 PYSEC-2026-4024 [medium] AnyIO process-pool workers can block indefinitely on undrained stderr\n\u2022 PYSEC-2026-4025 [critical] AnyIO: TLSStream IDNA 2003 host name encoding enables potential TLS certificate spoofing\n\u2022 GHSA-5p39-cfhj-2xmp [medium] AnyIO process-pool workers can block indefinitely on undrained stderr\n\u2022 GHSA-82r6-8w77-94w6 [critical] AnyIO: TLSStream IDNA 2003 host name encoding enables potential TLS certificate spoofing",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. It is not declared directly; it is pulled in by another package and may only be used by development tooling. Confidence is medium.",
+   "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
+   "remediation": "Upgrade anyio to 4.14.2 or later, then re-run the audit.",
+   "principle": null,
+   "references": [
+    "https://osv.dev/vulnerability/PYSEC-2026-4024"
+   ],
+   "fingerprint": "436c3c8753cb959cc6bcb72eb2b70643"
+  },
+  {
+   "tool": "osv-scanner",
+   "rule_id": "vulnerable-dependency",
+   "category": "security",
+   "severity": "critical",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "certifi 2026.7.22 has 2 known vulnerabilities (transitive)",
+   "file": "requirements.txt",
+   "line": null,
+   "end_line": null,
+   "evidence": "PyPI package certifi@2026.7.22\n\u2022 PYSEC-2026-4320 [critical] certifi bundles emSign root CAs with compromised intermediate CA keys\n\u2022 GHSA-6q48-6c7w-9gw2 [critical] certifi bundles emSign root CAs with compromised intermediate CA keys",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. It is not declared directly; it is pulled in by another package and may only be used by development tooling. Confidence is medium.",
+   "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
+   "remediation": "Upgrade certifi to 2026.10.18 or later, then re-run the audit.",
+   "principle": null,
+   "references": [
+    "https://osv.dev/vulnerability/PYSEC-2026-4320"
+   ],
+   "fingerprint": "64dbff4be70434a3be4b71bc8906bf42"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-cors-wildcard-with-credentials",
+   "category": "security",
+   "severity": "high",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "CORS allows any origin while also allowing credentials",
+   "file": "app/api.py",
+   "line": 8,
+   "end_line": 8,
+   "evidence": "# GT:fastapi_cors|cors-misconfig|CWE-942|yes\napi.add_middleware(CORSMiddleware, allow_origins=[\"*\"], allow_credentials=True)\n",
+   "explanation": "CORS allows any origin while also allowing credentials. (CWE-942). Detected by Semgrep pattern matching; the code shown matched rule `py-cors-wildcard-with-credentials`.",
+   "impact": "Any website can make authenticated requests on behalf of logged-in users and read the responses.",
+   "remediation": "List the exact allowed origins instead of \"*\".",
+   "principle": "insecure-configuration",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/942.html"
+   ],
+   "fingerprint": "20dd2892926b7b6b21a9a8ff09dab30f"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-jwt-signature-not-verified",
+   "category": "security",
+   "severity": "high",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "JWT is decoded without verifying its signature",
+   "file": "app/api.py",
+   "line": 45,
+   "end_line": 45,
+   "evidence": "    # GT:jwt_noverify_alg_none|jwt-verification|CWE-347|yes\n    return jwt.decode(token, options={\"verify_signature\": False}, algorithms=[\"HS256\"])",
+   "explanation": "JWT is decoded without verifying its signature. (CWE-347). Detected by Semgrep pattern matching; the code shown matched rule `py-jwt-signature-not-verified`.",
+   "impact": "Anyone can forge tokens and impersonate any user.",
+   "remediation": "Always pass the key and an explicit algorithms=[...] list; never disable verify_signature.",
+   "principle": "broken-authentication",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/347.html"
+   ],
+   "fingerprint": "31c79e4809f2392ddbabcc6523f78d8e"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-cors-wildcard-with-credentials",
+   "category": "security",
+   "severity": "high",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "CORS allows any origin while also allowing credentials",
+   "file": "app/main.py",
+   "line": 20,
+   "end_line": 20,
+   "evidence": "# GT:cors|cors-misconfig|CWE-942|yes\nCORS(app, origins=\"*\", supports_credentials=True)\n",
+   "explanation": "CORS allows any origin while also allowing credentials. (CWE-942). Detected by Semgrep pattern matching; the code shown matched rule `py-cors-wildcard-with-credentials`.",
+   "impact": "Any website can make authenticated requests on behalf of logged-in users and read the responses.",
+   "remediation": "List the exact allowed origins instead of \"*\".",
+   "principle": "insecure-configuration",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/942.html"
+   ],
+   "fingerprint": "9f5bc62fb367d6ea9749de75ecae5d87"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-jwt-signature-not-verified",
+   "category": "security",
+   "severity": "high",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "JWT is decoded without verifying its signature",
+   "file": "app/main.py",
+   "line": 200,
+   "end_line": 200,
+   "evidence": "    # GT:jwt_noverify|jwt-verification|CWE-347|yes\n    return jwt.decode(tok, options={\"verify_signature\": False})\n",
+   "explanation": "JWT is decoded without verifying its signature. (CWE-347). Detected by Semgrep pattern matching; the code shown matched rule `py-jwt-signature-not-verified`.",
+   "impact": "Anyone can forge tokens and impersonate any user.",
+   "remediation": "Always pass the key and an explicit algorithms=[...] list; never disable verify_signature.",
+   "principle": "broken-authentication",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/347.html"
+   ],
+   "fingerprint": "b90c7d83fffad7bd145351d6f092cb82"
+  },
+  {
+   "tool": "osv-scanner",
+   "rule_id": "vulnerable-dependency",
+   "category": "security",
+   "severity": "high",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "flask-cors 4.0.1 has 8 known vulnerabilities",
+   "file": "requirements.txt",
+   "line": null,
+   "end_line": null,
+   "evidence": "PyPI package flask-cors@4.0.1\n\u2022 PYSEC-2024-71 [high] A vulnerability in corydolphin/flask-cors up to version 4.0.1 allows the `Access-Control-Allow-Private-Network\n\u2022 PYSEC-2026-1383 [medium] Flask-CORS vulnerable to Improper Handling of Case Sensitivity\n\u2022 PYSEC-2026-1384 [medium] Flask-CORS improper regex path matching vulnerability\n\u2022 PYSEC-2026-1385 [medium] Flask-CORS allows for inconsistent CORS matching\n\u2022 GHSA-43qf-4rqw-9q2g [medium] Flask-CORS vulnerable to Improper Handling of Case Sensitivity\n\u2022 GHSA-7rxf-gvfg-47g4 [medium] Flask-CORS improper regex path matching vulnerability\n\u2022 GHSA-8vgw-p6qm-5gr7 [medium] Flask-CORS allows for inconsistent CORS matching\n\u2022 GHSA-hxwh-jpp2-84pm [high] Flask-CORS allows the `Access-Control-Allow-Private-Network` CORS header to be set to true by default",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. This is a direct runtime dependency.",
+   "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
+   "remediation": "Upgrade flask-cors to 6.0.0 or later, then re-run the audit.",
+   "principle": null,
+   "references": [
+    "https://osv.dev/vulnerability/PYSEC-2024-71"
+   ],
+   "fingerprint": "d4806cd685a3d655632723a9516a8928"
+  },
+  {
+   "tool": "testing",
+   "rule_id": "no-tests",
+   "category": "reliability",
+   "severity": "high",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "No automated tests found",
+   "file": null,
+   "line": null,
+   "end_line": null,
+   "evidence": "2 source files and 0 test files (searched tests/, __tests__/, test_*.py, *_test.py, *.test.*, *.spec.*).",
+   "explanation": "Without tests there is no fast, repeatable way to know whether a change breaks existing behaviour.",
+   "impact": "Regressions reach users; refactoring (including fixes from this report) is risky.",
+   "remediation": "Start with tests for the most critical paths (auth, payments, data writes), using pytest/Vitest.",
+   "principle": null,
+   "references": [],
+   "fingerprint": "27ffa54c186d875022ee47b9c4174e9a"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-command-injection-shell",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "A shell command is built from a non-constant value and executed through the shell",
+   "file": "app/main.py",
+   "line": 93,
+   "end_line": 93,
+   "evidence": "    # GT:cmdi_system|command-injection|CWE-78|yes\n    os.system(\"ping -c 1 \" + host)\n    return \"ok\"",
+   "explanation": "A shell command is built from a non-constant value and executed through the shell. (CWE-78). Detected by Semgrep pattern matching; the code shown matched rule `py-command-injection-shell`.",
+   "impact": "If any part of the command comes from user input, an attacker can run arbitrary commands on the server.",
+   "remediation": "Pass an argument list without shell=True (subprocess.run([\"cmd\", arg])) and validate inputs.",
+   "principle": "command-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/78.html"
+   ],
+   "fingerprint": "b78e817f120da1df324b44b56b40e971"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-command-injection-shell",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "A shell command is built from a non-constant value and executed through the shell",
+   "file": "app/main.py",
+   "line": 101,
+   "end_line": 101,
+   "evidence": "    # GT:cmdi_shell_true|command-injection|CWE-78|yes\n    out = subprocess.check_output(f\"nslookup {host}\", shell=True)\n    return out",
+   "explanation": "A shell command is built from a non-constant value and executed through the shell. (CWE-78). Detected by Semgrep pattern matching; the code shown matched rule `py-command-injection-shell`.",
+   "impact": "If any part of the command comes from user input, an attacker can run arbitrary commands on the server.",
+   "remediation": "Pass an argument list without shell=True (subprocess.run([\"cmd\", arg])) and validate inputs.",
+   "principle": "command-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/78.html"
+   ],
+   "fingerprint": "a5ff15dbdafc81cab6fec81b1687859a"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-command-injection-shell",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "A shell command is built from a non-constant value and executed through the shell",
+   "file": "app/main.py",
+   "line": 109,
+   "end_line": 109,
+   "evidence": "    # GT:cmdi_popen|command-injection|CWE-78|yes\n    return os.popen(\"ls \" + d).read()\n",
+   "explanation": "A shell command is built from a non-constant value and executed through the shell. (CWE-78). Detected by Semgrep pattern matching; the code shown matched rule `py-command-injection-shell`.",
+   "impact": "If any part of the command comes from user input, an attacker can run arbitrary commands on the server.",
+   "remediation": "Pass an argument list without shell=True (subprocess.run([\"cmd\", arg])) and validate inputs.",
+   "principle": "command-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/78.html"
+   ],
+   "fingerprint": "e48b300f0d739b5472dc080bd5d17269"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-eval-exec",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "eval()/exec() is called on a non-constant value",
+   "file": "app/main.py",
+   "line": 116,
+   "end_line": 116,
+   "evidence": "    # GT:eval|code-injection|CWE-95|yes\n    return str(eval(expr))\n",
+   "explanation": "eval()/exec() is called on a non-constant value. (CWE-95). Detected by Semgrep pattern matching; the code shown matched rule `py-eval-exec`.",
+   "impact": "Evaluating attacker-influenced strings executes arbitrary Python code.",
+   "remediation": "Use ast.literal_eval for data, or an explicit parser/dispatch table.",
+   "principle": "code-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/95.html"
+   ],
+   "fingerprint": "112fcedf6fedafb0bf5388f35fa05513"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-eval-exec",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "eval()/exec() is called on a non-constant value",
+   "file": "app/main.py",
+   "line": 123,
+   "end_line": 123,
+   "evidence": "    # GT:exec|code-injection|CWE-95|yes\n    exec(code)\n    return \"done\"",
+   "explanation": "eval()/exec() is called on a non-constant value. (CWE-95). Detected by Semgrep pattern matching; the code shown matched rule `py-eval-exec`.",
+   "impact": "Evaluating attacker-influenced strings executes arbitrary Python code.",
+   "remediation": "Use ast.literal_eval for data, or an explicit parser/dispatch table.",
+   "principle": "code-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/95.html"
+   ],
+   "fingerprint": "44a0db3aca9c618013df3a75e9e97c34"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-unsafe-deserialization",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "Unsafe deserialization of potentially untrusted data",
+   "file": "app/main.py",
+   "line": 130,
+   "end_line": 130,
+   "evidence": "    # GT:pickle|insecure-deserialization|CWE-502|yes\n    obj = pickle.loads(request.get_data())\n    return str(obj)",
+   "explanation": "Unsafe deserialization of potentially untrusted data. (CWE-502). Detected by Semgrep pattern matching; the code shown matched rule `py-unsafe-deserialization`.",
+   "impact": "pickle/marshal and yaml.load with the full loader can execute code embedded in the data.",
+   "remediation": "Use json, or yaml.safe_load; never unpickle data from users or the network.",
+   "principle": "insecure-deserialization",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/502.html"
+   ],
+   "fingerprint": "d281c9aa354eaf16a451bb445956f7f3"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-unsafe-deserialization",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "Unsafe deserialization of potentially untrusted data",
+   "file": "app/main.py",
+   "line": 137,
+   "end_line": 137,
+   "evidence": "    # GT:yaml_load|insecure-deserialization|CWE-502|yes\n    data = yaml.load(request.get_data(), Loader=yaml.Loader)\n    return jsonify(data)",
+   "explanation": "Unsafe deserialization of potentially untrusted data. (CWE-502). Detected by Semgrep pattern matching; the code shown matched rule `py-unsafe-deserialization`.",
+   "impact": "pickle/marshal and yaml.load with the full loader can execute code embedded in the data.",
+   "remediation": "Use json, or yaml.safe_load; never unpickle data from users or the network.",
+   "principle": "insecure-deserialization",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/502.html"
+   ],
+   "fingerprint": "c54f3b32035e5d0f856e4a38dc2efb89"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-unsafe-deserialization",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "Unsafe deserialization of potentially untrusted data",
+   "file": "app/main.py",
+   "line": 144,
+   "end_line": 144,
+   "evidence": "    # GT:yaml_load_noloader|insecure-deserialization|CWE-502|yes\n    data = yaml.load(request.get_data())\n    return jsonify(data)",
+   "explanation": "Unsafe deserialization of potentially untrusted data. (CWE-502). Detected by Semgrep pattern matching; the code shown matched rule `py-unsafe-deserialization`.",
+   "impact": "pickle/marshal and yaml.load with the full loader can execute code embedded in the data.",
+   "remediation": "Use json, or yaml.safe_load; never unpickle data from users or the network.",
+   "principle": "insecure-deserialization",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/502.html"
+   ],
+   "fingerprint": "11faa2356bc0281606aed9862c063455"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-path-traversal-request-data",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "User-controlled input reaches a filesystem path",
+   "file": "app/main.py",
+   "line": 152,
+   "end_line": 152,
+   "evidence": "    # GT:path_open|path-traversal|CWE-22|yes\n    with open(\"/var/data/\" + name) as fh:\n        return fh.read()",
+   "explanation": "User-controlled input reaches a filesystem path. (CWE-22). Detected by Semgrep pattern matching; the code shown matched rule `py-path-traversal-request-data`.",
+   "impact": "An attacker can read or overwrite files outside the intended directory using ../ sequences.",
+   "remediation": "Resolve the path and check it stays under an allowed base directory, or map IDs to files server-side.",
+   "principle": "path-traversal",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/22.html"
+   ],
+   "fingerprint": "38a3a232ded1ca5290962fade07fdc27"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-path-traversal-request-data",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "User-controlled input reaches a filesystem path",
+   "file": "app/main.py",
+   "line": 160,
+   "end_line": 160,
+   "evidence": "    # GT:path_send_file|path-traversal|CWE-22|yes\n    return send_file(os.path.join(\"/var/data\", name))\n",
+   "explanation": "User-controlled input reaches a filesystem path. (CWE-22). Detected by Semgrep pattern matching; the code shown matched rule `py-path-traversal-request-data`.",
+   "impact": "An attacker can read or overwrite files outside the intended directory using ../ sequences.",
+   "remediation": "Resolve the path and check it stays under an allowed base directory, or map IDs to files server-side.",
+   "principle": "path-traversal",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/22.html"
+   ],
+   "fingerprint": "7d1eddf4ce1e190417b51c57c4219ae7"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-template-injection",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "A template is rendered from a non-constant string",
+   "file": "app/main.py",
+   "line": 182,
+   "end_line": 182,
+   "evidence": "    # GT:xss_rts|xss|CWE-79|yes\n    return render_template_string(\"<h1>Hello \" + name + \"</h1>\")\n",
+   "explanation": "A template is rendered from a non-constant string. (CWE-1336). Detected by Semgrep pattern matching; the code shown matched rule `py-template-injection`.",
+   "impact": "Server-side template injection can lead to XSS or remote code execution.",
+   "remediation": "Use render_template with a fixed template file and pass data as variables.",
+   "principle": "xss",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/1336.html"
+   ],
+   "fingerprint": "693081a68434c91362bc46b3fb28f874"
+  },
+  {
+   "tool": "osv-scanner",
+   "rule_id": "vulnerable-dependency",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "starlette 0.38.6 has 14 known vulnerabilities (transitive)",
+   "file": "requirements.txt",
+   "line": null,
+   "end_line": null,
+   "evidence": "PyPI package starlette@0.38.6\n\u2022 PYSEC-2026-161 [medium] BadHost: Missing Host header validation poisons request.url.path, bypassing path-based security checks\n\u2022 PYSEC-2026-1941 [medium] Starlette has possible denial-of-service vector when parsing large files in multipart forms\n\u2022 PYSEC-2026-1943 [high] Starlette Denial of service (DoS) via multipart/form-data\n\u2022 PYSEC-2026-2280 [medium] Starlette is a lightweight ASGI framework/toolkit. In versions 1.0.1 and below, when dispatching a request, HT\n\u2022 PYSEC-2026-2281 [high] Starlette is a lightweight ASGI framework/toolkit. In versions 1.0.1 and earlier, StaticFiles on Windows is vu\n\u2022 PYSEC-2026-248 [medium] Starlette is a lightweight ASGI framework/toolkit. Prior to 1.3.0, the HTTP request path is not validated befo\n\u2022 PYSEC-2026-249 [high] Starlette is a lightweight ASGI framework/toolkit. From 0.4.1 until 1.3.1, request.form() accepts max_fields a\n\u2022 GHSA-2c2j-9gv5-cj73 [medium] Starlette has possible denial-of-service vector when parsing large files in multipart forms\n\u2022 GHSA-82w8-qh3p-5jfq [high] Starlette: request.form() limits silently ignored for application/x-www-form-urlencoded enable DoS\n\u2022 GHSA-86qp-5c8j-p5mr [medium] Starlette has missing Host header validation that poisons request.url.path, bypassing path-based security chec\n\u2022 GHSA-f96h-pmfr-66vw [high] Starlette Denial of service (DoS) via multipart/form-data\n\u2022 GHSA-jp82-jpqv-5vv3 [medium] Starlette: Unvalidated request path concatenated into authority poisons request.url.hostname\n\u2026 and 2 more",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. It is not declared directly; it is pulled in by another package and may only be used by development tooling. Confidence is medium.",
+   "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
+   "remediation": "Upgrade starlette to 1.3.1 or later, then re-run the audit.",
+   "principle": null,
+   "references": [
+    "https://osv.dev/vulnerability/PYSEC-2026-161"
+   ],
+   "fingerprint": "114bf636e439efa6510395a7e19367c2"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-tls-verification-disabled",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "TLS certificate verification is disabled",
+   "file": "app/main.py",
+   "line": 195,
+   "end_line": 195,
+   "evidence": "    # GT:tls_verify_false|tls-verification|CWE-295|yes\n    return requests.get(\"https://internal.example.com/api\", verify=False, timeout=5).text\n",
+   "explanation": "TLS certificate verification is disabled. (CWE-295). Detected by Semgrep pattern matching; the code shown matched rule `py-tls-verification-disabled`.",
+   "impact": "Traffic can be intercepted and modified by anyone on the network path (man-in-the-middle).",
+   "remediation": "Remove verify=False; if you need a private CA, pass verify=\"/path/to/ca.pem\".",
+   "principle": "insecure-transport",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/295.html"
+   ],
+   "fingerprint": "440e87e5f0563e8f98d62786fb16e7fe"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-flask-debug-enabled",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "Flask debug mode is enabled in code",
+   "file": "app/main.py",
+   "line": 311,
+   "end_line": 311,
+   "evidence": "    # GT:debug_true|debug-enabled|CWE-489|yes\n    app.run(host=\"0.0.0.0\", debug=True)",
+   "explanation": "Flask debug mode is enabled in code. (CWE-489). Detected by Semgrep pattern matching; the code shown matched rule `py-flask-debug-enabled`.",
+   "impact": "The Werkzeug debugger allows arbitrary code execution if reachable, and leaks stack traces.",
+   "remediation": "Read debug from an environment variable that defaults to False.",
+   "principle": "insecure-configuration",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/489.html"
+   ],
+   "fingerprint": "75fed4240712c5b600705157e0b4ac21"
+  },
+  {
+   "tool": "osv-scanner",
+   "rule_id": "vulnerable-dependency",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "flask 3.0.3 has 2 known vulnerabilities",
+   "file": "requirements.txt",
+   "line": null,
+   "end_line": null,
+   "evidence": "PyPI package flask@3.0.3\n\u2022 PYSEC-2026-2151 [medium] Flask is a web server gateway interface (WSGI) web application framework. In versions 3.1.2 and below, when th\n\u2022 GHSA-68rp-wp8r-4726 [medium] Flask session does not add `Vary: Cookie` header when accessed in some ways",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. This is a direct runtime dependency.",
+   "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
+   "remediation": "Upgrade flask to 3.1.3 or later, then re-run the audit.",
+   "principle": null,
+   "references": [
+    "https://osv.dev/vulnerability/PYSEC-2026-2151"
+   ],
+   "fingerprint": "a366b37b172f820b3944e59c692c20ed"
+  },
+  {
+   "tool": "osv-scanner",
+   "rule_id": "vulnerable-dependency",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "requests 2.32.3 has 4 known vulnerabilities",
+   "file": "requirements.txt",
+   "line": null,
+   "end_line": null,
+   "evidence": "PyPI package requests@2.32.3\n\u2022 PYSEC-2026-1872 [medium] Requests vulnerable to .netrc credentials leak via malicious URLs\n\u2022 PYSEC-2026-2275 [medium] Requests is a HTTP library. Prior to version 2.33.0, the `requests.utils.extract_zipped_paths()` utility funct\n\u2022 GHSA-9hjg-9r4m-mvj7 [medium] Requests vulnerable to .netrc credentials leak via malicious URLs\n\u2022 GHSA-gc5v-m9x4-r6x2 [medium] Requests has Insecure Temp File Reuse in its extract_zipped_paths() utility function",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. This is a direct runtime dependency.",
+   "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
+   "remediation": "Upgrade requests to 2.33.0 or later, then re-run the audit.",
+   "principle": null,
+   "references": [
+    "https://osv.dev/vulnerability/PYSEC-2026-1872"
+   ],
+   "fingerprint": "2575d104e9b6076338e985f212734992"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-hardcoded-secret-key",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "A secret/signing key is hard-coded in source",
+   "file": "app/main.py",
+   "line": 18,
+   "end_line": 18,
+   "evidence": "# GT:secretkey|hardcoded-secret|CWE-798|yes\napp.config[\"SECRET_KEY\"] = \"super-secret-key-12345\"\n# GT:cors|cors-misconfig|CWE-942|yes",
+   "explanation": "A secret/signing key is hard-coded in source. (CWE-798). Detected by Semgrep pattern matching; the code shown matched rule `py-hardcoded-secret-key`.",
+   "impact": "Anyone with access to the code can forge sessions/tokens signed with this key.",
+   "remediation": "Load the key from an environment variable or secret manager.",
+   "principle": "hardcoded-credentials",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/798.html"
+   ],
+   "fingerprint": "bd5aa14d98407e65108ce2262ddb5f69"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-ssrf-request-data",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "User-controlled input is used as the URL of a server-side HTTP request",
+   "file": "app/main.py",
+   "line": 166,
+   "end_line": 166,
+   "evidence": "    # GT:ssrf|ssrf|CWE-918|yes\n    r = requests.get(request.args.get(\"url\"))\n    return r.text",
+   "explanation": "User-controlled input is used as the URL of a server-side HTTP request. (CWE-918). Detected by Semgrep pattern matching; the code shown matched rule `py-ssrf-request-data`.",
+   "impact": "Attackers can make the server call internal services (cloud metadata, admin APIs).",
+   "remediation": "Allow-list hosts/schemes and resolve + block private IP ranges before requesting.",
+   "principle": "ssrf",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/918.html"
+   ],
+   "fingerprint": "625971e4e1ffeb4ba6c6a13968805b98"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-ssrf-request-data",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "User-controlled input is used as the URL of a server-side HTTP request",
+   "file": "app/main.py",
+   "line": 174,
+   "end_line": 174,
+   "evidence": "    # GT:ssrf_var|ssrf|CWE-918|yes\n    r = requests.get(target, timeout=5)\n    return r.text",
+   "explanation": "User-controlled input is used as the URL of a server-side HTTP request. (CWE-918). Detected by Semgrep pattern matching; the code shown matched rule `py-ssrf-request-data`.",
+   "impact": "Attackers can make the server call internal services (cloud metadata, admin APIs).",
+   "remediation": "Allow-list hosts/schemes and resolve + block private IP ranges before requesting.",
+   "principle": "ssrf",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/918.html"
+   ],
+   "fingerprint": "8a1ccbca4fb8e8284dced33b0b2616e2"
+  },
+  {
+   "tool": "osv-scanner",
+   "rule_id": "vulnerable-dependency",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "idna 3.9.0 has 2 known vulnerabilities (transitive)",
+   "file": "requirements.txt",
+   "line": null,
+   "end_line": null,
+   "evidence": "PyPI package idna@3.9.0\n\u2022 PYSEC-2026-215 [medium] Internationalized Domain Names in Applications (IDNA) for Python provides support for Internationalized Domain\n\u2022 GHSA-65pc-fj4g-8rjx [medium] Internationalized Domain Names in Applications (IDNA): Specially crafted inputs to idna.encode() can bypass CV",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. It is not declared directly; it is pulled in by another package and may only be used by development tooling. Confidence is medium.",
+   "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
+   "remediation": "Upgrade idna to 3.15 or later, then re-run the audit.",
+   "principle": null,
+   "references": [
+    "https://osv.dev/vulnerability/PYSEC-2026-215"
+   ],
+   "fingerprint": "abcfd559a93cfbb4e20330cc087586a9"
+  },
+  {
+   "tool": "design",
+   "rule_id": "db-query-in-loop",
+   "category": "architecture",
+   "severity": "medium",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "Database call `cur.fetchall` inside a loop (possible N+1 query)",
+   "file": "app/main.py",
+   "line": 227,
+   "end_line": 230,
+   "evidence": "    for row in cur.fetchall():\n        # GT:nplus1|n-plus-one|CWE-1073|yes\n        cur.execute(\"SELECT * FROM order_items WHERE order_id = ?\", (row[0],))\n        out.append(cur.fetchall())",
+   "explanation": "A call that looks like a database operation (`cur.fetchall`) runs on line 230, inside the loop starting on line 227 (2 such calls in that loop). This is the classic N+1 pattern: one query to get the rows, then one more per row. The detection is by call name, so the call could also be a deliberate batch or a non-database object.",
+   "impact": "Latency and database load grow linearly with the number of iterations; a page that is fast with 10 rows can time out with 10,000.",
+   "remediation": "Fetch everything in one query (a JOIN, `IN (...)` / `WHERE id = ANY`, `selectinload`/`prefetch_related`/`include`) before the loop, then look rows up in memory.",
+   "principle": "Data Access Efficiency",
+   "references": [
+    "https://docs.sqlalchemy.org/en/20/orm/queryguide/relationships.html#selectin-eager-loading"
+   ],
+   "fingerprint": "162552e6bc72904ffdb8f8dbce88b8b6"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-markup-unescaped",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "low",
+   "kind": "objective",
+   "title": "Value is marked as safe HTML, disabling auto-escaping",
+   "file": "app/main.py",
+   "line": 189,
+   "end_line": 189,
+   "evidence": "    # GT:xss_markup|xss|CWE-79|yes\n    return Markup(\"<b>\" + name + \"</b>\")\n",
+   "explanation": "Value is marked as safe HTML, disabling auto-escaping. (CWE-79). Detected by Semgrep pattern matching; the code shown matched rule `py-markup-unescaped`.",
+   "impact": "If the value contains user input, attackers can inject scripts into the page.",
+   "remediation": "Escape the value or sanitise it with an HTML sanitiser before marking it safe.",
+   "principle": "xss",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/79.html"
+   ],
+   "fingerprint": "303010b58ff9c100555a25b02069f557"
+  },
+  {
+   "tool": "design",
+   "rule_id": "api-unauthenticated-mutation",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "low",
+   "kind": "subjective",
+   "title": "`DELETE /admin/items/{item_id}` changes state with no visible authentication",
+   "file": "app/api.py",
+   "line": 30,
+   "end_line": null,
+   "evidence": "@api.delete(\"/admin/items/{item_id}\")\ndef admin_delete_item(item_id: int):\n    ITEMS.pop(item_id, None)\n    return {\"ok\": True}",
+   "explanation": "This is a heuristic. Neither the handler (lines 30-33) nor its file shows a recognisable authentication or authorization check (e.g. `Depends(get_current_user)`, `@login_required`, `getServerSession`, `requireAuth`). The app may still enforce auth elsewhere: global middleware, an API gateway, or router-level dependencies registered in another file.",
+   "impact": "If no auth is enforced anywhere, anyone who can reach the server can create, modify or delete data through this endpoint.",
+   "remediation": "Confirm where authentication is enforced. If it is not, add an auth dependency/middleware to this route and check that the caller may act on the specific resource (not just that they are logged in).",
+   "principle": "API Security",
+   "references": [
+    "https://owasp.org/API-Security/editions/2023/en/0xa2-broken-authentication/"
+   ],
+   "fingerprint": "296563f95fcf0a2c47dd262e298c218f"
+  },
+  {
+   "tool": "design",
+   "rule_id": "api-unauthenticated-mutation",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "low",
+   "kind": "subjective",
+   "title": "`POST /admin/items` changes state with no visible authentication",
+   "file": "app/api.py",
+   "line": 37,
+   "end_line": null,
+   "evidence": "@api.post(\"/admin/items\")\ndef admin_create_item(item: dict):\n    ITEMS[len(ITEMS)] = item\n    return item",
+   "explanation": "This is a heuristic. Neither the handler (lines 37-40) nor its file shows a recognisable authentication or authorization check (e.g. `Depends(get_current_user)`, `@login_required`, `getServerSession`, `requireAuth`). The app may still enforce auth elsewhere: global middleware, an API gateway, or router-level dependencies registered in another file.",
+   "impact": "If no auth is enforced anywhere, anyone who can reach the server can create, modify or delete data through this endpoint.",
+   "remediation": "Confirm where authentication is enforced. If it is not, add an auth dependency/middleware to this route and check that the caller may act on the specific resource (not just that they are logged in).",
+   "principle": "API Security",
+   "references": [
+    "https://owasp.org/API-Security/editions/2023/en/0xa2-broken-authentication/"
+   ],
+   "fingerprint": "d4c7ec643b536db242621b88d6a0f80c"
+  },
+  {
+   "tool": "design",
+   "rule_id": "api-unauthenticated-mutation",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "low",
+   "kind": "subjective",
+   "title": "`POST /code/exec` changes state with no visible authentication",
+   "file": "app/main.py",
+   "line": 119,
+   "end_line": null,
+   "evidence": "@app.route(\"/code/exec\", methods=[\"POST\"])\ndef code_exec():\n    code = request.get_data(as_text=True)\n    # GT:exec|code-injection|CWE-95|yes",
+   "explanation": "This is a heuristic. Neither the handler (lines 119-124) nor its file shows a recognisable authentication or authorization check (e.g. `Depends(get_current_user)`, `@login_required`, `getServerSession`, `requireAuth`). The app may still enforce auth elsewhere: global middleware, an API gateway, or router-level dependencies registered in another file.",
+   "impact": "If no auth is enforced anywhere, anyone who can reach the server can create, modify or delete data through this endpoint.",
+   "remediation": "Confirm where authentication is enforced. If it is not, add an auth dependency/middleware to this route and check that the caller may act on the specific resource (not just that they are logged in).",
+   "principle": "API Security",
+   "references": [
+    "https://owasp.org/API-Security/editions/2023/en/0xa2-broken-authentication/"
+   ],
+   "fingerprint": "e179b45cba7b1cd6ec2ed35d3eb4a18a"
+  },
+  {
+   "tool": "design",
+   "rule_id": "api-unauthenticated-mutation",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "low",
+   "kind": "subjective",
+   "title": "`POST /deser/pickle` changes state with no visible authentication",
+   "file": "app/main.py",
+   "line": 127,
+   "end_line": null,
+   "evidence": "@app.route(\"/deser/pickle\", methods=[\"POST\"])\ndef deser_pickle():\n    # GT:pickle|insecure-deserialization|CWE-502|yes\n    obj = pickle.loads(request.get_data())",
+   "explanation": "This is a heuristic. Neither the handler (lines 127-131) nor its file shows a recognisable authentication or authorization check (e.g. `Depends(get_current_user)`, `@login_required`, `getServerSession`, `requireAuth`). The app may still enforce auth elsewhere: global middleware, an API gateway, or router-level dependencies registered in another file.",
+   "impact": "If no auth is enforced anywhere, anyone who can reach the server can create, modify or delete data through this endpoint.",
+   "remediation": "Confirm where authentication is enforced. If it is not, add an auth dependency/middleware to this route and check that the caller may act on the specific resource (not just that they are logged in).",
+   "principle": "API Security",
+   "references": [
+    "https://owasp.org/API-Security/editions/2023/en/0xa2-broken-authentication/"
+   ],
+   "fingerprint": "fe35d15d22e29a62bbae6e0ff811715e"
+  },
+  {
+   "tool": "design",
+   "rule_id": "api-unauthenticated-mutation",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "low",
+   "kind": "subjective",
+   "title": "`POST /deser/yaml` changes state with no visible authentication",
+   "file": "app/main.py",
+   "line": 134,
+   "end_line": null,
+   "evidence": "@app.route(\"/deser/yaml\", methods=[\"POST\"])\ndef deser_yaml():\n    # GT:yaml_load|insecure-deserialization|CWE-502|yes\n    data = yaml.load(request.get_data(), Loader=yaml.Loader)",
+   "explanation": "This is a heuristic. Neither the handler (lines 134-138) nor its file shows a recognisable authentication or authorization check (e.g. `Depends(get_current_user)`, `@login_required`, `getServerSession`, `requireAuth`). The app may still enforce auth elsewhere: global middleware, an API gateway, or router-level dependencies registered in another file.",
+   "impact": "If no auth is enforced anywhere, anyone who can reach the server can create, modify or delete data through this endpoint.",
+   "remediation": "Confirm where authentication is enforced. If it is not, add an auth dependency/middleware to this route and check that the caller may act on the specific resource (not just that they are logged in).",
+   "principle": "API Security",
+   "references": [
+    "https://owasp.org/API-Security/editions/2023/en/0xa2-broken-authentication/"
+   ],
+   "fingerprint": "e9b9d04edd3fecea0ce6fbb239f929b4"
+  },
+  {
+   "tool": "design",
+   "rule_id": "api-unauthenticated-mutation",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "low",
+   "kind": "subjective",
+   "title": "`POST /deser/yaml_noloader` changes state with no visible authentication",
+   "file": "app/main.py",
+   "line": 141,
+   "end_line": null,
+   "evidence": "@app.route(\"/deser/yaml_noloader\", methods=[\"POST\"])\ndef deser_yaml_noloader():\n    # GT:yaml_load_noloader|insecure-deserialization|CWE-502|yes\n    data = yaml.load(request.get_data())",
+   "explanation": "This is a heuristic. Neither the handler (lines 141-145) nor its file shows a recognisable authentication or authorization check (e.g. `Depends(get_current_user)`, `@login_required`, `getServerSession`, `requireAuth`). The app may still enforce auth elsewhere: global middleware, an API gateway, or router-level dependencies registered in another file.",
+   "impact": "If no auth is enforced anywhere, anyone who can reach the server can create, modify or delete data through this endpoint.",
+   "remediation": "Confirm where authentication is enforced. If it is not, add an auth dependency/middleware to this route and check that the caller may act on the specific resource (not just that they are logged in).",
+   "principle": "API Security",
+   "references": [
+    "https://owasp.org/API-Security/editions/2023/en/0xa2-broken-authentication/"
+   ],
+   "fingerprint": "3c079f27f13257007fd16c0ca8bd3bda"
+  },
+  {
+   "tool": "design",
+   "rule_id": "api-unauthenticated-mutation",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "low",
+   "kind": "subjective",
+   "title": "`DELETE /users/{uid}` changes state with no visible authentication",
+   "file": "app/main.py",
+   "line": 214,
+   "end_line": null,
+   "evidence": "@app.route(\"/users/<int:uid>\", methods=[\"DELETE\"])\ndef delete_user(uid):\n    cur = db.cursor()\n    cur.execute(\"DELETE FROM users WHERE id = ?\", (uid,))",
+   "explanation": "This is a heuristic. Neither the handler (lines 214-219) nor its file shows a recognisable authentication or authorization check (e.g. `Depends(get_current_user)`, `@login_required`, `getServerSession`, `requireAuth`). The app may still enforce auth elsewhere: global middleware, an API gateway, or router-level dependencies registered in another file.",
+   "impact": "If no auth is enforced anywhere, anyone who can reach the server can create, modify or delete data through this endpoint.",
+   "remediation": "Confirm where authentication is enforced. If it is not, add an auth dependency/middleware to this route and check that the caller may act on the specific resource (not just that they are logged in).",
+   "principle": "API Security",
+   "references": [
+    "https://owasp.org/API-Security/editions/2023/en/0xa2-broken-authentication/"
+   ],
+   "fingerprint": "898be224e79f7b1019fec5b8c9382f5a"
+  },
+  {
+   "tool": "design",
+   "rule_id": "api-unauthenticated-mutation",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "low",
+   "kind": "subjective",
+   "title": "`POST /safe/yaml` changes state with no visible authentication",
+   "file": "app/main.py",
+   "line": 259,
+   "end_line": null,
+   "evidence": "@app.route(\"/safe/yaml\", methods=[\"POST\"])\ndef safe_yaml():\n    # SAFE:safe_yaml_safe_load|insecure-deserialization\n    return jsonify(yaml.safe_load(request.get_data()))",
+   "explanation": "This is a heuristic. Neither the handler (lines 259-262) nor its file shows a recognisable authentication or authorization check (e.g. `Depends(get_current_user)`, `@login_required`, `getServerSession`, `requireAuth`). The app may still enforce auth elsewhere: global middleware, an API gateway, or router-level dependencies registered in another file.",
+   "impact": "If no auth is enforced anywhere, anyone who can reach the server can create, modify or delete data through this endpoint.",
+   "remediation": "Confirm where authentication is enforced. If it is not, add an auth dependency/middleware to this route and check that the caller may act on the specific resource (not just that they are logged in).",
+   "principle": "API Security",
+   "references": [
+    "https://owasp.org/API-Security/editions/2023/en/0xa2-broken-authentication/"
+   ],
+   "fingerprint": "975d937be01b6bd2640164f4df88da60"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-weak-hash",
+   "category": "security",
+   "severity": "low",
+   "confidence": "low",
+   "kind": "objective",
+   "title": "MD5/SHA-1 used",
+   "file": "app/main.py",
+   "line": 205,
+   "end_line": 205,
+   "evidence": "    # GT:weak_hash_md5|weak-hash|CWE-328|yes\n    return hashlib.md5(pw.encode()).hexdigest()\n",
+   "explanation": "MD5/SHA-1 used. These are broken for security purposes. (CWE-327). Detected by Semgrep pattern matching; the code shown matched rule `py-weak-hash`.",
+   "impact": "If used for passwords, signatures or integrity checks, collisions/brute force are practical.",
+   "remediation": "Use hashlib.sha256 for integrity, and argon2/bcrypt/scrypt for passwords.",
+   "principle": "weak-cryptography",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/327.html"
+   ],
+   "fingerprint": "284faa46aa3ac35d7077c714ca09d142"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-weak-hash",
+   "category": "security",
+   "severity": "low",
+   "confidence": "low",
+   "kind": "objective",
+   "title": "MD5/SHA-1 used",
+   "file": "app/main.py",
+   "line": 210,
+   "end_line": 210,
+   "evidence": "    # GT:weak_hash_sha1|weak-hash|CWE-328|yes\n    return hashlib.sha1(pw.encode()).hexdigest()\n",
+   "explanation": "MD5/SHA-1 used. These are broken for security purposes. (CWE-327). Detected by Semgrep pattern matching; the code shown matched rule `py-weak-hash`.",
+   "impact": "If used for passwords, signatures or integrity checks, collisions/brute force are practical.",
+   "remediation": "Use hashlib.sha256 for integrity, and argon2/bcrypt/scrypt for passwords.",
+   "principle": "weak-cryptography",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/327.html"
+   ],
+   "fingerprint": "a6004effe04284c0961b9813f016a649"
+  },
+  {
+   "tool": "design",
+   "rule_id": "db-select-star",
+   "category": "architecture",
+   "severity": "low",
+   "confidence": "medium",
+   "kind": "subjective",
+   "title": "`SELECT *` used in a query (10 place(s))",
+   "file": "app/main.py",
+   "line": 30,
+   "end_line": null,
+   "evidence": "    cur.execute(f\"SELECT * FROM users WHERE id = {uid}\")\n(+9 more at lines 39, 48, 57, 64, 75)",
+   "explanation": "`SELECT *` returns every column, including ones added later, so the result shape depends on the table definition rather than on what the code needs.",
+   "impact": "Extra data over the wire, defeated covering indexes, and code that silently breaks or leaks new sensitive columns when the schema changes.",
+   "remediation": "List the columns the caller actually uses.",
+   "principle": "Data Access Efficiency",
+   "references": [
+    "https://use-the-index-luke.com/sql/select-list"
+   ],
+   "fingerprint": "809491cb7b266e32be21121720c5dc45"
+  },
+  {
+   "tool": "quality",
+   "rule_id": "mixed-http-and-data-access",
+   "category": "architecture",
+   "severity": "low",
+   "confidence": "low",
+   "kind": "subjective",
+   "title": "HTTP handlers and database queries in the same module",
+   "file": "app/main.py",
+   "line": 25,
+   "end_line": null,
+   "evidence": "Defines 31 route(s) (e.g. GET /sqli/fstring) and calls cursor, execute.",
+   "explanation": "Route handlers that query the database directly couple transport concerns to persistence. Acceptable in small apps; a smell as the app grows.",
+   "impact": "Business rules become hard to reuse (CLI, jobs, tests) and to test without a DB.",
+   "remediation": "Move data access into a repository/service layer the handlers call.",
+   "principle": "Separation of Concerns",
+   "references": [],
+   "fingerprint": "1bd45b695980e71369468e0d9a440393"
+  }
+ ],
+ "scores": {
+  "overall": 65.3,
+  "grade": "D",
+  "uncapped_overall": 65.3,
+  "caps": [
+   "critical"
+  ],
+  "not_analysed": [],
+  "merged_duplicates": 0,
+  "categories": {
+   "security": 1.9,
+   "reliability": 81.9,
+   "architecture": 91.8,
+   "code_quality": 100.0,
+   "maintainability": 100.0
+  }
+ },
+ "scanners": [
+  {
+   "name": "semgrep",
+   "status": "ok",
+   "version": "1.182.0",
+   "duration_s": 2.39,
+   "message": "",
+   "findings": 30
+  },
+  {
+   "name": "gitleaks",
+   "status": "ok",
+   "version": "8.30.1",
+   "duration_s": 0.06,
+   "message": "",
+   "findings": 0
+  },
+  {
+   "name": "osv-scanner",
+   "status": "ok",
+   "version": "2.7.0",
+   "duration_s": 10.66,
+   "message": "",
+   "findings": 8
+  },
+  {
+   "name": "trivy",
+   "status": "ok",
+   "version": "0.76.1",
+   "duration_s": 1.02,
+   "message": "",
+   "findings": 0
+  }
+ ],
+ "counts": {
+  "total": 50,
+  "by_severity": {
+   "critical": 10,
+   "high": 18,
+   "medium": 18,
+   "low": 4
+  },
+  "by_category": {
+   "security": 46,
+   "reliability": 1,
+   "architecture": 3
+  }
+ },
+ "seconds": 11.0
+}

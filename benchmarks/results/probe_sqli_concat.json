@@ -1,0 +1,193 @@
+{
+ "findings": [
+  {
+   "tool": "semgrep",
+   "rule_id": "py-sql-injection-string-build",
+   "category": "security",
+   "severity": "critical",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "SQL query is built with string formatting/concatenation and passed to a database call",
+   "file": "p.py",
+   "line": 4,
+   "end_line": 4,
+   "evidence": "    name = request.args.get(\"name\")\n    cur.execute(\"SELECT * FROM u WHERE n = '\" + name)             # 2-operand concat\ndef b(cur):",
+   "explanation": "SQL query is built with string formatting/concatenation and passed to a database call. (CWE-89). Detected by Semgrep pattern matching; the code shown matched rule `py-sql-injection-string-build`.",
+   "impact": "An attacker who controls any interpolated value can read or modify arbitrary data.",
+   "remediation": "Use parameterised queries, e.g. cursor.execute(\"SELECT ... WHERE id = %s\", (user_id,)).",
+   "principle": "sql-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/89.html"
+   ],
+   "fingerprint": "6e2285327ddd9f977ec294ee690b8816"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-sql-injection-string-build",
+   "category": "security",
+   "severity": "critical",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "SQL query is built with string formatting/concatenation and passed to a database call",
+   "file": "p.py",
+   "line": 7,
+   "end_line": 7,
+   "evidence": "    name = request.args.get(\"name\")\n    cur.execute(\"SELECT * FROM u WHERE n = '\" + name + \"'\")       # 3-operand concat\ndef c(cur):",
+   "explanation": "SQL query is built with string formatting/concatenation and passed to a database call. (CWE-89). Detected by Semgrep pattern matching; the code shown matched rule `py-sql-injection-string-build`.",
+   "impact": "An attacker who controls any interpolated value can read or modify arbitrary data.",
+   "remediation": "Use parameterised queries, e.g. cursor.execute(\"SELECT ... WHERE id = %s\", (user_id,)).",
+   "principle": "sql-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/89.html"
+   ],
+   "fingerprint": "019fae5bcfaf5bd46c769c4254893b5c"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-sql-injection-string-build",
+   "category": "security",
+   "severity": "critical",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "SQL query is built with string formatting/concatenation and passed to a database call",
+   "file": "p.py",
+   "line": 10,
+   "end_line": 11,
+   "evidence": "    name = request.args.get(\"name\")\n    q = \"SELECT * FROM u WHERE n = '\" + name\n    cur.execute(q)                                                # intermediate, 2-operand",
+   "explanation": "SQL query is built with string formatting/concatenation and passed to a database call. (CWE-89). Detected by Semgrep pattern matching; the code shown matched rule `py-sql-injection-string-build`.",
+   "impact": "An attacker who controls any interpolated value can read or modify arbitrary data.",
+   "remediation": "Use parameterised queries, e.g. cursor.execute(\"SELECT ... WHERE id = %s\", (user_id,)).",
+   "principle": "sql-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/89.html"
+   ],
+   "fingerprint": "617fab25a082d4291914400710aca25d"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-sql-injection-string-build",
+   "category": "security",
+   "severity": "critical",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "SQL query is built with string formatting/concatenation and passed to a database call",
+   "file": "p.py",
+   "line": 14,
+   "end_line": 15,
+   "evidence": "    name = request.args.get(\"name\")\n    q = \"SELECT * FROM u WHERE n = '\" + name + \"'\"\n    cur.execute(q)                                                # intermediate, 3-operand",
+   "explanation": "SQL query is built with string formatting/concatenation and passed to a database call. (CWE-89). Detected by Semgrep pattern matching; the code shown matched rule `py-sql-injection-string-build`.",
+   "impact": "An attacker who controls any interpolated value can read or modify arbitrary data.",
+   "remediation": "Use parameterised queries, e.g. cursor.execute(\"SELECT ... WHERE id = %s\", (user_id,)).",
+   "principle": "sql-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/89.html"
+   ],
+   "fingerprint": "6bf9da85333af9b0c7d3366fe52269b9"
+  },
+  {
+   "tool": "testing",
+   "rule_id": "no-tests",
+   "category": "reliability",
+   "severity": "high",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "No automated tests found",
+   "file": null,
+   "line": null,
+   "end_line": null,
+   "evidence": "1 source files and 0 test files (searched tests/, __tests__/, test_*.py, *_test.py, *.test.*, *.spec.*).",
+   "explanation": "Without tests there is no fast, repeatable way to know whether a change breaks existing behaviour.",
+   "impact": "Regressions reach users; refactoring (including fixes from this report) is risky.",
+   "remediation": "Start with tests for the most critical paths (auth, payments, data writes), using pytest/Vitest.",
+   "principle": null,
+   "references": [],
+   "fingerprint": "27ffa54c186d875022ee47b9c4174e9a"
+  },
+  {
+   "tool": "design",
+   "rule_id": "db-select-star",
+   "category": "architecture",
+   "severity": "low",
+   "confidence": "medium",
+   "kind": "subjective",
+   "title": "`SELECT *` used in a query (4 place(s))",
+   "file": "p.py",
+   "line": 4,
+   "end_line": null,
+   "evidence": "    cur.execute(\"SELECT * FROM u WHERE n = '\" + name)             # 2-operand concat\n(+3 more at lines 7, 10, 14)",
+   "explanation": "`SELECT *` returns every column, including ones added later, so the result shape depends on the table definition rather than on what the code needs.",
+   "impact": "Extra data over the wire, defeated covering indexes, and code that silently breaks or leaks new sensitive columns when the schema changes.",
+   "remediation": "List the columns the caller actually uses.",
+   "principle": "Data Access Efficiency",
+   "references": [
+    "https://use-the-index-luke.com/sql/select-list"
+   ],
+   "fingerprint": "f9e31c44dc42b7b049b1feac33353c81"
+  }
+ ],
+ "scores": {
+  "overall": 78.6,
+  "grade": "C",
+  "uncapped_overall": 78.6,
+  "caps": [
+   "critical"
+  ],
+  "not_analysed": [],
+  "merged_duplicates": 0,
+  "categories": {
+   "security": 42.0,
+   "reliability": 81.9,
+   "architecture": 98.3,
+   "code_quality": 100.0,
+   "maintainability": 100.0
+  }
+ },
+ "scanners": [
+  {
+   "name": "semgrep",
+   "status": "ok",
+   "version": "1.182.0",
+   "duration_s": 2.86,
+   "message": "",
+   "findings": 4
+  },
+  {
+   "name": "gitleaks",
+   "status": "ok",
+   "version": "8.30.1",
+   "duration_s": 0.05,
+   "message": "",
+   "findings": 0
+  },
+  {
+   "name": "osv-scanner",
+   "status": "ok",
+   "version": "2.7.0",
+   "duration_s": 0.09,
+   "message": "",
+   "findings": 0
+  },
+  {
+   "name": "trivy",
+   "status": "ok",
+   "version": "0.76.1",
+   "duration_s": 0.8,
+   "message": "",
+   "findings": 0
+  }
+ ],
+ "counts": {
+  "total": 6,
+  "by_severity": {
+   "critical": 4,
+   "high": 1,
+   "low": 1
+  },
+  "by_category": {
+   "security": 4,
+   "reliability": 1,
+   "architecture": 1
+  }
+ },
+ "seconds": 4.4
+}

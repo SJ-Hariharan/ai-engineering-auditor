@@ -1,0 +1,549 @@
+{
+ "findings": [
+  {
+   "tool": "semgrep",
+   "rule_id": "js-sql-injection-string-build",
+   "category": "security",
+   "severity": "critical",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "SQL query is built with string interpolation/concatenation and passed to a database call",
+   "file": "src/server.js",
+   "line": 22,
+   "end_line": 22,
+   "evidence": "  // GT:sqli_template|sql-injection|CWE-89|yes\n  const r = await pool.query(`SELECT * FROM users WHERE id = ${req.query.id}`);\n  res.json(r.rows);",
+   "explanation": "SQL query is built with string interpolation/concatenation and passed to a database call. (CWE-89). Detected by Semgrep pattern matching; the code shown matched rule `js-sql-injection-string-build`.",
+   "impact": "An attacker who controls any interpolated value can read or modify arbitrary data.",
+   "remediation": "Use parameter placeholders ($1 / ?) and pass values separately, or an ORM query builder.",
+   "principle": "sql-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/89.html"
+   ],
+   "fingerprint": "49f89e54189d8bd9e1e7051a3103ff0c"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "js-sql-injection-string-build",
+   "category": "security",
+   "severity": "critical",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "SQL query is built with string interpolation/concatenation and passed to a database call",
+   "file": "src/server.js",
+   "line": 28,
+   "end_line": 28,
+   "evidence": "  // GT:sqli_concat|sql-injection|CWE-89|yes\n  const r = await pool.query(\"SELECT * FROM users WHERE name = '\" + req.query.name + \"'\");\n  res.json(r.rows);",
+   "explanation": "SQL query is built with string interpolation/concatenation and passed to a database call. (CWE-89). Detected by Semgrep pattern matching; the code shown matched rule `js-sql-injection-string-build`.",
+   "impact": "An attacker who controls any interpolated value can read or modify arbitrary data.",
+   "remediation": "Use parameter placeholders ($1 / ?) and pass values separately, or an ORM query builder.",
+   "principle": "sql-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/89.html"
+   ],
+   "fingerprint": "e063acc7a5ee36d8f5001bcd38499c0f"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "js-cors-wildcard-with-credentials",
+   "category": "security",
+   "severity": "high",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "CORS reflects any origin while allowing credentials",
+   "file": "src/server.js",
+   "line": 15,
+   "end_line": 15,
+   "evidence": "// GT:cors_true_credentials|cors-misconfig|CWE-942|yes\napp.use(cors({ origin: true, credentials: true }));\n",
+   "explanation": "CORS reflects any origin while allowing credentials. (CWE-942). Detected by Semgrep pattern matching; the code shown matched rule `js-cors-wildcard-with-credentials`.",
+   "impact": "Any website can make authenticated requests on behalf of logged-in users and read the responses.",
+   "remediation": "Configure an explicit allow-list of origins.",
+   "principle": "insecure-configuration",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/942.html"
+   ],
+   "fingerprint": "e3d9ce57c91150fd8a9db19e8c421755"
+  },
+  {
+   "tool": "gitleaks",
+   "rule_id": "generic-api-key",
+   "category": "security",
+   "severity": "high",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "Possible exposed secret (generic-api-key)",
+   "file": ".env.local",
+   "line": 2,
+   "end_line": 2,
+   "evidence": "NEXT_\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022[redacted]",
+   "explanation": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations. The value is never shown in this report.",
+   "impact": "Anyone with read access to the repository (or its history) can use this credential. Committed secrets should be treated as compromised.",
+   "remediation": "Revoke/rotate the credential at the provider first, then remove it from the code, load it from environment variables or a secret manager, and add the file to .gitignore. Rewriting git history alone does not make a leaked key safe.",
+   "principle": null,
+   "references": [
+    "https://github.com/gitleaks/gitleaks"
+   ],
+   "fingerprint": "76ff7c9dcb7024d6fe919b53495b4dad"
+  },
+  {
+   "tool": "testing",
+   "rule_id": "no-tests",
+   "category": "reliability",
+   "severity": "high",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "No automated tests found",
+   "file": null,
+   "line": null,
+   "end_line": null,
+   "evidence": "3 source files and 0 test files (searched tests/, __tests__/, test_*.py, *_test.py, *.test.*, *.spec.*).",
+   "explanation": "Without tests there is no fast, repeatable way to know whether a change breaks existing behaviour.",
+   "impact": "Regressions reach users; refactoring (including fixes from this report) is risky.",
+   "remediation": "Start with tests for the most critical paths (auth, payments, data writes), using pytest/Vitest.",
+   "principle": null,
+   "references": [],
+   "fingerprint": "27ffa54c186d875022ee47b9c4174e9a"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "js-secret-exposed-to-browser",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "A secret-looking environment variable is exposed to the browser bundle via a public prefix",
+   "file": "pages/index.js",
+   "line": 3,
+   "end_line": 3,
+   "evidence": "  // GT:next_public_secret_code|secret-exposed-to-browser|CWE-200|yes\n  const key = process.env.NEXT_PUBLIC_API_SECRET;\n  return <main>Home {key ? \"ok\" : \"\"}</main>;",
+   "explanation": "A secret-looking environment variable is exposed to the browser bundle via a public prefix. (CWE-200). Detected by Semgrep pattern matching; the code shown matched rule `js-secret-exposed-to-browser`.",
+   "impact": "NEXT_PUBLIC_/VITE_/REACT_APP_ variables are embedded in client JavaScript and visible to every visitor.",
+   "remediation": "Keep the secret server-side (no public prefix) and call it from an API route or server action.",
+   "principle": "secret-exposure",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/200.html"
+   ],
+   "fingerprint": "f03104e06f324d34154b59a44be1c6cd"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "js-reflected-xss-express",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "Request data flows into an HTML response without escaping",
+   "file": "src/server.js",
+   "line": 40,
+   "end_line": 40,
+   "evidence": "  // GT:reflected_xss|xss|CWE-79|yes\n  res.send(req.query.x);\n});",
+   "explanation": "Request data flows into an HTML response without escaping. (CWE-79). Detected by Semgrep pattern matching; the code shown matched rule `js-reflected-xss-express`.",
+   "impact": "Attackers can craft links that run scripts in victims' browsers (reflected XSS).",
+   "remediation": "Return JSON (res.json) or escape the value with a templating engine that auto-escapes.",
+   "principle": "xss",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/79.html"
+   ],
+   "fingerprint": "ea3f02623221f741d24c5e88153bbb75"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "js-reflected-xss-express",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "Request data flows into an HTML response without escaping",
+   "file": "src/server.js",
+   "line": 45,
+   "end_line": 45,
+   "evidence": "  // GT:reflected_xss_template|xss|CWE-79|yes\n  res.send(`<h1>Hello ${req.query.name}</h1>`);\n});",
+   "explanation": "Request data flows into an HTML response without escaping. (CWE-79). Detected by Semgrep pattern matching; the code shown matched rule `js-reflected-xss-express`.",
+   "impact": "Attackers can craft links that run scripts in victims' browsers (reflected XSS).",
+   "remediation": "Return JSON (res.json) or escape the value with a templating engine that auto-escapes.",
+   "principle": "xss",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/79.html"
+   ],
+   "fingerprint": "1fe4d9e349942466e98457b92911e8db"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "js-reflected-xss-express",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "Request data flows into an HTML response without escaping",
+   "file": "src/server.js",
+   "line": 50,
+   "end_line": 50,
+   "evidence": "  // GT:eval|code-injection|CWE-95|yes\n  res.send(String(eval(req.query.expr)));\n});",
+   "explanation": "Request data flows into an HTML response without escaping. (CWE-79). Detected by Semgrep pattern matching; the code shown matched rule `js-reflected-xss-express`.",
+   "impact": "Attackers can craft links that run scripts in victims' browsers (reflected XSS).",
+   "remediation": "Return JSON (res.json) or escape the value with a templating engine that auto-escapes.",
+   "principle": "xss",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/79.html"
+   ],
+   "fingerprint": "aca8ea08f91f5337914f28b03c816ccd"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "js-eval",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "Code is evaluated from a non-constant string",
+   "file": "src/server.js",
+   "line": 50,
+   "end_line": 50,
+   "evidence": "  // GT:eval|code-injection|CWE-95|yes\n  res.send(String(eval(req.query.expr)));\n});",
+   "explanation": "Code is evaluated from a non-constant string. (CWE-95). Detected by Semgrep pattern matching; the code shown matched rule `js-eval`.",
+   "impact": "If the string contains attacker input, arbitrary code runs (in the browser or on the server).",
+   "remediation": "Use JSON.parse for data, or an explicit dispatch table instead of eval.",
+   "principle": "code-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/95.html"
+   ],
+   "fingerprint": "c6e9e6691412d5c5f5ebf09cbb48c13d"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "js-command-injection",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "A shell command is built from a non-constant value",
+   "file": "src/server.js",
+   "line": 55,
+   "end_line": 55,
+   "evidence": "  // GT:cmd_exec_template|command-injection|CWE-78|yes\n  exec(`ping -c 1 ${req.query.host}`, (err, out) => res.send(out));\n});",
+   "explanation": "A shell command is built from a non-constant value. (CWE-78). Detected by Semgrep pattern matching; the code shown matched rule `js-command-injection`.",
+   "impact": "If any part comes from user input, an attacker can run arbitrary commands on the server.",
+   "remediation": "Use execFile/spawn with an argument array (no shell) and validate inputs.",
+   "principle": "command-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/78.html"
+   ],
+   "fingerprint": "bca2f438e1c77cc81bd749228c215130"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "js-path-traversal",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "Request data reaches a filesystem path",
+   "file": "src/server.js",
+   "line": 70,
+   "end_line": 70,
+   "evidence": "  // GT:path_sendfile|path-traversal|CWE-22|yes\n  res.sendFile(req.query.f);\n});",
+   "explanation": "Request data reaches a filesystem path. (CWE-22). Detected by Semgrep pattern matching; the code shown matched rule `js-path-traversal`.",
+   "impact": "An attacker can read or overwrite files outside the intended directory.",
+   "remediation": "Resolve the path and verify it stays under an allowed base directory.",
+   "principle": "path-traversal",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/22.html"
+   ],
+   "fingerprint": "0df1a8e976872e0f6b52da48ce5083f1"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "js-reflected-xss-express",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "Request data flows into an HTML response without escaping",
+   "file": "src/server.js",
+   "line": 75,
+   "end_line": 75,
+   "evidence": "  // GT:path_readfile|path-traversal|CWE-22|yes\n  res.send(require(\"fs\").readFileSync(\"/data/\" + req.query.f, \"utf8\"));\n});",
+   "explanation": "Request data flows into an HTML response without escaping. (CWE-79). Detected by Semgrep pattern matching; the code shown matched rule `js-reflected-xss-express`.",
+   "impact": "Attackers can craft links that run scripts in victims' browsers (reflected XSS).",
+   "remediation": "Return JSON (res.json) or escape the value with a templating engine that auto-escapes.",
+   "principle": "xss",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/79.html"
+   ],
+   "fingerprint": "49a3748c6e15f26fe90a6497e1748b4a"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "js-reflected-xss-express",
+   "category": "security",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "Request data flows into an HTML response without escaping",
+   "file": "src/server.js",
+   "line": 86,
+   "end_line": 86,
+   "evidence": "  const r = await fetch(req.query.url);\n  res.send(await r.text());\n});",
+   "explanation": "Request data flows into an HTML response without escaping. (CWE-79). Detected by Semgrep pattern matching; the code shown matched rule `js-reflected-xss-express`.",
+   "impact": "Attackers can craft links that run scripts in victims' browsers (reflected XSS).",
+   "remediation": "Return JSON (res.json) or escape the value with a templating engine that auto-escapes.",
+   "principle": "xss",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/79.html"
+   ],
+   "fingerprint": "eb2e5f073bb9ace38c12ee342ac62d4b"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "js-tls-verification-disabled",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "TLS certificate verification is disabled",
+   "file": "src/server.js",
+   "line": 90,
+   "end_line": 90,
+   "evidence": "// GT:tls_reject_unauthorized|tls-verification|CWE-295|yes\nconst agent = new https.Agent({ rejectUnauthorized: false });\n",
+   "explanation": "TLS certificate verification is disabled. (CWE-295). Detected by Semgrep pattern matching; the code shown matched rule `js-tls-verification-disabled`.",
+   "impact": "Traffic can be intercepted and modified (man-in-the-middle).",
+   "remediation": "Remove rejectUnauthorized:false / NODE_TLS_REJECT_UNAUTHORIZED=0; trust a specific CA instead.",
+   "principle": "insecure-transport",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/295.html"
+   ],
+   "fingerprint": "6a64e81491b1348b59a51f8705490b38"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "js-react-dangerously-set-inner-html",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "dangerouslySetInnerHTML is used with a non-constant value",
+   "file": "src/Widget.jsx",
+   "line": 6,
+   "end_line": 6,
+   "evidence": "  // GT:react_dangerously|xss|CWE-79|yes\n  return <div dangerouslySetInnerHTML={{ __html: html }} />;\n}",
+   "explanation": "dangerouslySetInnerHTML is used with a non-constant value. (CWE-79). Detected by Semgrep pattern matching; the code shown matched rule `js-react-dangerously-set-inner-html`.",
+   "impact": "Bypasses React's escaping; any user-controlled content becomes executable HTML.",
+   "remediation": "Render as text, or sanitise with DOMPurify.sanitize() before passing it in.",
+   "principle": "xss",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/79.html"
+   ],
+   "fingerprint": "a9bca89a3c4aa3841f113edf6081261a"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "js-xss-inner-html",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "A non-constant value is written to innerHTML/outerHTML or document",
+   "file": "src/Widget.jsx",
+   "line": 17,
+   "end_line": 17,
+   "evidence": "  // GT:innerhtml|xss|CWE-79|yes\n  el.innerHTML = msg;\n}",
+   "explanation": "A non-constant value is written to innerHTML/outerHTML or document.write. (CWE-79). Detected by Semgrep pattern matching; the code shown matched rule `js-xss-inner-html`.",
+   "impact": "If the value contains user-controlled data, attackers can run scripts in your users' browsers.",
+   "remediation": "Use textContent, or sanitise HTML with DOMPurify before inserting it.",
+   "principle": "xss",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/79.html"
+   ],
+   "fingerprint": "d418f6ff4b748e2bfb01e90b0a6e5f9d"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "js-open-redirect",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "Request data is used as a redirect target",
+   "file": "src/server.js",
+   "line": 65,
+   "end_line": 65,
+   "evidence": "  // GT:open_redirect|open-redirect|CWE-601|yes\n  res.redirect(req.query.next);\n});",
+   "explanation": "Request data is used as a redirect target. (CWE-601). Detected by Semgrep pattern matching; the code shown matched rule `js-open-redirect`.",
+   "impact": "Attackers can use your domain to redirect victims to phishing sites.",
+   "remediation": "Only allow relative paths or an allow-list of destinations.",
+   "principle": "open-redirect",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/601.html"
+   ],
+   "fingerprint": "0e22df69e246f8dd12181816b4116a74"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "js-ssrf",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "low",
+   "kind": "objective",
+   "title": "Request data is used as the URL of a server-side HTTP request",
+   "file": "src/server.js",
+   "line": 85,
+   "end_line": 85,
+   "evidence": "  // GT:ssrf_fetch|ssrf|CWE-918|yes\n  const r = await fetch(req.query.url);\n  res.send(await r.text());",
+   "explanation": "Request data is used as the URL of a server-side HTTP request. (CWE-918). Detected by Semgrep pattern matching; the code shown matched rule `js-ssrf`.",
+   "impact": "Attackers can make the server call internal services.",
+   "remediation": "Allow-list hosts and block private address ranges.",
+   "principle": "ssrf",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/918.html"
+   ],
+   "fingerprint": "e4fa230679840a14b1fc544057efb1ea"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "js-weak-random-token",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "low",
+   "kind": "objective",
+   "title": "Math",
+   "file": "src/server.js",
+   "line": 94,
+   "end_line": 94,
+   "evidence": "  // GT:math_random_token|weak-random|CWE-338|yes\n  const token = Math.random().toString(36).slice(2);\n  res.json({ token });",
+   "explanation": "Math.random() used to generate a token/secret/ID. (CWE-338). Detected by Semgrep pattern matching; the code shown matched rule `js-weak-random-token`.",
+   "impact": "Math.random is predictable; tokens generated with it can be guessed.",
+   "remediation": "Use crypto.randomUUID() or crypto.getRandomValues()/randomBytes().",
+   "principle": "weak-cryptography",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/338.html"
+   ],
+   "fingerprint": "13686444e678a11994f9bf7a3fb1e458"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "js-jwt-decode-without-verify",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "low",
+   "kind": "objective",
+   "title": "JWT is decoded without signature verification",
+   "file": "src/server.js",
+   "line": 105,
+   "end_line": 105,
+   "evidence": "  // GT:jwt_decode_auth|jwt-verification|CWE-347|yes\n  const user = jwt.decode(req.headers.authorization.split(\" \")[1]);\n  req.user = user;",
+   "explanation": "JWT is decoded without signature verification. (CWE-347). Detected by Semgrep pattern matching; the code shown matched rule `js-jwt-decode-without-verify`.",
+   "impact": "If the decoded claims are trusted for authorisation, anyone can forge them.",
+   "remediation": "Use jwt.verify(token, key, { algorithms: [...] }) wherever the claims are trusted.",
+   "principle": "broken-authentication",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/347.html"
+   ],
+   "fingerprint": "5e7b7658cdfb08aa12a39728aede88b4"
+  },
+  {
+   "tool": "design",
+   "rule_id": "db-select-star",
+   "category": "architecture",
+   "severity": "low",
+   "confidence": "medium",
+   "kind": "subjective",
+   "title": "`SELECT *` used in a query (3 place(s))",
+   "file": "src/server.js",
+   "line": 22,
+   "end_line": null,
+   "evidence": "  const r = await pool.query(`SELECT * FROM users WHERE id = ${req.query.id}`);\n(+2 more at lines 28, 34)",
+   "explanation": "`SELECT *` returns every column, including ones added later, so the result shape depends on the table definition rather than on what the code needs.",
+   "impact": "Extra data over the wire, defeated covering indexes, and code that silently breaks or leaks new sensitive columns when the schema changes.",
+   "remediation": "List the columns the caller actually uses.",
+   "principle": "Data Access Efficiency",
+   "references": [
+    "https://use-the-index-luke.com/sql/select-list"
+   ],
+   "fingerprint": "bbfe97028785d52e9e755b55f3fbb61b"
+  },
+  {
+   "tool": "quality",
+   "rule_id": "mixed-http-and-data-access",
+   "category": "architecture",
+   "severity": "low",
+   "confidence": "low",
+   "kind": "subjective",
+   "title": "HTTP handlers and database queries in the same module",
+   "file": "src/server.js",
+   "line": 20,
+   "end_line": null,
+   "evidence": "Defines 19 route(s) (e.g. GET /sqli) and calls query.",
+   "explanation": "Route handlers that query the database directly couple transport concerns to persistence. Acceptable in small apps; a smell as the app grows.",
+   "impact": "Business rules become hard to reuse (CLI, jobs, tests) and to test without a DB.",
+   "remediation": "Move data access into a repository/service layer the handlers call.",
+   "principle": "Separation of Concerns",
+   "references": [],
+   "fingerprint": "43a0bbee6d062544edc9f29a3c3f2944"
+  }
+ ],
+ "scores": {
+  "overall": 69.4,
+  "grade": "D",
+  "uncapped_overall": 69.4,
+  "caps": [
+   "critical"
+  ],
+  "not_analysed": [],
+  "merged_duplicates": 1,
+  "categories": {
+   "security": 12.0,
+   "reliability": 81.9,
+   "architecture": 97.3,
+   "code_quality": 100.0,
+   "maintainability": 100.0
+  }
+ },
+ "scanners": [
+  {
+   "name": "semgrep",
+   "status": "ok",
+   "version": "1.182.0",
+   "duration_s": 2.29,
+   "message": "",
+   "findings": 19
+  },
+  {
+   "name": "gitleaks",
+   "status": "ok",
+   "version": "8.30.1",
+   "duration_s": 0.05,
+   "message": "",
+   "findings": 1
+  },
+  {
+   "name": "osv-scanner",
+   "status": "ok",
+   "version": "2.7.0",
+   "duration_s": 0.12,
+   "message": "",
+   "findings": 0
+  },
+  {
+   "name": "trivy",
+   "status": "ok",
+   "version": "0.76.1",
+   "duration_s": 1.18,
+   "message": "",
+   "findings": 0
+  }
+ ],
+ "counts": {
+  "total": 23,
+  "by_severity": {
+   "critical": 2,
+   "high": 12,
+   "medium": 7,
+   "low": 2
+  },
+  "by_category": {
+   "security": 20,
+   "reliability": 1,
+   "architecture": 2
+  }
+ },
+ "seconds": 4.2
+}

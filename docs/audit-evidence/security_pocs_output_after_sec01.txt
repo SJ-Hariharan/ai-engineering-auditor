@@ -1,0 +1,10 @@
+VULNERABLE P1      10 failed logins by anyone lock the victim out for 5 min (correct password rejected)  ->  victim login with correct password -> 429
+HOLDS      P2      registration reveals whether an email has an account  ->  429 Too many attempts; try again later
+VULNERABLE P3a     hard-coded secret value stored verbatim in finding evidence (non-gitleaks rule)  ->  ['semgrep/py-hardcoded-secret-key']
+VULNERABLE P3b     secret value appears in the exported Markdown report  ->  
+HOLDS      P3c     gitleaks-detected AWS key is masked in the Markdown report  ->  
+HOLDS      P4      another user gets 404 on every owned resource  ->  {'project': 404, 'audit': 404, 'findings': 404, 'file': 404, 'fixes': 404, 'fix-patch': 404, 'finding-fix': 404, 'explain': 404, 'rerun': 404, 'delete': 404, 'pr': 404}
+HOLDS      P5      file viewer traversal  ->  {'../../../../etc/passwd': 404, '/etc/passwd': 404, 'server/../../../x': 404, '%2e%2e/%2e%2e/etc/passwd': 400}
+HOLDS      P6a     a repo-supplied .semgrepignore hides semgrep findings  ->  semgrep findings 16 -> 16; score 60.4 -> 60.4
+HOLDS      P6b     a repo-supplied .gitleaks.toml allowlist hides secrets  ->  gitleaks findings 2 -> 2
+HOLDS      P6c     an inline `# nosemgrep` comment hides a SQL injection  ->  SQLi still reported: True

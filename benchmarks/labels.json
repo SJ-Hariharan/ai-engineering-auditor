@@ -1,0 +1,21 @@
+{
+"vuln_py|requirements.txt|*|vulnerable-dependency": {"label":"TP-unplanted","reason":"Pinned versions have advisories per OSV (data fetched live; individual advisories not independently verified by me). Severity of transitive certifi/anyio 'critical' is questionable."},
+"vuln_py|None|None|no-tests": {"label":"TP-unplanted","reason":"Repo really has no tests."},
+"vuln_js|None|None|no-tests": {"label":"TP-unplanted","reason":"Repo really has no tests."},
+"secrets_repo|None|None|no-tests": {"label":"TP-unplanted","reason":"Repo really has no tests."},
+"vuln_py|app/main.py|119|api-unauthenticated-mutation": {"label":"TP-unplanted","reason":"POST /code/exec is an unauthenticated route that runs code; correct and relevant."},
+"vuln_py|app/main.py|127|api-unauthenticated-mutation": {"label":"debatable","reason":"Unauthenticated POST (deserialisation endpoint) - worth review but message claims 'changes state' on a parse-only route."},
+"vuln_py|app/main.py|134|api-unauthenticated-mutation": {"label":"debatable","reason":"Unauthenticated POST that only parses YAML; rule is verb-based."},
+"vuln_py|app/main.py|141|api-unauthenticated-mutation": {"label":"debatable","reason":"Unauthenticated POST that only parses YAML; rule is verb-based."},
+"vuln_py|app/main.py|259|api-unauthenticated-mutation": {"label":"FP","reason":"/safe/yaml only parses and returns data; no state change. Verb-based heuristic."},
+"vuln_py|app/main.py|30|db-select-star": {"label":"debatable","reason":"Style/perf note (low); true that SELECT * is used, not a defect per se."},
+"vuln_py|app/main.py|25|mixed-http-and-data-access": {"label":"debatable","reason":"Subjective layering note on a deliberately single-file demo."},
+"vuln_js|src/server.js|50|js-reflected-xss-express": {"label":"debatable","reason":"res.send(String(eval(req.query.expr))) - output is attacker-controlled so XSS is real, but already RCE (duplicate impact of eval finding)."},
+"vuln_js|src/server.js|75|js-reflected-xss-express": {"label":"debatable","reason":"res.send(readFileSync('/data/'+req.query.f)): reflects file content, not request data directly; real issue is path traversal (missed)."},
+"vuln_js|src/server.js|86|js-reflected-xss-express": {"label":"debatable","reason":"res.send(await r.text()) from fetch(req.query.url): reflects remote content; XSS via SSRF response is plausible but indirect."},
+"vuln_js|src/server.js|22|db-select-star": {"label":"debatable","reason":"Style note."},
+"vuln_js|src/server.js|20|mixed-http-and-data-access": {"label":"debatable","reason":"Subjective layering note on single-file demo."},
+"secrets_repo|config/app.yaml|5|generic-api-key": {"label":"TP-unplanted","reason":"Second secret (password:) in same YAML file; real."},
+"secrets_repo|.env|3|generic-api-key": {"label":"TP-unplanted","reason":"AWS secret access key on adjacent line in .env; real."},
+"arch_repo|tsapp/src/errors.ts|1|naming-convention": {"label":"debatable","reason":"Info-level; single-letter function name 'a' in my fixture."}
+}

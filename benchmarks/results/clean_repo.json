@@ -1,0 +1,58 @@
+{
+ "findings": [],
+ "scores": {
+  "overall": 100.0,
+  "grade": "A",
+  "uncapped_overall": 100.0,
+  "caps": [],
+  "not_analysed": [],
+  "merged_duplicates": 0,
+  "categories": {
+   "security": 100.0,
+   "reliability": 100.0,
+   "architecture": 100.0,
+   "code_quality": 100.0,
+   "maintainability": 100.0
+  }
+ },
+ "scanners": [
+  {
+   "name": "semgrep",
+   "status": "ok",
+   "version": "1.182.0",
+   "duration_s": 2.42,
+   "message": "",
+   "findings": 0
+  },
+  {
+   "name": "gitleaks",
+   "status": "ok",
+   "version": "8.30.1",
+   "duration_s": 0.05,
+   "message": "",
+   "findings": 0
+  },
+  {
+   "name": "osv-scanner",
+   "status": "ok",
+   "version": "2.7.0",
+   "duration_s": 0.09,
+   "message": "",
+   "findings": 0
+  },
+  {
+   "name": "trivy",
+   "status": "ok",
+   "version": "0.76.1",
+   "duration_s": 0.79,
+   "message": "",
+   "findings": 0
+  }
+ ],
+ "counts": {
+  "total": 0,
+  "by_severity": {},
+  "by_category": {}
+ },
+ "seconds": 3.9
+}

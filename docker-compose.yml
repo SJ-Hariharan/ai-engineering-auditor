@@ -1,0 +1,90 @@
+# Local/self-hosted stack:  cp .env.example .env  &&  docker compose up --build
+# Web UI: http://localhost:3000
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: auditor
+      POSTGRES_USER: auditor
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U auditor"]
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+
+  api:
+    build: ./backend
+    env_file: .env
+    environment: &backend-env
+      AUDITOR_DATABASE_URL: postgresql+psycopg://auditor:${POSTGRES_PASSWORD}@db/auditor
+      AUDITOR_REDIS_URL: redis://redis:6379/0
+      AUDITOR_WORKSPACE_ROOT: /data/workspaces
+      AUDITOR_CORS_ORIGINS: '["http://localhost:3000"]'
+    volumes: [workspaces:/data/workspaces]
+    depends_on:
+      db: {condition: service_healthy}
+      redis: {condition: service_started}
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+
+  worker:
+    build: ./backend
+    command: ["python", "-m", "app.worker"]
+    env_file: .env
+    environment:
+      <<: *backend-env
+      # Running repository test suites needs a Docker daemon. It is OFF by default because
+      # giving a container the host Docker socket is equivalent to root on the host.
+      # To enable, prefer a dedicated sandbox host (DOCKER_HOST=tcp://sandbox:2376 with TLS)
+      # and a hardened runtime (AUDITOR_SANDBOX_RUNTIME=runsc), then set this to "true".
+      AUDITOR_SANDBOX_ENABLED: ${AUDITOR_SANDBOX_ENABLED:-false}
+    volumes:
+      - workspaces:/data/workspaces
+      - trivycache:/home/auditor/.cache
+    depends_on:
+      db: {condition: service_healthy}
+      redis: {condition: service_started}
+    tmpfs: [/tmp]
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    deploy:
+      resources:
+        limits: {cpus: "2", memory: 4g}
+
+  # Enforces AUDITOR_WORKSPACE_TTL_HOURS even when no audits run (SEC-08): purges expired
+  # source copies and orphaned workspaces once an hour.
+  cleanup:
+    build: ./backend
+    command: ["sh", "-c", "while true; do python -m app.worker cleanup; sleep 3600; done"]
+    env_file: .env
+    environment: *backend-env
+    volumes: [workspaces:/data/workspaces]
+    depends_on:
+      db: {condition: service_healthy}
+    restart: unless-stopped
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+
+  web:
+    build:
+      context: ./frontend
+      args: {AUDITOR_API_URL: "http://api:8000"}
+    ports: ["127.0.0.1:3000:3000"]
+    depends_on: [api]
+    read_only: true
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+
+volumes:
+  pgdata:
+  workspaces:
+  trivycache:

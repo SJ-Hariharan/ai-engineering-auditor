@@ -1,0 +1,27 @@
+== A. Synthetic cases ==
+SC-02 same location, 1 rule  -> security before 81.9, after 81.9
+SC-02 same location, 4 rules -> security before 44.9, after 81.9
+SC-02 control: 4 rules on 4 different lines -> after 44.9 (distinct issues still each penalised)
+SC-02 gitleaks critical + semgrep high on one line -> after security 65.9 (= lone critical 65.9)
+SC-01 lone high-confidence critical secret -> before 89.8 B, after 79.9 C (uncapped 89.8, caps: critical≤79.9)
+SC-01 no findings, nothing analysable -> before 100.0 A, after N/A N/A (uncapped None, caps: incomplete≤89.9)
+SC-01 Go-only repo (no parsed files), 1 high secret -> before 94.6 A, after 81.9 B (uncapped 81.9, caps: none)
+SC-01 no findings, Semgrep failed -> before 100.0 A, after 89.9 B (uncapped 100.0, caps: incomplete≤89.9)
+
+== B. Real pipeline on backend/tests/fixtures/vulnerable_app ==
+all scanners (offline: OSV skipped by configuration): 30 findings, scanners {'semgrep': 'ok', 'gitleaks': 'ok', 'osv-scanner': 'skipped', 'trivy': 'ok'}
+   before 60.4 D; after 61.4 D (uncapped 61.4, caps: critical≤79.9, incomplete≤89.9); security 5.5 (incomplete); merged duplicates 1
+Semgrep forced to fail: 14 findings, scanners {'semgrep': 'failed', 'gitleaks': 'ok', 'osv-scanner': 'skipped', 'trivy': 'ok'}
+   before 74.8 C; after 75.8 C (uncapped 75.8, caps: incomplete≤89.9); security 53.5 (incomplete); merged duplicates 1
+
+== C. Stored benchmark findings re-scored (benchmarks/results/*.json) ==
+repo | findings | merged | before | after | security before→after | caps
+arch_repo | 19 | 0 | 79.2 C | 79.2 C | 100.0→100.0 | -
+clean_repo | 0 | 0 | 100.0 A | 100.0 A | 100.0→100.0 | -
+full-stack-fastapi-template | 87 | 2 | 68.2 D | 68.3 D | 32.3→32.3 | -
+itsdangerous | 25 | 0 | 81.4 B | 81.4 B | 51.8→51.8 | -
+probe_alias_root | 2 | 0 | 94.2 A | 94.2 A | 100.0→100.0 | -
+probe_sqli_concat | 4 | 0 | 82.1 B | 79.9 C | 53.5→53.5 | critical
+secrets_repo | 12 | 0 | 68.4 D | 68.4 D | 6.8→6.8 | critical
+vuln_js | 22 | 1 | 69.7 D | 70.2 C | 12.8→14.7 | critical
+vuln_py | 48 | 0 | 65.4 D | 65.4 D | 2.1→2.1 | critical

@@ -1,0 +1,186 @@
+{
+ "repo": "arch_repo",
+ "planted": [
+  {
+   "id": "py_cycle2",
+   "file": "pypkg/a.py",
+   "line": 2,
+   "category": "circular-dependency",
+   "cwe": "CWE-NA",
+   "expected_detect": true,
+   "alt_files": [
+    "pypkg/a.py",
+    "pypkg/b.py"
+   ],
+   "line_agnostic": true
+  },
+  {
+   "id": "py_broken_import",
+   "file": "pypkg/broken.py",
+   "line": 2,
+   "category": "unresolved-import",
+   "cwe": "CWE-NA",
+   "expected_detect": true
+  },
+  {
+   "id": "py_cycle3",
+   "file": "pypkg/c.py",
+   "line": 2,
+   "category": "circular-dependency",
+   "cwe": "CWE-NA",
+   "expected_detect": true,
+   "alt_files": [
+    "pypkg/c.py",
+    "pypkg/d.py",
+    "pypkg/e.py"
+   ],
+   "line_agnostic": true
+  },
+  {
+   "id": "py_high_complexity",
+   "file": "pypkg/complex.py",
+   "line": 2,
+   "category": "high-complexity",
+   "cwe": "CWE-NA",
+   "expected_detect": true
+  },
+  {
+   "id": "py_duplicate",
+   "file": "pypkg/dup1.py",
+   "line": 2,
+   "category": "duplicate-code",
+   "cwe": "CWE-NA",
+   "expected_detect": true,
+   "alt_files": [
+    "pypkg/dup1.py",
+    "pypkg/dup2.py"
+   ],
+   "line_agnostic": true
+  },
+  {
+   "id": "py_bare_except",
+   "file": "pypkg/errors.py",
+   "line": 7,
+   "category": "bare-except",
+   "cwe": "CWE-NA",
+   "expected_detect": true
+  },
+  {
+   "id": "py_swallowed",
+   "file": "pypkg/errors.py",
+   "line": 15,
+   "category": "swallowed-exception",
+   "cwe": "CWE-NA",
+   "expected_detect": true
+  },
+  {
+   "id": "py_god_class",
+   "file": "pypkg/god.py",
+   "line": 2,
+   "category": "large-class",
+   "cwe": "CWE-NA",
+   "expected_detect": true
+  },
+  {
+   "id": "py_hub",
+   "file": "pypkg/hub.py",
+   "line": 2,
+   "category": "coupling-hub",
+   "cwe": "CWE-NA",
+   "expected_detect": true,
+   "line_agnostic": true
+  },
+  {
+   "id": "py_long_function",
+   "file": "pypkg/long_fn.py",
+   "line": 2,
+   "category": "long-function",
+   "cwe": "CWE-NA",
+   "expected_detect": true
+  },
+  {
+   "id": "py_deep_nesting",
+   "file": "pypkg/nested.py",
+   "line": 2,
+   "category": "deep-nesting",
+   "cwe": "CWE-NA",
+   "expected_detect": true
+  },
+  {
+   "id": "py_many_params",
+   "file": "pypkg/params.py",
+   "line": 2,
+   "category": "many-parameters",
+   "cwe": "CWE-NA",
+   "expected_detect": true
+  },
+  {
+   "id": "ts_high_complexity",
+   "file": "tsapp/src/complex.ts",
+   "line": 2,
+   "category": "high-complexity",
+   "cwe": "CWE-NA",
+   "expected_detect": true
+  },
+  {
+   "id": "ts_empty_catch",
+   "file": "tsapp/src/errors.ts",
+   "line": 5,
+   "category": "empty-catch",
+   "cwe": "CWE-NA",
+   "expected_detect": true
+  },
+  {
+   "id": "ts_broken_alias",
+   "file": "tsapp/src/index.ts",
+   "line": 2,
+   "category": "unresolved-import",
+   "cwe": "CWE-NA",
+   "expected_detect": true
+  },
+  {
+   "id": "ts_broken_relative",
+   "file": "tsapp/src/index.ts",
+   "line": 5,
+   "category": "unresolved-import",
+   "cwe": "CWE-NA",
+   "expected_detect": true
+  },
+  {
+   "id": "ts_cycle3",
+   "file": "tsapp/src/lib/p.ts",
+   "line": 2,
+   "category": "circular-dependency",
+   "cwe": "CWE-NA",
+   "expected_detect": true,
+   "alt_files": [
+    "tsapp/src/lib/p.ts",
+    "tsapp/src/lib/q.ts",
+    "tsapp/src/lib/r.ts"
+   ],
+   "line_agnostic": true
+  },
+  {
+   "id": "ts_cycle2",
+   "file": "tsapp/src/lib/x.ts",
+   "line": 2,
+   "category": "circular-dependency",
+   "cwe": "CWE-NA",
+   "expected_detect": true,
+   "alt_files": [
+    "tsapp/src/lib/x.ts",
+    "tsapp/src/lib/y.ts"
+   ],
+   "line_agnostic": true
+  },
+  {
+   "id": "arch_no_tests",
+   "file": null,
+   "line": null,
+   "category": "no-tests",
+   "cwe": "NA",
+   "expected_detect": true
+  }
+ ],
+ "safe_lookalikes": []
+}

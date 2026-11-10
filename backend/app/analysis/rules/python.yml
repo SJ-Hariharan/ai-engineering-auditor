@@ -1,0 +1,291 @@
+rules:
+  - id: py-sql-injection-string-build
+    languages: [python]
+    severity: ERROR
+    message: SQL query is built with string formatting/concatenation and passed to a database call.
+    metadata:
+      category: sql-injection
+      cwe: "CWE-89"
+      confidence: HIGH
+      impact: An attacker who controls any interpolated value can read or modify arbitrary data.
+      fix: Use parameterised queries, e.g. cursor.execute("SELECT ... WHERE id = %s", (user_id,)).
+    patterns:
+      - pattern-either:
+          - pattern: $OBJ.execute(f"...", ...)
+          - pattern: $OBJ.execute("..." % $X, ...)
+          - pattern: $OBJ.execute("..." + $X, ...)
+          # DET-01: "..." + value + "..." (the common quoted-literal form)
+          - pattern: $OBJ.execute("..." + $X + $Y, ...)
+          - pattern: $OBJ.execute($S.format(...), ...)
+          - pattern: $OBJ.executemany(f"...", ...)
+          - pattern: $OBJ.raw(f"...", ...)
+          - pattern: $OBJ.raw("..." % $X, ...)
+          - pattern: text(f"...")
+          - pattern: sqlalchemy.text(f"...")
+          - pattern: |
+              $Q = f"..."
+              ...
+              $OBJ.execute($Q, ...)
+          - pattern: |
+              $Q = "..." + $X
+              ...
+              $OBJ.execute($Q, ...)
+          - pattern: |
+              $Q = "..." + $X + $Y
+              ...
+              $OBJ.execute($Q, ...)
+          - pattern: |
+              $Q = "..." % $X
+              ...
+              $OBJ.execute($Q, ...)
+
+  - id: py-command-injection-shell
+    languages: [python]
+    severity: ERROR
+    message: A shell command is built from a non-constant value and executed through the shell.
+    metadata:
+      category: command-injection
+      cwe: "CWE-78"
+      confidence: MEDIUM
+      impact: If any part of the command comes from user input, an attacker can run arbitrary commands on the server.
+      fix: Pass an argument list without shell=True (subprocess.run(["cmd", arg])) and validate inputs.
+    patterns:
+      - pattern-either:
+          - pattern: subprocess.$F($CMD, ..., shell=True, ...)
+          - pattern: os.system($CMD)
+          - pattern: os.popen($CMD, ...)
+      - pattern-not: subprocess.$F("...", ..., shell=True, ...)
+      - pattern-not: os.system("...")
+      - pattern-not: os.popen("...", ...)
+
+  - id: py-eval-exec
+    languages: [python]
+    severity: ERROR
+    message: eval()/exec() is called on a non-constant value.
+    metadata:
+      category: code-injection
+      cwe: "CWE-95"
+      confidence: MEDIUM
+      impact: Evaluating attacker-influenced strings executes arbitrary Python code.
+      fix: Use ast.literal_eval for data, or an explicit parser/dispatch table.
+    patterns:
+      - pattern-either:
+          - pattern: eval($X, ...)
+          - pattern: exec($X, ...)
+      - pattern-not: eval("...", ...)
+      - pattern-not: exec("...", ...)
+
+  - id: py-unsafe-deserialization
+    languages: [python]
+    severity: ERROR
+    message: Unsafe deserialization of potentially untrusted data.
+    metadata:
+      category: insecure-deserialization
+      cwe: "CWE-502"
+      confidence: MEDIUM
+      impact: pickle/marshal and yaml.load with the full loader can execute code embedded in the data.
+      fix: Use json, or yaml.safe_load; never unpickle data from users or the network.
+    pattern-either:
+      - pattern: pickle.loads(...)
+      - pattern: pickle.load(...)
+      - pattern: cPickle.loads(...)
+      - pattern: marshal.loads(...)
+      - pattern: dill.loads(...)
+      - patterns:
+          - pattern: yaml.load(...)
+          - pattern-not: yaml.load(..., Loader=yaml.SafeLoader, ...)
+          - pattern-not: yaml.load(..., Loader=SafeLoader, ...)
+          - pattern-not: yaml.load(..., Loader=yaml.CSafeLoader, ...)
+      - pattern: yaml.unsafe_load(...)
+
+  - id: py-tls-verification-disabled
+    languages: [python]
+    severity: WARNING
+    message: TLS certificate verification is disabled.
+    metadata:
+      category: insecure-transport
+      cwe: "CWE-295"
+      confidence: HIGH
+      impact: Traffic can be intercepted and modified by anyone on the network path (man-in-the-middle).
+      fix: Remove verify=False; if you need a private CA, pass verify="/path/to/ca.pem".
+    pattern-either:
+      - pattern: requests.$F(..., verify=False, ...)
+      - pattern: httpx.$F(..., verify=False, ...)
+      - pattern: httpx.Client(..., verify=False, ...)
+      - pattern: httpx.AsyncClient(..., verify=False, ...)
+      - pattern: ssl._create_unverified_context(...)
+
+  - id: py-flask-debug-enabled
+    languages: [python]
+    severity: WARNING
+    message: Flask debug mode is enabled in code.
+    metadata:
+      category: insecure-configuration
+      cwe: "CWE-489"
+      confidence: HIGH
+      impact: The Werkzeug debugger allows arbitrary code execution if reachable, and leaks stack traces.
+      fix: Read debug from an environment variable that defaults to False.
+    pattern: $APP.run(..., debug=True, ...)
+
+  - id: py-jwt-signature-not-verified
+    languages: [python]
+    severity: ERROR
+    message: JWT is decoded without verifying its signature.
+    metadata:
+      category: broken-authentication
+      cwe: "CWE-347"
+      confidence: HIGH
+      impact: Anyone can forge tokens and impersonate any user.
+      fix: Always pass the key and an explicit algorithms=[...] list; never disable verify_signature.
+    pattern-either:
+      - pattern: 'jwt.decode(..., options={..., "verify_signature": False, ...}, ...)'
+      - pattern: jwt.decode(..., verify=False, ...)
+      - pattern: jwt.decode(..., algorithms=["none"], ...)
+
+  - id: py-cors-wildcard-with-credentials
+    languages: [python]
+    severity: ERROR
+    message: CORS allows any origin while also allowing credentials.
+    metadata:
+      category: insecure-configuration
+      cwe: "CWE-942"
+      confidence: HIGH
+      impact: Any website can make authenticated requests on behalf of logged-in users and read the responses.
+      fix: List the exact allowed origins instead of "*".
+    pattern-either:
+      - pattern: $APP.add_middleware(CORSMiddleware, ..., allow_origins=["*"], ..., allow_credentials=True, ...)
+      - pattern: $APP.add_middleware(CORSMiddleware, ..., allow_credentials=True, ..., allow_origins=["*"], ...)
+      - pattern: CORS($APP, ..., supports_credentials=True, ...)
+
+  - id: py-hardcoded-secret-key
+    languages: [python]
+    severity: WARNING
+    message: A secret/signing key is hard-coded in source.
+    metadata:
+      category: hardcoded-credentials
+      cwe: "CWE-798"
+      confidence: MEDIUM
+      impact: Anyone with access to the code can forge sessions/tokens signed with this key.
+      fix: Load the key from an environment variable or secret manager.
+    patterns:
+      - pattern-either:
+          - pattern: SECRET_KEY = "$V"
+          - pattern: JWT_SECRET = "$V"
+          - pattern: $APP.secret_key = "$V"
+          - pattern: $APP.config["SECRET_KEY"] = "$V"
+      - metavariable-regex:
+          metavariable: $V
+          regex: ^.{6,}$
+
+  - id: py-weak-hash
+    languages: [python]
+    severity: INFO
+    message: MD5/SHA-1 used. These are broken for security purposes.
+    metadata:
+      category: weak-cryptography
+      cwe: "CWE-327"
+      confidence: LOW
+      impact: If used for passwords, signatures or integrity checks, collisions/brute force are practical.
+      fix: Use hashlib.sha256 for integrity, and argon2/bcrypt/scrypt for passwords.
+    patterns:
+      - pattern-either:
+          - pattern: hashlib.md5(...)
+          - pattern: hashlib.sha1(...)
+      - pattern-not: hashlib.$F(..., usedforsecurity=False, ...)
+
+  - id: py-insecure-tempfile
+    languages: [python]
+    severity: WARNING
+    message: tempfile.mktemp() is race-prone.
+    metadata:
+      category: insecure-file-handling
+      cwe: "CWE-377"
+      confidence: HIGH
+      impact: Another process can create the file first (symlink attack).
+      fix: Use tempfile.mkstemp() or NamedTemporaryFile().
+    pattern: tempfile.mktemp(...)
+
+  - id: py-path-traversal-request-data
+    languages: [python]
+    mode: taint
+    severity: ERROR
+    message: User-controlled input reaches a filesystem path.
+    metadata:
+      category: path-traversal
+      cwe: "CWE-22"
+      confidence: MEDIUM
+      impact: An attacker can read or overwrite files outside the intended directory using ../ sequences.
+      fix: Resolve the path and check it stays under an allowed base directory, or map IDs to files server-side.
+    pattern-sources:
+      - pattern-either:
+          - pattern: request.args.get(...)
+          - pattern: request.args[...]
+          - pattern: request.form.get(...)
+          - pattern: request.form[...]
+          - pattern: request.values.get(...)
+          - pattern: request.GET.get(...)
+          - pattern: request.POST.get(...)
+    pattern-sinks:
+      - pattern-either:
+          - pattern: open(...)
+          - pattern: send_file(...)
+          - pattern: os.path.join(...)
+          - pattern: pathlib.Path(...)
+          - pattern: Path(...)
+    pattern-sanitizers:
+      - pattern: secure_filename(...)
+      - pattern: os.path.basename(...)
+
+  - id: py-ssrf-request-data
+    languages: [python]
+    mode: taint
+    severity: WARNING
+    message: User-controlled input is used as the URL of a server-side HTTP request.
+    metadata:
+      category: ssrf
+      cwe: "CWE-918"
+      confidence: MEDIUM
+      impact: Attackers can make the server call internal services (cloud metadata, admin APIs).
+      fix: Allow-list hosts/schemes and resolve + block private IP ranges before requesting.
+    pattern-sources:
+      - pattern-either:
+          - pattern: request.args.get(...)
+          - pattern: request.form.get(...)
+          - pattern: request.GET.get(...)
+          - pattern: request.json.get(...)
+    pattern-sinks:
+      - pattern-either:
+          - pattern: requests.$M($URL, ...)
+          - pattern: httpx.$M($URL, ...)
+          - pattern: urllib.request.urlopen($URL, ...)
+
+  - id: py-template-injection
+    languages: [python]
+    severity: ERROR
+    message: A template is rendered from a non-constant string.
+    metadata:
+      category: xss
+      cwe: "CWE-1336"
+      confidence: MEDIUM
+      impact: Server-side template injection can lead to XSS or remote code execution.
+      fix: Use render_template with a fixed template file and pass data as variables.
+    patterns:
+      - pattern: render_template_string($X, ...)
+      - pattern-not: render_template_string("...", ...)
+
+  - id: py-markup-unescaped
+    languages: [python]
+    severity: WARNING
+    message: Value is marked as safe HTML, disabling auto-escaping.
+    metadata:
+      category: xss
+      cwe: "CWE-79"
+      confidence: LOW
+      impact: If the value contains user input, attackers can inject scripts into the page.
+      fix: Escape the value or sanitise it with an HTML sanitiser before marking it safe.
+    patterns:
+      - pattern-either:
+          - pattern: Markup($X)
+          - pattern: mark_safe($X)
+      - pattern-not: Markup("...")
+      - pattern-not: mark_safe("...")

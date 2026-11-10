@@ -1,0 +1,6 @@
+# App-owned Gitleaks config (SEC-01). Passing it with --config stops a scanned repository's
+# own .gitleaks.toml from changing or allow-listing rules. It only extends the built-in rules.
+title = "AI Engineering Auditor - Gitleaks defaults"
+
+[extend]
+useDefault = true

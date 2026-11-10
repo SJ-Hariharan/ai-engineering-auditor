@@ -1,0 +1,2 @@
+# App-owned OSV-Scanner config (SEC-01). Passing it with --config overrides any osv-scanner.toml
+# in the scanned repository, so a repository cannot ignore its own vulnerabilities.

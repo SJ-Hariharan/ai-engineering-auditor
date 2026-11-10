@@ -1,0 +1,293 @@
+rules:
+  - id: js-sql-injection-string-build
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: SQL query is built with string interpolation/concatenation and passed to a database call.
+    metadata:
+      category: sql-injection
+      cwe: "CWE-89"
+      confidence: HIGH
+      impact: An attacker who controls any interpolated value can read or modify arbitrary data.
+      fix: Use parameter placeholders ($1 / ?) and pass values separately, or an ORM query builder.
+    pattern-either:
+      - patterns:
+          - pattern-either:
+              - pattern: $DB.query(`...${$X}...`, ...)
+              - pattern: $DB.execute(`...${$X}...`, ...)
+              - pattern: $DB.query("..." + $X, ...)
+              - pattern: $DB.execute("..." + $X, ...)
+              # DET-01: "..." + value + "..." (the common quoted-literal form)
+              - pattern: $DB.query("..." + $X + $Y, ...)
+              - pattern: $DB.execute("..." + $X + $Y, ...)
+              - pattern: $DB.raw(`...${$X}...`, ...)
+          - metavariable-regex:
+              metavariable: $DB
+              regex: (?i).*(db|pool|client|conn|connection|knex|sequelize|sql|pg|mysql|database).*
+      - pattern: $P.$queryRawUnsafe(...)
+      - pattern: $P.$executeRawUnsafe(...)
+
+  - id: js-xss-inner-html
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: A non-constant value is written to innerHTML/outerHTML or document.write.
+    metadata:
+      category: xss
+      cwe: "CWE-79"
+      confidence: MEDIUM
+      impact: If the value contains user-controlled data, attackers can run scripts in your users' browsers.
+      fix: Use textContent, or sanitise HTML with DOMPurify before inserting it.
+    patterns:
+      - pattern-either:
+          - pattern: $EL.innerHTML = $X
+          - pattern: $EL.outerHTML = $X
+          - pattern: $EL.insertAdjacentHTML($POS, $X)
+          - pattern: document.write($X)
+      - pattern-not: $EL.innerHTML = "..."
+      - pattern-not: $EL.outerHTML = "..."
+      - pattern-not: $EL.insertAdjacentHTML($POS, "...")
+      - pattern-not: document.write("...")
+      - pattern-not: $EL.innerHTML = DOMPurify.sanitize(...)
+
+  - id: js-react-dangerously-set-inner-html
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: dangerouslySetInnerHTML is used with a non-constant value.
+    metadata:
+      category: xss
+      cwe: "CWE-79"
+      confidence: MEDIUM
+      impact: Bypasses React's escaping; any user-controlled content becomes executable HTML.
+      fix: Render as text, or sanitise with DOMPurify.sanitize() before passing it in.
+    patterns:
+      - pattern: '<$EL dangerouslySetInnerHTML={{__html: $X}} />'
+      - pattern-not: '<$EL dangerouslySetInnerHTML={{__html: "..."}} />'
+      - pattern-not: '<$EL dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(...)}} />'
+
+  - id: js-eval
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: Code is evaluated from a non-constant string.
+    metadata:
+      category: code-injection
+      cwe: "CWE-95"
+      confidence: MEDIUM
+      impact: If the string contains attacker input, arbitrary code runs (in the browser or on the server).
+      fix: Use JSON.parse for data, or an explicit dispatch table instead of eval.
+    pattern-either:
+      - patterns:
+          - pattern: eval($X)
+          - pattern-not: eval("...")
+      - pattern: new Function(...)
+      - pattern: setTimeout("..." + $X, ...)
+      - pattern: setTimeout(`...${$X}...`, ...)
+      - pattern: setInterval("..." + $X, ...)
+      - pattern: setInterval(`...${$X}...`, ...)
+
+  - id: js-command-injection
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: A shell command is built from a non-constant value.
+    metadata:
+      category: command-injection
+      cwe: "CWE-78"
+      confidence: MEDIUM
+      impact: If any part comes from user input, an attacker can run arbitrary commands on the server.
+      fix: Use execFile/spawn with an argument array (no shell) and validate inputs.
+    patterns:
+      - pattern-either:
+          - pattern: $CP.exec(`...${$X}...`, ...)
+          - pattern: $CP.execSync(`...${$X}...`, ...)
+          - pattern: $CP.exec("..." + $X, ...)
+          - pattern: $CP.execSync("..." + $X, ...)
+          - pattern: exec(`...${$X}...`, ...)
+          - pattern: execSync(`...${$X}...`, ...)
+          - pattern: exec("..." + $X, ...)
+          - pattern: execSync("..." + $X, ...)
+          - pattern: 'spawn($C, $A, {..., shell: true, ...})'
+
+  - id: js-tls-verification-disabled
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: TLS certificate verification is disabled.
+    metadata:
+      category: insecure-transport
+      cwe: "CWE-295"
+      confidence: HIGH
+      impact: Traffic can be intercepted and modified (man-in-the-middle).
+      fix: Remove rejectUnauthorized:false / NODE_TLS_REJECT_UNAUTHORIZED=0; trust a specific CA instead.
+    pattern-either:
+      - pattern: "{..., rejectUnauthorized: false, ...}"
+      - pattern: process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
+      - pattern: process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0"
+
+  - id: js-jwt-decode-without-verify
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: JWT is decoded without signature verification.
+    metadata:
+      category: broken-authentication
+      cwe: "CWE-347"
+      confidence: LOW
+      impact: If the decoded claims are trusted for authorisation, anyone can forge them.
+      fix: "Use jwt.verify(token, key, { algorithms: [...] }) wherever the claims are trusted."
+    pattern-either:
+      - pattern: jwt.decode(...)
+      - pattern: 'jwt.verify($T, $K, {..., algorithms: [..., "none", ...], ...})'
+
+  - id: js-cors-wildcard-with-credentials
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: CORS reflects any origin while allowing credentials.
+    metadata:
+      category: insecure-configuration
+      cwe: "CWE-942"
+      confidence: HIGH
+      impact: Any website can make authenticated requests on behalf of logged-in users and read the responses.
+      fix: Configure an explicit allow-list of origins.
+    pattern-either:
+      - pattern: 'cors({..., origin: true, ..., credentials: true, ...})'
+      - pattern: 'cors({..., credentials: true, ..., origin: true, ...})'
+      - pattern: 'cors({..., origin: "*", ..., credentials: true, ...})'
+      - pattern: 'cors({..., credentials: true, ..., origin: "*", ...})'
+
+  - id: js-secret-exposed-to-browser
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: A secret-looking environment variable is exposed to the browser bundle via a public prefix.
+    metadata:
+      category: secret-exposure
+      cwe: "CWE-200"
+      confidence: MEDIUM
+      impact: NEXT_PUBLIC_/VITE_/REACT_APP_ variables are embedded in client JavaScript and visible to every visitor.
+      fix: Keep the secret server-side (no public prefix) and call it from an API route or server action.
+    patterns:
+      - pattern-either:
+          - pattern: process.env.$VAR
+          - pattern: import.meta.env.$VAR
+      - metavariable-regex:
+          metavariable: $VAR
+          regex: ^(NEXT_PUBLIC_|VITE_|REACT_APP_|EXPO_PUBLIC_).*(SECRET|PRIVATE|SERVICE_ROLE|PASSWORD|TOKEN|OPENAI|ANTHROPIC|STRIPE_SECRET|SK_).*
+
+  - id: js-reflected-xss-express
+    languages: [javascript, typescript]
+    mode: taint
+    severity: ERROR
+    message: Request data flows into an HTML response without escaping.
+    metadata:
+      category: xss
+      cwe: "CWE-79"
+      confidence: MEDIUM
+      impact: Attackers can craft links that run scripts in victims' browsers (reflected XSS).
+      fix: Return JSON (res.json) or escape the value with a templating engine that auto-escapes.
+    pattern-sources:
+      - pattern-either:
+          - pattern: $REQ.query
+          - pattern: $REQ.params
+          - pattern: $REQ.body
+    pattern-sinks:
+      - pattern-either:
+          - pattern: $RES.send(...)
+          - pattern: $RES.write(...)
+          - pattern: $RES.end(...)
+
+  - id: js-open-redirect
+    languages: [javascript, typescript]
+    mode: taint
+    severity: WARNING
+    message: Request data is used as a redirect target.
+    metadata:
+      category: open-redirect
+      cwe: "CWE-601"
+      confidence: MEDIUM
+      impact: Attackers can use your domain to redirect victims to phishing sites.
+      fix: Only allow relative paths or an allow-list of destinations.
+    pattern-sources:
+      - pattern-either:
+          - pattern: $REQ.query
+          - pattern: $REQ.body
+          - pattern: $REQ.params
+          - pattern: $URL.searchParams.get(...)
+    pattern-sinks:
+      - pattern-either:
+          - pattern: $RES.redirect(...)
+          - pattern: redirect(...)
+          - pattern: NextResponse.redirect(...)
+
+  - id: js-path-traversal
+    languages: [javascript, typescript]
+    mode: taint
+    severity: ERROR
+    message: Request data reaches a filesystem path.
+    metadata:
+      category: path-traversal
+      cwe: "CWE-22"
+      confidence: MEDIUM
+      impact: An attacker can read or overwrite files outside the intended directory.
+      fix: Resolve the path and verify it stays under an allowed base directory.
+    pattern-sources:
+      - pattern-either:
+          - pattern: $REQ.query
+          - pattern: $REQ.params
+          - pattern: $REQ.body
+    pattern-sinks:
+      - pattern-either:
+          - pattern: fs.$F(...)
+          - pattern: $RES.sendFile(...)
+          - pattern: path.join(...)
+    pattern-sanitizers:
+      - pattern: path.basename(...)
+
+  - id: js-ssrf
+    languages: [javascript, typescript]
+    mode: taint
+    severity: WARNING
+    message: Request data is used as the URL of a server-side HTTP request.
+    metadata:
+      category: ssrf
+      cwe: "CWE-918"
+      confidence: LOW
+      impact: Attackers can make the server call internal services.
+      fix: Allow-list hosts and block private address ranges.
+    pattern-sources:
+      - pattern-either:
+          - pattern: $REQ.query
+          - pattern: $REQ.body
+          - pattern: $REQ.params
+    pattern-sinks:
+      - pattern-either:
+          - pattern: fetch($U, ...)
+          - pattern: axios.get($U, ...)
+          - pattern: axios.post($U, ...)
+          - pattern: axios($U, ...)
+
+  - id: js-insecure-cookie
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: Session cookie set without httpOnly or secure.
+    metadata:
+      category: broken-authentication
+      cwe: "CWE-614"
+      confidence: MEDIUM
+      impact: Cookies readable by JavaScript can be stolen via XSS; non-secure cookies leak over HTTP.
+      fix: Set httpOnly true, secure true (in production) and sameSite 'lax' or 'strict'.
+    pattern-either:
+      - pattern: '$RES.cookie($N, $V, {..., httpOnly: false, ...})'
+      - pattern: '$RES.cookie($N, $V, {..., secure: false, ...})'
+
+  - id: js-weak-random-token
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: Math.random() used to generate a token/secret/ID.
+    metadata:
+      category: weak-cryptography
+      cwe: "CWE-338"
+      confidence: LOW
+      impact: Math.random is predictable; tokens generated with it can be guessed.
+      fix: Use crypto.randomUUID() or crypto.getRandomValues()/randomBytes().
+    patterns:
+      - pattern-inside: |
+          $T = <... Math.random() ...>
+      - metavariable-regex:
+          metavariable: $T
+          regex: (?i).*(token|secret|password|session|nonce|otp|apikey|api_key).*
+      - pattern: Math.random()

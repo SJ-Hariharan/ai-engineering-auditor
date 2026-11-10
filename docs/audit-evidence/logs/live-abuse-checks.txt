@@ -1,0 +1,9 @@
+PASS  victim registers  201
+PASS  device cookie set through the proxy  
+PASS  attacker throttled after 10 failures  [401, 401, 401, 401, 401, 401, 401, 401, 401, 401, 429, 429, 429, 429, 429]
+PASS  spoofed X-Forwarded-For does not reset the attacker's budget  429
+PASS  victim (known browser) still logs in during the attack  200
+PASS  60 MB upload rejected  413 in 0.0s
+PASS  no project created by the oversized upload  0
+
+7/7 checks passed

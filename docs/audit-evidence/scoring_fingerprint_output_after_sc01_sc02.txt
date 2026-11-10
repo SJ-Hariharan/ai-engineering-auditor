@@ -1,0 +1,6 @@
+F1 identical bare-excepts at lines 4 and 10 -> 1 finding(s): lines [4]
+F2 after adding a 3rd bare-except: new fingerprints = 0
+S1 same issue as 1 rule -> security 81.9; as 4 rules -> 44.9
+S2 same 6 findings in 200 orders -> 20 distinct security scores, range 66.0..76.3
+S3 single critical, nothing else -> overall 79.9 grade C
+S4 no findings at all (e.g. nothing analysable) -> overall 100.0

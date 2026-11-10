@@ -1,0 +1,33 @@
+PASS  register  
+PASS  logout  
+PASS  me after logout -> 401  
+PASS  wrong password -> 401  
+PASS  login  
+PASS  cookie HttpOnly + SameSite=Lax  
+PASS  CSRF header enforced via proxy  
+PASS  sequential GitHub audit #1 (markupsafe)  completed  13s
+PASS  sequential GitHub audit #2 (itsdangerous)  completed  10s
+PASS  ZIP upload  201
+PASS  ZIP audit completed (3rd job in this worker)  completed  10s
+PASS  all scanners ok  [('semgrep', 'ok'), ('gitleaks', 'ok'), ('osv-scanner', 'ok'), ('trivy', 'ok')]
+PASS  findings returned  36
+PASS  detects py-sql-injection-string-build  
+PASS  detects aws-access-token  
+PASS  detects circular-dependency  
+PASS  detects unresolved-import  
+PASS  file viewer masks gitleaks secret  
+PASS  file viewer traversal blocked  
+PASS  report.md export (gitleaks secret masked)  
+PASS  deterministic fix diff  
+PASS  approve fix  
+PASS  PR refused for ZIP project  
+PASS  AI fix blocked without consent  
+PASS  sandbox disabled in Compose -> 503  
+PASS  rerun accepted  201
+PASS  rerun completed with comparison (4th job)  {'new': 0, 'resolved': 0, 'persisting': 36}
+PASS  cross-user isolation (404)  [404, 404, 404, 404]
+PASS  cross-user cannot change a fix  
+PASS  delete project  
+PASS  deleted audit is gone  
+
+31/31 checks passed

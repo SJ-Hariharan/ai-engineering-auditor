@@ -1,0 +1,49 @@
+INFO:alembic.runtime.migration:Context impl SQLiteImpl.
+INFO:alembic.runtime.migration:Will assume non-transactional DDL.
+INFO:alembic.runtime.migration:Running upgrade  -> 0001_initial, Initial schema (matches the tables previously created by Base.metadata.create_all).
+INFO:httpx2:HTTP Request: POST http://testserver/api/auth/register "HTTP/1.1 201 Created"
+INFO:httpx2:HTTP Request: POST http://testserver/api/auth/login "HTTP/1.1 401 Unauthorized"
+INFO:httpx2:HTTP Request: POST http://testserver/api/auth/login "HTTP/1.1 401 Unauthorized"
+INFO:httpx2:HTTP Request: POST http://testserver/api/auth/login "HTTP/1.1 401 Unauthorized"
+INFO:httpx2:HTTP Request: POST http://testserver/api/auth/login "HTTP/1.1 401 Unauthorized"
+INFO:httpx2:HTTP Request: POST http://testserver/api/auth/login "HTTP/1.1 401 Unauthorized"
+INFO:httpx2:HTTP Request: POST http://testserver/api/auth/login "HTTP/1.1 401 Unauthorized"
+INFO:httpx2:HTTP Request: POST http://testserver/api/auth/login "HTTP/1.1 401 Unauthorized"
+INFO:httpx2:HTTP Request: POST http://testserver/api/auth/login "HTTP/1.1 401 Unauthorized"
+INFO:httpx2:HTTP Request: POST http://testserver/api/auth/login "HTTP/1.1 401 Unauthorized"
+INFO:httpx2:HTTP Request: POST http://testserver/api/auth/login "HTTP/1.1 429 Too Many Requests"
+INFO:httpx2:HTTP Request: POST http://testserver/api/auth/login "HTTP/1.1 429 Too Many Requests"
+INFO:httpx2:HTTP Request: POST http://testserver/api/auth/register "HTTP/1.1 429 Too Many Requests"
+INFO:httpx2:HTTP Request: POST http://testserver/api/auth/register "HTTP/1.1 201 Created"
+INFO:httpx2:HTTP Request: POST http://testserver/api/projects/upload "HTTP/1.1 201 Created"
+INFO:httpx2:HTTP Request: GET http://testserver/api/audits/67c4148a-e68a-4607-a4ba-94e12544a54a/findings "HTTP/1.1 200 OK"
+INFO:httpx2:HTTP Request: GET http://testserver/api/audits/67c4148a-e68a-4607-a4ba-94e12544a54a/report.md "HTTP/1.1 200 OK"
+INFO:httpx2:HTTP Request: POST http://testserver/api/findings/5b5739a3-e35f-4d22-9b91-cc5481cb340c/fix "HTTP/1.1 201 Created"
+INFO:httpx2:HTTP Request: POST http://testserver/api/auth/register "HTTP/1.1 201 Created"
+INFO:httpx2:HTTP Request: GET http://testserver/api/projects/e2e72d32-db3f-4e32-bf8f-f29e140711ce "HTTP/1.1 404 Not Found"
+INFO:httpx2:HTTP Request: GET http://testserver/api/audits/67c4148a-e68a-4607-a4ba-94e12544a54a "HTTP/1.1 404 Not Found"
+INFO:httpx2:HTTP Request: GET http://testserver/api/audits/67c4148a-e68a-4607-a4ba-94e12544a54a/findings "HTTP/1.1 404 Not Found"
+INFO:httpx2:HTTP Request: GET http://testserver/api/audits/67c4148a-e68a-4607-a4ba-94e12544a54a/files/server/app.py "HTTP/1.1 404 Not Found"
+INFO:httpx2:HTTP Request: GET http://testserver/api/audits/67c4148a-e68a-4607-a4ba-94e12544a54a/fixes "HTTP/1.1 404 Not Found"
+INFO:httpx2:HTTP Request: PATCH http://testserver/api/fixes/0202b5e1-b1f3-4da1-b151-40d55e22b584 "HTTP/1.1 404 Not Found"
+INFO:httpx2:HTTP Request: POST http://testserver/api/findings/9cc37409-fcb0-4fa8-99d1-a35f944f1942/fix "HTTP/1.1 404 Not Found"
+INFO:httpx2:HTTP Request: POST http://testserver/api/audits/67c4148a-e68a-4607-a4ba-94e12544a54a/explain "HTTP/1.1 404 Not Found"
+INFO:httpx2:HTTP Request: POST http://testserver/api/projects/e2e72d32-db3f-4e32-bf8f-f29e140711ce/audits "HTTP/1.1 404 Not Found"
+INFO:httpx2:HTTP Request: DELETE http://testserver/api/projects/e2e72d32-db3f-4e32-bf8f-f29e140711ce "HTTP/1.1 404 Not Found"
+INFO:httpx2:HTTP Request: POST http://testserver/api/audits/67c4148a-e68a-4607-a4ba-94e12544a54a/pull-request "HTTP/1.1 404 Not Found"
+INFO:httpx2:HTTP Request: PATCH http://testserver/api/projects/e2e72d32-db3f-4e32-bf8f-f29e140711ce "HTTP/1.1 200 OK"
+INFO:httpx2:HTTP Request: GET http://testserver/etc/passwd "HTTP/1.1 404 Not Found"
+INFO:httpx2:HTTP Request: GET http://testserver/api/audits/67c4148a-e68a-4607-a4ba-94e12544a54a/files//etc/passwd "HTTP/1.1 404 Not Found"
+INFO:httpx2:HTTP Request: GET http://testserver/api/audits/x "HTTP/1.1 404 Not Found"
+INFO:httpx2:HTTP Request: GET http://testserver/api/audits/67c4148a-e68a-4607-a4ba-94e12544a54a/files/%2e%2e/%2e%2e/etc/passwd "HTTP/1.1 400 Bad Request"
+VULNERABLE P1      10 failed logins by anyone lock the victim out for 5 min (correct password rejected)  ->  victim login with correct password -> 429
+HOLDS      P2      registration reveals whether an email has an account  ->  429 Too many attempts; try again later
+VULNERABLE P3a     hard-coded secret value stored verbatim in finding evidence (non-gitleaks rule)  ->  ['semgrep/py-hardcoded-secret-key']
+VULNERABLE P3b     secret value appears in the exported Markdown report  ->  
+HOLDS      P3c     gitleaks-detected AWS key is masked in the Markdown report  ->  
+HOLDS      P4      another user gets 404 on every owned resource  ->  {'project': 404, 'audit': 404, 'findings': 404, 'file': 404, 'fixes': 404, 'fix-patch': 404, 'finding-fix': 404, 'explain': 404, 'rerun': 404, 'delete': 404, 'pr': 404}
+HOLDS      P5      file viewer traversal  ->  {'../../../../etc/passwd': 404, '/etc/passwd': 404, 'server/../../../x': 404, '%2e%2e/%2e%2e/etc/passwd': 400}
+VULNERABLE P6a     a repo-supplied .semgrepignore hides semgrep findings  ->  semgrep findings 16 -> 0; score 60.4 -> 82.7
+VULNERABLE P6b     a repo-supplied .gitleaks.toml allowlist hides secrets  ->  gitleaks findings 2 -> 0
+VULNERABLE P6c     an inline `# nosemgrep` comment hides a SQL injection  ->  SQLi still reported: False
+temp dir: /var/folders/y8/wxxj6ljj6mxdgwpsrfhjhp900000gn/T/auditor-poc-a0guvofi

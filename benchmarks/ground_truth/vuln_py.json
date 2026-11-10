@@ -1,0 +1,357 @@
+{
+ "repo": "vuln_py",
+ "planted": [
+  {
+   "id": "fastapi_cors",
+   "file": "app/api.py",
+   "line": 8,
+   "category": "cors-misconfig",
+   "cwe": "CWE-942",
+   "expected_detect": true
+  },
+  {
+   "id": "fastapi_noauth_delete",
+   "file": "app/api.py",
+   "line": 30,
+   "category": "missing-auth",
+   "cwe": "CWE-306",
+   "expected_detect": true
+  },
+  {
+   "id": "fastapi_noauth_post",
+   "file": "app/api.py",
+   "line": 37,
+   "category": "missing-auth",
+   "cwe": "CWE-306",
+   "expected_detect": true
+  },
+  {
+   "id": "jwt_noverify_alg_none",
+   "file": "app/api.py",
+   "line": 45,
+   "category": "jwt-verification",
+   "cwe": "CWE-347",
+   "expected_detect": true
+  },
+  {
+   "id": "secretkey",
+   "file": "app/main.py",
+   "line": 18,
+   "category": "hardcoded-secret",
+   "cwe": "CWE-798",
+   "expected_detect": true
+  },
+  {
+   "id": "cors",
+   "file": "app/main.py",
+   "line": 20,
+   "category": "cors-misconfig",
+   "cwe": "CWE-942",
+   "expected_detect": true
+  },
+  {
+   "id": "sqli_fstring",
+   "file": "app/main.py",
+   "line": 30,
+   "category": "sql-injection",
+   "cwe": "CWE-89",
+   "expected_detect": true
+  },
+  {
+   "id": "sqli_percent",
+   "file": "app/main.py",
+   "line": 39,
+   "category": "sql-injection",
+   "cwe": "CWE-89",
+   "expected_detect": true
+  },
+  {
+   "id": "sqli_plus",
+   "file": "app/main.py",
+   "line": 48,
+   "category": "sql-injection",
+   "cwe": "CWE-89",
+   "expected_detect": true
+  },
+  {
+   "id": "sqli_format",
+   "file": "app/main.py",
+   "line": 57,
+   "category": "sql-injection",
+   "cwe": "CWE-89",
+   "expected_detect": true
+  },
+  {
+   "id": "sqli_intermediate",
+   "file": "app/main.py",
+   "line": 67,
+   "category": "sql-injection",
+   "cwe": "CWE-89",
+   "expected_detect": true
+  },
+  {
+   "id": "sqli_text",
+   "file": "app/main.py",
+   "line": 75,
+   "category": "sql-injection",
+   "cwe": "CWE-89",
+   "expected_detect": true
+  },
+  {
+   "id": "sqli_fstring_var",
+   "file": "app/main.py",
+   "line": 85,
+   "category": "sql-injection",
+   "cwe": "CWE-89",
+   "expected_detect": true
+  },
+  {
+   "id": "cmdi_system",
+   "file": "app/main.py",
+   "line": 93,
+   "category": "command-injection",
+   "cwe": "CWE-78",
+   "expected_detect": true
+  },
+  {
+   "id": "cmdi_shell_true",
+   "file": "app/main.py",
+   "line": 101,
+   "category": "command-injection",
+   "cwe": "CWE-78",
+   "expected_detect": true
+  },
+  {
+   "id": "cmdi_popen",
+   "file": "app/main.py",
+   "line": 109,
+   "category": "command-injection",
+   "cwe": "CWE-78",
+   "expected_detect": true
+  },
+  {
+   "id": "eval",
+   "file": "app/main.py",
+   "line": 116,
+   "category": "code-injection",
+   "cwe": "CWE-95",
+   "expected_detect": true
+  },
+  {
+   "id": "exec",
+   "file": "app/main.py",
+   "line": 123,
+   "category": "code-injection",
+   "cwe": "CWE-95",
+   "expected_detect": true
+  },
+  {
+   "id": "pickle",
+   "file": "app/main.py",
+   "line": 130,
+   "category": "insecure-deserialization",
+   "cwe": "CWE-502",
+   "expected_detect": true
+  },
+  {
+   "id": "yaml_load",
+   "file": "app/main.py",
+   "line": 137,
+   "category": "insecure-deserialization",
+   "cwe": "CWE-502",
+   "expected_detect": true
+  },
+  {
+   "id": "yaml_load_noloader",
+   "file": "app/main.py",
+   "line": 144,
+   "category": "insecure-deserialization",
+   "cwe": "CWE-502",
+   "expected_detect": true
+  },
+  {
+   "id": "path_open",
+   "file": "app/main.py",
+   "line": 152,
+   "category": "path-traversal",
+   "cwe": "CWE-22",
+   "expected_detect": true
+  },
+  {
+   "id": "path_send_file",
+   "file": "app/main.py",
+   "line": 160,
+   "category": "path-traversal",
+   "cwe": "CWE-22",
+   "expected_detect": true
+  },
+  {
+   "id": "ssrf",
+   "file": "app/main.py",
+   "line": 166,
+   "category": "ssrf",
+   "cwe": "CWE-918",
+   "expected_detect": true
+  },
+  {
+   "id": "ssrf_var",
+   "file": "app/main.py",
+   "line": 174,
+   "category": "ssrf",
+   "cwe": "CWE-918",
+   "expected_detect": true
+  },
+  {
+   "id": "xss_rts",
+   "file": "app/main.py",
+   "line": 182,
+   "category": "xss",
+   "cwe": "CWE-79",
+   "expected_detect": true
+  },
+  {
+   "id": "xss_markup",
+   "file": "app/main.py",
+   "line": 189,
+   "category": "xss",
+   "cwe": "CWE-79",
+   "expected_detect": true
+  },
+  {
+   "id": "tls_verify_false",
+   "file": "app/main.py",
+   "line": 195,
+   "category": "tls-verification",
+   "cwe": "CWE-295",
+   "expected_detect": true
+  },
+  {
+   "id": "jwt_noverify",
+   "file": "app/main.py",
+   "line": 200,
+   "category": "jwt-verification",
+   "cwe": "CWE-347",
+   "expected_detect": true
+  },
+  {
+   "id": "weak_hash_md5",
+   "file": "app/main.py",
+   "line": 205,
+   "category": "weak-hash",
+   "cwe": "CWE-328",
+   "expected_detect": true
+  },
+  {
+   "id": "weak_hash_sha1",
+   "file": "app/main.py",
+   "line": 210,
+   "category": "weak-hash",
+   "cwe": "CWE-328",
+   "expected_detect": true
+  },
+  {
+   "id": "noauth_delete",
+   "file": "app/main.py",
+   "line": 214,
+   "category": "missing-auth",
+   "cwe": "CWE-306",
+   "expected_detect": true
+  },
+  {
+   "id": "nplus1",
+   "file": "app/main.py",
+   "line": 229,
+   "category": "n-plus-one",
+   "cwe": "CWE-1073",
+   "expected_detect": true
+  },
+  {
+   "id": "debug_true",
+   "file": "app/main.py",
+   "line": 311,
+   "category": "debug-enabled",
+   "cwe": "CWE-489",
+   "expected_detect": true
+  }
+ ],
+ "safe_lookalikes": [
+  {
+   "id": "safe_auth_delete",
+   "file": "app/api.py",
+   "line": 23,
+   "category": "missing-auth"
+  },
+  {
+   "id": "safe_sql_param",
+   "file": "app/main.py",
+   "line": 241,
+   "category": "sql-injection"
+  },
+  {
+   "id": "safe_sqlalchemy_bind",
+   "file": "app/main.py",
+   "line": 248,
+   "category": "sql-injection"
+  },
+  {
+   "id": "safe_subprocess_list",
+   "file": "app/main.py",
+   "line": 256,
+   "category": "command-injection"
+  },
+  {
+   "id": "safe_yaml_safe_load",
+   "file": "app/main.py",
+   "line": 262,
+   "category": "insecure-deserialization"
+  },
+  {
+   "id": "safe_literal_eval",
+   "file": "app/main.py",
+   "line": 268,
+   "category": "code-injection"
+  },
+  {
+   "id": "safe_eval_const",
+   "file": "app/main.py",
+   "line": 273,
+   "category": "code-injection"
+  },
+  {
+   "id": "safe_verify_true",
+   "file": "app/main.py",
+   "line": 279,
+   "category": "tls-verification"
+  },
+  {
+   "id": "safe_send_file_secure",
+   "file": "app/main.py",
+   "line": 286,
+   "category": "path-traversal"
+  },
+  {
+   "id": "safe_sha256_nonsecurity",
+   "file": "app/main.py",
+   "line": 291,
+   "category": "weak-hash"
+  },
+  {
+   "id": "safe_md5_usedforsecurity_false",
+   "file": "app/main.py",
+   "line": 296,
+   "category": "weak-hash"
+  },
+  {
+   "id": "safe_jwt_verified",
+   "file": "app/main.py",
+   "line": 301,
+   "category": "jwt-verification"
+  },
+  {
+   "id": "safe_secret_env",
+   "file": "app/main.py",
+   "line": 306,
+   "category": "hardcoded-secret"
+  }
+ ]
+}

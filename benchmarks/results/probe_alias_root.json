@@ -1,0 +1,101 @@
+{
+ "findings": [
+  {
+   "tool": "testing",
+   "rule_id": "no-tests",
+   "category": "reliability",
+   "severity": "high",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "No automated tests found",
+   "file": null,
+   "line": null,
+   "end_line": null,
+   "evidence": "2 source files and 0 test files (searched tests/, __tests__/, test_*.py, *_test.py, *.test.*, *.spec.*).",
+   "explanation": "Without tests there is no fast, repeatable way to know whether a change breaks existing behaviour.",
+   "impact": "Regressions reach users; refactoring (including fixes from this report) is risky.",
+   "remediation": "Start with tests for the most critical paths (auth, payments, data writes), using pytest/Vitest.",
+   "principle": null,
+   "references": [],
+   "fingerprint": "27ffa54c186d875022ee47b9c4174e9a"
+  },
+  {
+   "tool": "graph",
+   "rule_id": "unresolved-import",
+   "category": "reliability",
+   "severity": "high",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "Import '@lib/nonexistent' does not resolve to a file",
+   "file": "src/index.ts",
+   "line": 2,
+   "end_line": null,
+   "evidence": "src/index.ts:2 imports '@lib/nonexistent', but no matching file exists in the repository.",
+   "explanation": "Local imports were resolved against the repository's files (including tsconfig path aliases). This one has no target. It may be generated at build time, which is why confidence is medium.",
+   "impact": "If the file is genuinely missing the application will fail to build or crash at import time.",
+   "remediation": "Fix the import path, add the missing module, or document the code generation step that creates it.",
+   "principle": null,
+   "references": [],
+   "fingerprint": "5e09319d9d004a87055222e933d58f3e"
+  }
+ ],
+ "scores": {
+  "overall": 94.2,
+  "grade": "A",
+  "uncapped_overall": 94.2,
+  "caps": [],
+  "not_analysed": [],
+  "merged_duplicates": 0,
+  "categories": {
+   "security": 100.0,
+   "reliability": 71.2,
+   "architecture": 100.0,
+   "code_quality": 100.0,
+   "maintainability": 100.0
+  }
+ },
+ "scanners": [
+  {
+   "name": "semgrep",
+   "status": "ok",
+   "version": "1.182.0",
+   "duration_s": 2.37,
+   "message": "",
+   "findings": 0
+  },
+  {
+   "name": "gitleaks",
+   "status": "ok",
+   "version": "8.30.1",
+   "duration_s": 0.04,
+   "message": "",
+   "findings": 0
+  },
+  {
+   "name": "osv-scanner",
+   "status": "ok",
+   "version": "2.7.0",
+   "duration_s": 0.09,
+   "message": "",
+   "findings": 0
+  },
+  {
+   "name": "trivy",
+   "status": "ok",
+   "version": "0.76.1",
+   "duration_s": 0.87,
+   "message": "",
+   "findings": 0
+  }
+ ],
+ "counts": {
+  "total": 2,
+  "by_severity": {
+   "high": 2
+  },
+  "by_category": {
+   "reliability": 2
+  }
+ },
+ "seconds": 4.0
+}

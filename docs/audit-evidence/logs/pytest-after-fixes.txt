@@ -1,0 +1,4 @@
+........................................................s...........     [100%]
+=========================== short test summary info ============================
+SKIPPED [1] tests/test_sandbox.py:11: Docker daemon not available
+67 passed, 1 skipped in 72.27s (0:01:12)

@@ -1,0 +1,2203 @@
+{
+ "vuln_py": {
+  "rows": [
+   {
+    "gt": {
+     "id": "fastapi_cors",
+     "file": "app/api.py",
+     "line": 8,
+     "category": "cors-misconfig",
+     "cwe": "CWE-942",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-cors-wildcard-with-credentials",
+     "file": "app/api.py",
+     "line": 8,
+     "severity": "high",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "fastapi_noauth_delete",
+     "file": "app/api.py",
+     "line": 30,
+     "category": "missing-auth",
+     "cwe": "CWE-306",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "design",
+     "rule_id": "api-unauthenticated-mutation",
+     "file": "app/api.py",
+     "line": 30,
+     "severity": "medium",
+     "confidence": "low"
+    }
+   },
+   {
+    "gt": {
+     "id": "fastapi_noauth_post",
+     "file": "app/api.py",
+     "line": 37,
+     "category": "missing-auth",
+     "cwe": "CWE-306",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "design",
+     "rule_id": "api-unauthenticated-mutation",
+     "file": "app/api.py",
+     "line": 37,
+     "severity": "medium",
+     "confidence": "low"
+    }
+   },
+   {
+    "gt": {
+     "id": "jwt_noverify_alg_none",
+     "file": "app/api.py",
+     "line": 45,
+     "category": "jwt-verification",
+     "cwe": "CWE-347",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-jwt-signature-not-verified",
+     "file": "app/api.py",
+     "line": 45,
+     "severity": "high",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "secretkey",
+     "file": "app/main.py",
+     "line": 18,
+     "category": "hardcoded-secret",
+     "cwe": "CWE-798",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-hardcoded-secret-key",
+     "file": "app/main.py",
+     "line": 18,
+     "severity": "medium",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "cors",
+     "file": "app/main.py",
+     "line": 20,
+     "category": "cors-misconfig",
+     "cwe": "CWE-942",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-cors-wildcard-with-credentials",
+     "file": "app/main.py",
+     "line": 20,
+     "severity": "high",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "sqli_fstring",
+     "file": "app/main.py",
+     "line": 30,
+     "category": "sql-injection",
+     "cwe": "CWE-89",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-sql-injection-string-build",
+     "file": "app/main.py",
+     "line": 30,
+     "severity": "critical",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "sqli_percent",
+     "file": "app/main.py",
+     "line": 39,
+     "category": "sql-injection",
+     "cwe": "CWE-89",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-sql-injection-string-build",
+     "file": "app/main.py",
+     "line": 39,
+     "severity": "critical",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "sqli_plus",
+     "file": "app/main.py",
+     "line": 48,
+     "category": "sql-injection",
+     "cwe": "CWE-89",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-sql-injection-string-build",
+     "file": "app/main.py",
+     "line": 48,
+     "severity": "critical",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "sqli_format",
+     "file": "app/main.py",
+     "line": 57,
+     "category": "sql-injection",
+     "cwe": "CWE-89",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-sql-injection-string-build",
+     "file": "app/main.py",
+     "line": 57,
+     "severity": "critical",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "sqli_intermediate",
+     "file": "app/main.py",
+     "line": 67,
+     "category": "sql-injection",
+     "cwe": "CWE-89",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-sql-injection-string-build",
+     "file": "app/main.py",
+     "line": 64,
+     "severity": "critical",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "sqli_text",
+     "file": "app/main.py",
+     "line": 75,
+     "category": "sql-injection",
+     "cwe": "CWE-89",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-sql-injection-string-build",
+     "file": "app/main.py",
+     "line": 75,
+     "severity": "critical",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "sqli_fstring_var",
+     "file": "app/main.py",
+     "line": 85,
+     "category": "sql-injection",
+     "cwe": "CWE-89",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-sql-injection-string-build",
+     "file": "app/main.py",
+     "line": 82,
+     "severity": "critical",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "cmdi_system",
+     "file": "app/main.py",
+     "line": 93,
+     "category": "command-injection",
+     "cwe": "CWE-78",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-command-injection-shell",
+     "file": "app/main.py",
+     "line": 93,
+     "severity": "high",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "cmdi_shell_true",
+     "file": "app/main.py",
+     "line": 101,
+     "category": "command-injection",
+     "cwe": "CWE-78",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-command-injection-shell",
+     "file": "app/main.py",
+     "line": 101,
+     "severity": "high",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "cmdi_popen",
+     "file": "app/main.py",
+     "line": 109,
+     "category": "command-injection",
+     "cwe": "CWE-78",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-command-injection-shell",
+     "file": "app/main.py",
+     "line": 109,
+     "severity": "high",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "eval",
+     "file": "app/main.py",
+     "line": 116,
+     "category": "code-injection",
+     "cwe": "CWE-95",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-eval-exec",
+     "file": "app/main.py",
+     "line": 116,
+     "severity": "high",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "exec",
+     "file": "app/main.py",
+     "line": 123,
+     "category": "code-injection",
+     "cwe": "CWE-95",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-eval-exec",
+     "file": "app/main.py",
+     "line": 123,
+     "severity": "high",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "pickle",
+     "file": "app/main.py",
+     "line": 130,
+     "category": "insecure-deserialization",
+     "cwe": "CWE-502",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-unsafe-deserialization",
+     "file": "app/main.py",
+     "line": 130,
+     "severity": "high",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "yaml_load",
+     "file": "app/main.py",
+     "line": 137,
+     "category": "insecure-deserialization",
+     "cwe": "CWE-502",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-unsafe-deserialization",
+     "file": "app/main.py",
+     "line": 137,
+     "severity": "high",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "yaml_load_noloader",
+     "file": "app/main.py",
+     "line": 144,
+     "category": "insecure-deserialization",
+     "cwe": "CWE-502",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-unsafe-deserialization",
+     "file": "app/main.py",
+     "line": 144,
+     "severity": "high",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "path_open",
+     "file": "app/main.py",
+     "line": 152,
+     "category": "path-traversal",
+     "cwe": "CWE-22",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-path-traversal-request-data",
+     "file": "app/main.py",
+     "line": 152,
+     "severity": "high",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "path_send_file",
+     "file": "app/main.py",
+     "line": 160,
+     "category": "path-traversal",
+     "cwe": "CWE-22",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-path-traversal-request-data",
+     "file": "app/main.py",
+     "line": 160,
+     "severity": "high",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "ssrf",
+     "file": "app/main.py",
+     "line": 166,
+     "category": "ssrf",
+     "cwe": "CWE-918",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-ssrf-request-data",
+     "file": "app/main.py",
+     "line": 166,
+     "severity": "medium",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "ssrf_var",
+     "file": "app/main.py",
+     "line": 174,
+     "category": "ssrf",
+     "cwe": "CWE-918",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-ssrf-request-data",
+     "file": "app/main.py",
+     "line": 174,
+     "severity": "medium",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "xss_rts",
+     "file": "app/main.py",
+     "line": 182,
+     "category": "xss",
+     "cwe": "CWE-79",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-template-injection",
+     "file": "app/main.py",
+     "line": 182,
+     "severity": "high",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "xss_markup",
+     "file": "app/main.py",
+     "line": 189,
+     "category": "xss",
+     "cwe": "CWE-79",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-markup-unescaped",
+     "file": "app/main.py",
+     "line": 189,
+     "severity": "medium",
+     "confidence": "low"
+    }
+   },
+   {
+    "gt": {
+     "id": "tls_verify_false",
+     "file": "app/main.py",
+     "line": 195,
+     "category": "tls-verification",
+     "cwe": "CWE-295",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-tls-verification-disabled",
+     "file": "app/main.py",
+     "line": 195,
+     "severity": "medium",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "jwt_noverify",
+     "file": "app/main.py",
+     "line": 200,
+     "category": "jwt-verification",
+     "cwe": "CWE-347",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-jwt-signature-not-verified",
+     "file": "app/main.py",
+     "line": 200,
+     "severity": "high",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "weak_hash_md5",
+     "file": "app/main.py",
+     "line": 205,
+     "category": "weak-hash",
+     "cwe": "CWE-328",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-weak-hash",
+     "file": "app/main.py",
+     "line": 205,
+     "severity": "low",
+     "confidence": "low"
+    }
+   },
+   {
+    "gt": {
+     "id": "weak_hash_sha1",
+     "file": "app/main.py",
+     "line": 210,
+     "category": "weak-hash",
+     "cwe": "CWE-328",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-weak-hash",
+     "file": "app/main.py",
+     "line": 210,
+     "severity": "low",
+     "confidence": "low"
+    }
+   },
+   {
+    "gt": {
+     "id": "noauth_delete",
+     "file": "app/main.py",
+     "line": 214,
+     "category": "missing-auth",
+     "cwe": "CWE-306",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "design",
+     "rule_id": "api-unauthenticated-mutation",
+     "file": "app/main.py",
+     "line": 214,
+     "severity": "medium",
+     "confidence": "low"
+    }
+   },
+   {
+    "gt": {
+     "id": "nplus1",
+     "file": "app/main.py",
+     "line": 229,
+     "category": "n-plus-one",
+     "cwe": "CWE-1073",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "design",
+     "rule_id": "db-query-in-loop",
+     "file": "app/main.py",
+     "line": 227,
+     "severity": "medium",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "debug_true",
+     "file": "app/main.py",
+     "line": 311,
+     "category": "debug-enabled",
+     "cwe": "CWE-489",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "py-flask-debug-enabled",
+     "file": "app/main.py",
+     "line": 311,
+     "severity": "medium",
+     "confidence": "high"
+    }
+   }
+  ],
+  "unmatched": [
+   {
+    "key": "vuln_py|requirements.txt|None|vulnerable-dependency",
+    "finding": {
+     "tool": "osv-scanner",
+     "rule_id": "vulnerable-dependency",
+     "category": "security",
+     "severity": "critical",
+     "confidence": "high",
+     "file": "requirements.txt",
+     "line": null,
+     "title": "pyjwt 2.9.0 has 32 known vulnerabilities"
+    },
+    "label": "TP-unplanted",
+    "reason": "Pinned versions have advisories per OSV (data fetched live; individual advisories not independently verified by me). Severity of transitive certifi/anyio 'critical' is questionable.",
+    "safe_hit": []
+   },
+   {
+    "key": "vuln_py|requirements.txt|None|vulnerable-dependency",
+    "finding": {
+     "tool": "osv-scanner",
+     "rule_id": "vulnerable-dependency",
+     "category": "security",
+     "severity": "critical",
+     "confidence": "medium",
+     "file": "requirements.txt",
+     "line": null,
+     "title": "anyio 4.9.0 has 4 known vulnerabilities (transitive)"
+    },
+    "label": "TP-unplanted",
+    "reason": "Pinned versions have advisories per OSV (data fetched live; individual advisories not independently verified by me). Severity of transitive certifi/anyio 'critical' is questionable.",
+    "safe_hit": []
+   },
+   {
+    "key": "vuln_py|requirements.txt|None|vulnerable-dependency",
+    "finding": {
+     "tool": "osv-scanner",
+     "rule_id": "vulnerable-dependency",
+     "category": "security",
+     "severity": "critical",
+     "confidence": "medium",
+     "file": "requirements.txt",
+     "line": null,
+     "title": "certifi 2026.7.22 has 2 known vulnerabilities (transitive)"
+    },
+    "label": "TP-unplanted",
+    "reason": "Pinned versions have advisories per OSV (data fetched live; individual advisories not independently verified by me). Severity of transitive certifi/anyio 'critical' is questionable.",
+    "safe_hit": []
+   },
+   {
+    "key": "vuln_py|requirements.txt|None|vulnerable-dependency",
+    "finding": {
+     "tool": "osv-scanner",
+     "rule_id": "vulnerable-dependency",
+     "category": "security",
+     "severity": "high",
+     "confidence": "high",
+     "file": "requirements.txt",
+     "line": null,
+     "title": "flask-cors 4.0.1 has 8 known vulnerabilities"
+    },
+    "label": "TP-unplanted",
+    "reason": "Pinned versions have advisories per OSV (data fetched live; individual advisories not independently verified by me). Severity of transitive certifi/anyio 'critical' is questionable.",
+    "safe_hit": []
+   },
+   {
+    "key": "vuln_py|None|None|no-tests",
+    "finding": {
+     "tool": "testing",
+     "rule_id": "no-tests",
+     "category": "reliability",
+     "severity": "high",
+     "confidence": "high",
+     "file": null,
+     "line": null,
+     "title": "No automated tests found"
+    },
+    "label": "TP-unplanted",
+    "reason": "Repo really has no tests.",
+    "safe_hit": []
+   },
+   {
+    "key": "vuln_py|requirements.txt|None|vulnerable-dependency",
+    "finding": {
+     "tool": "osv-scanner",
+     "rule_id": "vulnerable-dependency",
+     "category": "security",
+     "severity": "high",
+     "confidence": "medium",
+     "file": "requirements.txt",
+     "line": null,
+     "title": "starlette 0.38.6 has 14 known vulnerabilities (transitive)"
+    },
+    "label": "TP-unplanted",
+    "reason": "Pinned versions have advisories per OSV (data fetched live; individual advisories not independently verified by me). Severity of transitive certifi/anyio 'critical' is questionable.",
+    "safe_hit": []
+   },
+   {
+    "key": "vuln_py|requirements.txt|None|vulnerable-dependency",
+    "finding": {
+     "tool": "osv-scanner",
+     "rule_id": "vulnerable-dependency",
+     "category": "security",
+     "severity": "medium",
+     "confidence": "high",
+     "file": "requirements.txt",
+     "line": null,
+     "title": "flask 3.0.3 has 2 known vulnerabilities"
+    },
+    "label": "TP-unplanted",
+    "reason": "Pinned versions have advisories per OSV (data fetched live; individual advisories not independently verified by me). Severity of transitive certifi/anyio 'critical' is questionable.",
+    "safe_hit": []
+   },
+   {
+    "key": "vuln_py|requirements.txt|None|vulnerable-dependency",
+    "finding": {
+     "tool": "osv-scanner",
+     "rule_id": "vulnerable-dependency",
+     "category": "security",
+     "severity": "medium",
+     "confidence": "high",
+     "file": "requirements.txt",
+     "line": null,
+     "title": "requests 2.32.3 has 4 known vulnerabilities"
+    },
+    "label": "TP-unplanted",
+    "reason": "Pinned versions have advisories per OSV (data fetched live; individual advisories not independently verified by me). Severity of transitive certifi/anyio 'critical' is questionable.",
+    "safe_hit": []
+   },
+   {
+    "key": "vuln_py|requirements.txt|None|vulnerable-dependency",
+    "finding": {
+     "tool": "osv-scanner",
+     "rule_id": "vulnerable-dependency",
+     "category": "security",
+     "severity": "medium",
+     "confidence": "medium",
+     "file": "requirements.txt",
+     "line": null,
+     "title": "idna 3.9.0 has 2 known vulnerabilities (transitive)"
+    },
+    "label": "TP-unplanted",
+    "reason": "Pinned versions have advisories per OSV (data fetched live; individual advisories not independently verified by me). Severity of transitive certifi/anyio 'critical' is questionable.",
+    "safe_hit": []
+   },
+   {
+    "key": "vuln_py|app/main.py|119|api-unauthenticated-mutation",
+    "finding": {
+     "tool": "design",
+     "rule_id": "api-unauthenticated-mutation",
+     "category": "security",
+     "severity": "medium",
+     "confidence": "low",
+     "file": "app/main.py",
+     "line": 119,
+     "title": "`POST /code/exec` changes state with no visible authentication"
+    },
+    "label": "TP-unplanted",
+    "reason": "POST /code/exec is an unauthenticated route that runs code; correct and relevant.",
+    "safe_hit": []
+   },
+   {
+    "key": "vuln_py|app/main.py|127|api-unauthenticated-mutation",
+    "finding": {
+     "tool": "design",
+     "rule_id": "api-unauthenticated-mutation",
+     "category": "security",
+     "severity": "medium",
+     "confidence": "low",
+     "file": "app/main.py",
+     "line": 127,
+     "title": "`POST /deser/pickle` changes state with no visible authentication"
+    },
+    "label": "debatable",
+    "reason": "Unauthenticated POST (deserialisation endpoint) - worth review but message claims 'changes state' on a parse-only route.",
+    "safe_hit": []
+   },
+   {
+    "key": "vuln_py|app/main.py|134|api-unauthenticated-mutation",
+    "finding": {
+     "tool": "design",
+     "rule_id": "api-unauthenticated-mutation",
+     "category": "security",
+     "severity": "medium",
+     "confidence": "low",
+     "file": "app/main.py",
+     "line": 134,
+     "title": "`POST /deser/yaml` changes state with no visible authentication"
+    },
+    "label": "debatable",
+    "reason": "Unauthenticated POST that only parses YAML; rule is verb-based.",
+    "safe_hit": []
+   },
+   {
+    "key": "vuln_py|app/main.py|141|api-unauthenticated-mutation",
+    "finding": {
+     "tool": "design",
+     "rule_id": "api-unauthenticated-mutation",
+     "category": "security",
+     "severity": "medium",
+     "confidence": "low",
+     "file": "app/main.py",
+     "line": 141,
+     "title": "`POST /deser/yaml_noloader` changes state with no visible authentication"
+    },
+    "label": "debatable",
+    "reason": "Unauthenticated POST that only parses YAML; rule is verb-based.",
+    "safe_hit": []
+   },
+   {
+    "key": "vuln_py|app/main.py|259|api-unauthenticated-mutation",
+    "finding": {
+     "tool": "design",
+     "rule_id": "api-unauthenticated-mutation",
+     "category": "security",
+     "severity": "medium",
+     "confidence": "low",
+     "file": "app/main.py",
+     "line": 259,
+     "title": "`POST /safe/yaml` changes state with no visible authentication"
+    },
+    "label": "FP",
+    "reason": "/safe/yaml only parses and returns data; no state change. Verb-based heuristic.",
+    "safe_hit": []
+   },
+   {
+    "key": "vuln_py|app/main.py|30|db-select-star",
+    "finding": {
+     "tool": "design",
+     "rule_id": "db-select-star",
+     "category": "architecture",
+     "severity": "low",
+     "confidence": "medium",
+     "file": "app/main.py",
+     "line": 30,
+     "title": "`SELECT *` used in a query (10 place(s))"
+    },
+    "label": "debatable",
+    "reason": "Style/perf note (low); true that SELECT * is used, not a defect per se.",
+    "safe_hit": []
+   },
+   {
+    "key": "vuln_py|app/main.py|25|mixed-http-and-data-access",
+    "finding": {
+     "tool": "quality",
+     "rule_id": "mixed-http-and-data-access",
+     "category": "architecture",
+     "severity": "low",
+     "confidence": "low",
+     "file": "app/main.py",
+     "line": 25,
+     "title": "HTTP handlers and database queries in the same module"
+    },
+    "label": "debatable",
+    "reason": "Subjective layering note on a deliberately single-file demo.",
+    "safe_hit": []
+   }
+  ],
+  "scores": {
+   "overall": 65.3,
+   "grade": "D",
+   "uncapped_overall": 65.3,
+   "caps": [
+    "critical"
+   ],
+   "not_analysed": [],
+   "merged_duplicates": 0,
+   "categories": {
+    "security": 1.9,
+    "reliability": 81.9,
+    "architecture": 91.8,
+    "code_quality": 100.0,
+    "maintainability": 100.0
+   }
+  },
+  "n_findings": 50,
+  "counts": {
+   "total": 50,
+   "by_severity": {
+    "critical": 10,
+    "high": 18,
+    "medium": 18,
+    "low": 4
+   },
+   "by_category": {
+    "security": 46,
+    "reliability": 1,
+    "architecture": 3
+   }
+  },
+  "seconds": 11.0
+ },
+ "vuln_js": {
+  "rows": [
+   {
+    "gt": {
+     "id": "next_public_secret_env",
+     "file": ".env.local",
+     "line": 2,
+     "category": "secret-exposed-to-browser",
+     "cwe": "CWE-200",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "gitleaks",
+     "rule_id": "generic-api-key",
+     "file": ".env.local",
+     "line": 2,
+     "severity": "high",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "next_public_secret_code",
+     "file": "pages/index.js",
+     "line": 3,
+     "category": "secret-exposed-to-browser",
+     "cwe": "CWE-200",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "js-secret-exposed-to-browser",
+     "file": "pages/index.js",
+     "line": 3,
+     "severity": "high",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "react_dangerously",
+     "file": "src/Widget.jsx",
+     "line": 6,
+     "category": "xss",
+     "cwe": "CWE-79",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "js-react-dangerously-set-inner-html",
+     "file": "src/Widget.jsx",
+     "line": 6,
+     "severity": "medium",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "innerhtml",
+     "file": "src/Widget.jsx",
+     "line": 17,
+     "category": "xss",
+     "cwe": "CWE-79",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "js-xss-inner-html",
+     "file": "src/Widget.jsx",
+     "line": 17,
+     "severity": "medium",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "cors_true_credentials",
+     "file": "src/server.js",
+     "line": 15,
+     "category": "cors-misconfig",
+     "cwe": "CWE-942",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "js-cors-wildcard-with-credentials",
+     "file": "src/server.js",
+     "line": 15,
+     "severity": "high",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "sqli_template",
+     "file": "src/server.js",
+     "line": 22,
+     "category": "sql-injection",
+     "cwe": "CWE-89",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "js-sql-injection-string-build",
+     "file": "src/server.js",
+     "line": 22,
+     "severity": "critical",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "sqli_concat",
+     "file": "src/server.js",
+     "line": 28,
+     "category": "sql-injection",
+     "cwe": "CWE-89",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "js-sql-injection-string-build",
+     "file": "src/server.js",
+     "line": 28,
+     "severity": "critical",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "reflected_xss",
+     "file": "src/server.js",
+     "line": 40,
+     "category": "xss",
+     "cwe": "CWE-79",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "js-reflected-xss-express",
+     "file": "src/server.js",
+     "line": 40,
+     "severity": "high",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "reflected_xss_template",
+     "file": "src/server.js",
+     "line": 45,
+     "category": "xss",
+     "cwe": "CWE-79",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "js-reflected-xss-express",
+     "file": "src/server.js",
+     "line": 45,
+     "severity": "high",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "eval",
+     "file": "src/server.js",
+     "line": 50,
+     "category": "code-injection",
+     "cwe": "CWE-95",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "js-eval",
+     "file": "src/server.js",
+     "line": 50,
+     "severity": "high",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "cmd_exec_template",
+     "file": "src/server.js",
+     "line": 55,
+     "category": "command-injection",
+     "cwe": "CWE-78",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "js-command-injection",
+     "file": "src/server.js",
+     "line": 55,
+     "severity": "high",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "open_redirect",
+     "file": "src/server.js",
+     "line": 65,
+     "category": "open-redirect",
+     "cwe": "CWE-601",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "js-open-redirect",
+     "file": "src/server.js",
+     "line": 65,
+     "severity": "medium",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "path_sendfile",
+     "file": "src/server.js",
+     "line": 70,
+     "category": "path-traversal",
+     "cwe": "CWE-22",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "js-path-traversal",
+     "file": "src/server.js",
+     "line": 70,
+     "severity": "high",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "path_readfile",
+     "file": "src/server.js",
+     "line": 75,
+     "category": "path-traversal",
+     "cwe": "CWE-22",
+     "expected_detect": true
+    },
+    "detected": false,
+    "finding": null
+   },
+   {
+    "gt": {
+     "id": "ssrf_fetch",
+     "file": "src/server.js",
+     "line": 85,
+     "category": "ssrf",
+     "cwe": "CWE-918",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "js-ssrf",
+     "file": "src/server.js",
+     "line": 85,
+     "severity": "medium",
+     "confidence": "low"
+    }
+   },
+   {
+    "gt": {
+     "id": "tls_reject_unauthorized",
+     "file": "src/server.js",
+     "line": 90,
+     "category": "tls-verification",
+     "cwe": "CWE-295",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "js-tls-verification-disabled",
+     "file": "src/server.js",
+     "line": 90,
+     "severity": "medium",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "math_random_token",
+     "file": "src/server.js",
+     "line": 94,
+     "category": "weak-random",
+     "cwe": "CWE-338",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "js-weak-random-token",
+     "file": "src/server.js",
+     "line": 94,
+     "severity": "medium",
+     "confidence": "low"
+    }
+   },
+   {
+    "gt": {
+     "id": "jwt_decode_auth",
+     "file": "src/server.js",
+     "line": 105,
+     "category": "jwt-verification",
+     "cwe": "CWE-347",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "js-jwt-decode-without-verify",
+     "file": "src/server.js",
+     "line": 105,
+     "severity": "medium",
+     "confidence": "low"
+    }
+   },
+   {
+    "gt": {
+     "id": "proto_pollution_merge",
+     "file": "src/server.js",
+     "line": 119,
+     "category": "prototype-pollution",
+     "cwe": "CWE-1321",
+     "expected_detect": false
+    },
+    "detected": false,
+    "finding": null
+   },
+   {
+    "gt": {
+     "id": "proto_pollution_assign",
+     "file": "src/server.js",
+     "line": 126,
+     "category": "prototype-pollution",
+     "cwe": "CWE-1321",
+     "expected_detect": false
+    },
+    "detected": false,
+    "finding": null
+   },
+   {
+    "gt": {
+     "id": "nosql_injection",
+     "file": "src/server.js",
+     "line": 133,
+     "category": "nosql-injection",
+     "cwe": "CWE-943",
+     "expected_detect": false
+    },
+    "detected": false,
+    "finding": null
+   },
+   {
+    "gt": {
+     "id": "noauth_delete",
+     "file": "src/server.js",
+     "line": 138,
+     "category": "missing-auth",
+     "cwe": "CWE-306",
+     "expected_detect": true
+    },
+    "detected": false,
+    "finding": null
+   },
+   {
+    "gt": {
+     "id": "insecure_cookie",
+     "file": "src/server.js",
+     "line": 145,
+     "category": "insecure-cookie",
+     "cwe": "CWE-614",
+     "expected_detect": true
+    },
+    "detected": false,
+    "finding": null
+   }
+  ],
+  "unmatched": [
+   {
+    "key": "vuln_js|None|None|no-tests",
+    "finding": {
+     "tool": "testing",
+     "rule_id": "no-tests",
+     "category": "reliability",
+     "severity": "high",
+     "confidence": "high",
+     "file": null,
+     "line": null,
+     "title": "No automated tests found"
+    },
+    "label": "TP-unplanted",
+    "reason": "Repo really has no tests.",
+    "safe_hit": []
+   },
+   {
+    "key": "vuln_js|src/server.js|50|js-reflected-xss-express",
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "js-reflected-xss-express",
+     "category": "security",
+     "severity": "high",
+     "confidence": "medium",
+     "file": "src/server.js",
+     "line": 50,
+     "title": "Request data flows into an HTML response without escaping"
+    },
+    "label": "debatable",
+    "reason": "res.send(String(eval(req.query.expr))) - output is attacker-controlled so XSS is real, but already RCE (duplicate impact of eval finding).",
+    "safe_hit": []
+   },
+   {
+    "key": "vuln_js|src/server.js|75|js-reflected-xss-express",
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "js-reflected-xss-express",
+     "category": "security",
+     "severity": "high",
+     "confidence": "medium",
+     "file": "src/server.js",
+     "line": 75,
+     "title": "Request data flows into an HTML response without escaping"
+    },
+    "label": "debatable",
+    "reason": "res.send(readFileSync('/data/'+req.query.f)): reflects file content, not request data directly; real issue is path traversal (missed).",
+    "safe_hit": []
+   },
+   {
+    "key": "vuln_js|src/server.js|86|js-reflected-xss-express",
+    "finding": {
+     "tool": "semgrep",
+     "rule_id": "js-reflected-xss-express",
+     "category": "security",
+     "severity": "high",
+     "confidence": "medium",
+     "file": "src/server.js",
+     "line": 86,
+     "title": "Request data flows into an HTML response without escaping"
+    },
+    "label": "debatable",
+    "reason": "res.send(await r.text()) from fetch(req.query.url): reflects remote content; XSS via SSRF response is plausible but indirect.",
+    "safe_hit": []
+   },
+   {
+    "key": "vuln_js|src/server.js|22|db-select-star",
+    "finding": {
+     "tool": "design",
+     "rule_id": "db-select-star",
+     "category": "architecture",
+     "severity": "low",
+     "confidence": "medium",
+     "file": "src/server.js",
+     "line": 22,
+     "title": "`SELECT *` used in a query (3 place(s))"
+    },
+    "label": "debatable",
+    "reason": "Style note.",
+    "safe_hit": []
+   },
+   {
+    "key": "vuln_js|src/server.js|20|mixed-http-and-data-access",
+    "finding": {
+     "tool": "quality",
+     "rule_id": "mixed-http-and-data-access",
+     "category": "architecture",
+     "severity": "low",
+     "confidence": "low",
+     "file": "src/server.js",
+     "line": 20,
+     "title": "HTTP handlers and database queries in the same module"
+    },
+    "label": "debatable",
+    "reason": "Subjective layering note on single-file demo.",
+    "safe_hit": []
+   }
+  ],
+  "scores": {
+   "overall": 69.4,
+   "grade": "D",
+   "uncapped_overall": 69.4,
+   "caps": [
+    "critical"
+   ],
+   "not_analysed": [],
+   "merged_duplicates": 1,
+   "categories": {
+    "security": 12.0,
+    "reliability": 81.9,
+    "architecture": 97.3,
+    "code_quality": 100.0,
+    "maintainability": 100.0
+   }
+  },
+  "n_findings": 23,
+  "counts": {
+   "total": 23,
+   "by_severity": {
+    "critical": 2,
+    "high": 12,
+    "medium": 7,
+    "low": 2
+   },
+   "by_category": {
+    "security": 20,
+    "reliability": 1,
+    "architecture": 2
+   }
+  },
+  "seconds": 4.2
+ },
+ "secrets_repo": {
+  "rows": [
+   {
+    "gt": {
+     "id": "env_aws",
+     "file": ".env",
+     "line": 2,
+     "category": "hardcoded-secret",
+     "cwe": "CWE-798",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "gitleaks",
+     "rule_id": "aws-access-token",
+     "file": ".env",
+     "line": 2,
+     "severity": "high",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "yaml_password",
+     "file": "config/app.yaml",
+     "line": 4,
+     "category": "hardcoded-secret",
+     "cwe": "CWE-798",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "gitleaks",
+     "rule_id": "generic-api-key",
+     "file": "config/app.yaml",
+     "line": 4,
+     "severity": "critical",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "py_github",
+     "file": "config/settings.py",
+     "line": 3,
+     "category": "hardcoded-secret",
+     "cwe": "CWE-798",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "gitleaks",
+     "rule_id": "github-pat",
+     "file": "config/settings.py",
+     "line": 3,
+     "severity": "critical",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "py_stripe",
+     "file": "config/settings.py",
+     "line": 5,
+     "category": "hardcoded-secret",
+     "cwe": "CWE-798",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "gitleaks",
+     "rule_id": "stripe-access-token",
+     "file": "config/settings.py",
+     "line": 5,
+     "severity": "critical",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "py_dburl",
+     "file": "config/settings.py",
+     "line": 7,
+     "category": "hardcoded-secret",
+     "cwe": "CWE-798",
+     "expected_detect": true
+    },
+    "detected": false,
+    "finding": null
+   },
+   {
+    "gt": {
+     "id": "fixture_secret",
+     "file": "fixtures/README_fixture_secret.py",
+     "line": 2,
+     "category": "hardcoded-secret",
+     "cwe": "CWE-798",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "gitleaks",
+     "rule_id": "stripe-access-token",
+     "file": "fixtures/README_fixture_secret.py",
+     "line": 2,
+     "severity": "low",
+     "confidence": "low"
+    }
+   },
+   {
+    "gt": {
+     "id": "pem_private_key",
+     "file": "keys/deploy_key.pem",
+     "line": 2,
+     "category": "hardcoded-secret",
+     "cwe": "CWE-798",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "gitleaks",
+     "rule_id": "private-key",
+     "file": "keys/deploy_key.pem",
+     "line": 2,
+     "severity": "critical",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "js_slack",
+     "file": "src/notify.js",
+     "line": 3,
+     "category": "hardcoded-secret",
+     "cwe": "CWE-798",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "gitleaks",
+     "rule_id": "slack-bot-token",
+     "file": "src/notify.js",
+     "line": 3,
+     "severity": "critical",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "js_generic_api_key",
+     "file": "src/notify.js",
+     "line": 5,
+     "category": "hardcoded-secret",
+     "cwe": "CWE-798",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "gitleaks",
+     "rule_id": "generic-api-key",
+     "file": "src/notify.js",
+     "line": 5,
+     "severity": "critical",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "json_fixture_token",
+     "file": "fixtures/sample_data.json",
+     "line": 2,
+     "category": "hardcoded-secret",
+     "cwe": "CWE-798",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "gitleaks",
+     "rule_id": "github-pat",
+     "file": "fixtures/sample_data.json",
+     "line": 2,
+     "severity": "low",
+     "confidence": "low"
+    }
+   }
+  ],
+  "unmatched": [
+   {
+    "key": "secrets_repo|config/app.yaml|5|generic-api-key",
+    "finding": {
+     "tool": "gitleaks",
+     "rule_id": "generic-api-key",
+     "category": "security",
+     "severity": "critical",
+     "confidence": "high",
+     "file": "config/app.yaml",
+     "line": 5,
+     "title": "Possible exposed secret (generic-api-key)"
+    },
+    "label": "TP-unplanted",
+    "reason": "Second secret (password:) in same YAML file; real.",
+    "safe_hit": []
+   },
+   {
+    "key": "secrets_repo|.env|3|generic-api-key",
+    "finding": {
+     "tool": "gitleaks",
+     "rule_id": "generic-api-key",
+     "category": "security",
+     "severity": "high",
+     "confidence": "high",
+     "file": ".env",
+     "line": 3,
+     "title": "Possible exposed secret (generic-api-key)"
+    },
+    "label": "TP-unplanted",
+    "reason": "AWS secret access key on adjacent line in .env; real.",
+    "safe_hit": []
+   },
+   {
+    "key": "secrets_repo|None|None|no-tests",
+    "finding": {
+     "tool": "testing",
+     "rule_id": "no-tests",
+     "category": "reliability",
+     "severity": "high",
+     "confidence": "high",
+     "file": null,
+     "line": null,
+     "title": "No automated tests found"
+    },
+    "label": "TP-unplanted",
+    "reason": "Repo really has no tests.",
+    "safe_hit": []
+   }
+  ],
+  "scores": {
+   "overall": 68.4,
+   "grade": "D",
+   "uncapped_overall": 68.4,
+   "caps": [
+    "critical"
+   ],
+   "not_analysed": [],
+   "merged_duplicates": 0,
+   "categories": {
+    "security": 6.8,
+    "reliability": 81.9,
+    "architecture": 100.0,
+    "code_quality": 100.0,
+    "maintainability": 100.0
+   }
+  },
+  "n_findings": 12,
+  "counts": {
+   "total": 12,
+   "by_severity": {
+    "critical": 7,
+    "high": 3,
+    "low": 2
+   },
+   "by_category": {
+    "security": 11,
+    "reliability": 1
+   }
+  },
+  "seconds": 4.9
+ },
+ "arch_repo": {
+  "rows": [
+   {
+    "gt": {
+     "id": "py_cycle2",
+     "file": "pypkg/a.py",
+     "line": 2,
+     "category": "circular-dependency",
+     "cwe": "CWE-NA",
+     "expected_detect": true,
+     "alt_files": [
+      "pypkg/a.py",
+      "pypkg/b.py"
+     ],
+     "line_agnostic": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "graph",
+     "rule_id": "circular-dependency",
+     "file": "pypkg/a.py",
+     "line": 2,
+     "severity": "medium",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "py_broken_import",
+     "file": "pypkg/broken.py",
+     "line": 2,
+     "category": "unresolved-import",
+     "cwe": "CWE-NA",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "graph",
+     "rule_id": "unresolved-import",
+     "file": "pypkg/broken.py",
+     "line": 2,
+     "severity": "high",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "py_cycle3",
+     "file": "pypkg/c.py",
+     "line": 2,
+     "category": "circular-dependency",
+     "cwe": "CWE-NA",
+     "expected_detect": true,
+     "alt_files": [
+      "pypkg/c.py",
+      "pypkg/d.py",
+      "pypkg/e.py"
+     ],
+     "line_agnostic": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "graph",
+     "rule_id": "circular-dependency",
+     "file": "pypkg/c.py",
+     "line": 2,
+     "severity": "medium",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "py_high_complexity",
+     "file": "pypkg/complex.py",
+     "line": 2,
+     "category": "high-complexity",
+     "cwe": "CWE-NA",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "quality",
+     "rule_id": "high-complexity",
+     "file": "pypkg/complex.py",
+     "line": 2,
+     "severity": "high",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "py_duplicate",
+     "file": "pypkg/dup1.py",
+     "line": 2,
+     "category": "duplicate-code",
+     "cwe": "CWE-NA",
+     "expected_detect": true,
+     "alt_files": [
+      "pypkg/dup1.py",
+      "pypkg/dup2.py"
+     ],
+     "line_agnostic": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "quality",
+     "rule_id": "duplicate-code",
+     "file": "pypkg/dup1.py",
+     "line": 3,
+     "severity": "medium",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "py_bare_except",
+     "file": "pypkg/errors.py",
+     "line": 7,
+     "category": "bare-except",
+     "cwe": "CWE-NA",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "quality",
+     "rule_id": "bare-except",
+     "file": "pypkg/errors.py",
+     "line": 7,
+     "severity": "medium",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "py_swallowed",
+     "file": "pypkg/errors.py",
+     "line": 15,
+     "category": "swallowed-exception",
+     "cwe": "CWE-NA",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "quality",
+     "rule_id": "swallowed-exception",
+     "file": "pypkg/errors.py",
+     "line": 15,
+     "severity": "medium",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "py_god_class",
+     "file": "pypkg/god.py",
+     "line": 2,
+     "category": "large-class",
+     "cwe": "CWE-NA",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "quality",
+     "rule_id": "large-class",
+     "file": "pypkg/god.py",
+     "line": 2,
+     "severity": "medium",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "py_hub",
+     "file": "pypkg/hub.py",
+     "line": 2,
+     "category": "coupling-hub",
+     "cwe": "CWE-NA",
+     "expected_detect": true,
+     "line_agnostic": true
+    },
+    "detected": false,
+    "finding": null
+   },
+   {
+    "gt": {
+     "id": "py_long_function",
+     "file": "pypkg/long_fn.py",
+     "line": 2,
+     "category": "long-function",
+     "cwe": "CWE-NA",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "quality",
+     "rule_id": "long-function",
+     "file": "pypkg/long_fn.py",
+     "line": 2,
+     "severity": "medium",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "py_deep_nesting",
+     "file": "pypkg/nested.py",
+     "line": 2,
+     "category": "deep-nesting",
+     "cwe": "CWE-NA",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "quality",
+     "rule_id": "deep-nesting",
+     "file": "pypkg/nested.py",
+     "line": 2,
+     "severity": "low",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "py_many_params",
+     "file": "pypkg/params.py",
+     "line": 2,
+     "category": "many-parameters",
+     "cwe": "CWE-NA",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "quality",
+     "rule_id": "many-parameters",
+     "file": "pypkg/params.py",
+     "line": 2,
+     "severity": "low",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "ts_high_complexity",
+     "file": "tsapp/src/complex.ts",
+     "line": 2,
+     "category": "high-complexity",
+     "cwe": "CWE-NA",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "quality",
+     "rule_id": "high-complexity",
+     "file": "tsapp/src/complex.ts",
+     "line": 2,
+     "severity": "high",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "ts_empty_catch",
+     "file": "tsapp/src/errors.ts",
+     "line": 5,
+     "category": "empty-catch",
+     "cwe": "CWE-NA",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "quality",
+     "rule_id": "empty-catch",
+     "file": "tsapp/src/errors.ts",
+     "line": 5,
+     "severity": "medium",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "ts_broken_alias",
+     "file": "tsapp/src/index.ts",
+     "line": 2,
+     "category": "unresolved-import",
+     "cwe": "CWE-NA",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "graph",
+     "rule_id": "unresolved-import",
+     "file": "tsapp/src/index.ts",
+     "line": 2,
+     "severity": "high",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "ts_broken_relative",
+     "file": "tsapp/src/index.ts",
+     "line": 5,
+     "category": "unresolved-import",
+     "cwe": "CWE-NA",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "graph",
+     "rule_id": "unresolved-import",
+     "file": "tsapp/src/index.ts",
+     "line": 5,
+     "severity": "high",
+     "confidence": "medium"
+    }
+   },
+   {
+    "gt": {
+     "id": "ts_cycle3",
+     "file": "tsapp/src/lib/p.ts",
+     "line": 2,
+     "category": "circular-dependency",
+     "cwe": "CWE-NA",
+     "expected_detect": true,
+     "alt_files": [
+      "tsapp/src/lib/p.ts",
+      "tsapp/src/lib/q.ts",
+      "tsapp/src/lib/r.ts"
+     ],
+     "line_agnostic": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "graph",
+     "rule_id": "circular-dependency",
+     "file": "tsapp/src/lib/p.ts",
+     "line": 2,
+     "severity": "medium",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "ts_cycle2",
+     "file": "tsapp/src/lib/x.ts",
+     "line": 2,
+     "category": "circular-dependency",
+     "cwe": "CWE-NA",
+     "expected_detect": true,
+     "alt_files": [
+      "tsapp/src/lib/x.ts",
+      "tsapp/src/lib/y.ts"
+     ],
+     "line_agnostic": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "graph",
+     "rule_id": "circular-dependency",
+     "file": "tsapp/src/lib/x.ts",
+     "line": 2,
+     "severity": "medium",
+     "confidence": "high"
+    }
+   },
+   {
+    "gt": {
+     "id": "arch_no_tests",
+     "file": null,
+     "line": null,
+     "category": "no-tests",
+     "cwe": "NA",
+     "expected_detect": true
+    },
+    "detected": true,
+    "finding": {
+     "tool": "testing",
+     "rule_id": "no-tests",
+     "file": null,
+     "line": null,
+     "severity": "high",
+     "confidence": "high"
+    }
+   }
+  ],
+  "unmatched": [
+   {
+    "key": "arch_repo|tsapp/src/errors.ts|1|naming-convention",
+    "finding": {
+     "tool": "quality",
+     "rule_id": "naming-convention",
+     "category": "code_quality",
+     "severity": "info",
+     "confidence": "medium",
+     "file": "tsapp/src/errors.ts",
+     "line": 1,
+     "title": "1 function name(s) break naming conventions"
+    },
+    "label": "debatable",
+    "reason": "Info-level; single-letter function name 'a' in my fixture.",
+    "safe_hit": []
+   }
+  ],
+  "scores": {
+   "overall": 79.2,
+   "grade": "C",
+   "uncapped_overall": 79.2,
+   "caps": [],
+   "not_analysed": [],
+   "merged_duplicates": 0,
+   "categories": {
+    "security": 100.0,
+    "reliability": 49.3,
+    "architecture": 84.1,
+    "code_quality": 70.2,
+    "maintainability": 79.9
+   }
+  },
+  "n_findings": 19,
+  "counts": {
+   "total": 19,
+   "by_severity": {
+    "high": 6,
+    "medium": 10,
+    "low": 2,
+    "info": 1
+   },
+   "by_category": {
+    "reliability": 7,
+    "code_quality": 5,
+    "architecture": 4,
+    "maintainability": 3
+   }
+  },
+  "seconds": 4.2
+ },
+ "clean_repo": {
+  "rows": [],
+  "unmatched": [],
+  "scores": {
+   "overall": 100.0,
+   "grade": "A",
+   "uncapped_overall": 100.0,
+   "caps": [],
+   "not_analysed": [],
+   "merged_duplicates": 0,
+   "categories": {
+    "security": 100.0,
+    "reliability": 100.0,
+    "architecture": 100.0,
+    "code_quality": 100.0,
+    "maintainability": 100.0
+   }
+  },
+  "n_findings": 0,
+  "counts": {
+   "total": 0,
+   "by_severity": {},
+   "by_category": {}
+  },
+  "seconds": 3.9
+ }
+}

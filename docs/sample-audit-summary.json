@@ -1,0 +1,713 @@
+{
+ "summary": {
+  "stack": {
+   "languages": [
+    {
+     "name": "Python",
+     "files": 2,
+     "lines": 60
+    },
+    {
+     "name": "JavaScript",
+     "files": 1,
+     "lines": 17
+    },
+    {
+     "name": "TypeScript",
+     "files": 1,
+     "lines": 15
+    }
+   ],
+   "frameworks": [
+    "Flask"
+   ],
+   "test_frameworks": [],
+   "databases": [],
+   "package_managers": [
+    "pip"
+   ],
+   "manifests": [
+    "Dockerfile",
+    "server/requirements.txt"
+   ],
+   "containerized": true
+  },
+  "inventory": {
+   "total_files": 7,
+   "source_files": 4,
+   "total_lines": 92,
+   "skipped_large_files": 0,
+   "tree": [
+    {
+     "path": "server",
+     "files": 2,
+     "lines": 60,
+     "tests": 0
+    },
+    {
+     "path": "web",
+     "files": 2,
+     "lines": 32,
+     "tests": 0
+    }
+   ]
+  },
+  "entry_points": [
+   {
+    "file": "server/app.py",
+    "kind": "Application module",
+    "reason": "Conventional entry filename"
+   },
+   {
+    "file": "web/server.js",
+    "kind": "Node server",
+    "reason": "Conventional entry filename"
+   }
+  ],
+  "files": [
+   {
+    "path": "server/app.py",
+    "language": "Python",
+    "lines": 54,
+    "is_test": false,
+    "functions": 6,
+    "classes": 0,
+    "fan_in": 1,
+    "fan_out": 1,
+    "instability": 0.5
+   },
+   {
+    "path": "server/models.py",
+    "language": "Python",
+    "lines": 6,
+    "is_test": false,
+    "functions": 1,
+    "classes": 0,
+    "fan_in": 1,
+    "fan_out": 1,
+    "instability": 0.5
+   },
+   {
+    "path": "web/page.tsx",
+    "language": "TypeScript",
+    "lines": 15,
+    "is_test": false,
+    "functions": 2,
+    "classes": 0,
+    "fan_in": 0,
+    "fan_out": 0,
+    "instability": 0.0
+   },
+   {
+    "path": "web/server.js",
+    "language": "JavaScript",
+    "lines": 17,
+    "is_test": false,
+    "functions": 1,
+    "classes": 0,
+    "fan_in": 0,
+    "fan_out": 0,
+    "instability": 0.0
+   }
+  ],
+  "symbols": {
+   "server/app.py": [
+    {
+     "name": "get_user",
+     "kind": "function",
+     "line": 17,
+     "end_line": 22,
+     "params": 0,
+     "complexity": 1,
+     "parent": null
+    },
+    {
+     "name": "download",
+     "kind": "function",
+     "line": 26,
+     "end_line": 28,
+     "params": 0,
+     "complexity": 1,
+     "parent": null
+    },
+    {
+     "name": "ping",
+     "kind": "function",
+     "line": 32,
+     "end_line": 34,
+     "params": 0,
+     "complexity": 1,
+     "parent": null
+    },
+    {
+     "name": "load",
+     "kind": "function",
+     "line": 37,
+     "end_line": 41,
+     "params": 1,
+     "complexity": 2,
+     "parent": null
+    },
+    {
+     "name": "config",
+     "kind": "function",
+     "line": 44,
+     "end_line": 45,
+     "params": 1,
+     "complexity": 1,
+     "parent": null
+    },
+    {
+     "name": "fetch",
+     "kind": "function",
+     "line": 48,
+     "end_line": 49,
+     "params": 1,
+     "complexity": 1,
+     "parent": null
+    }
+   ],
+   "server/models.py": [
+    {
+     "name": "helper",
+     "kind": "function",
+     "line": 4,
+     "end_line": 5,
+     "params": 0,
+     "complexity": 1,
+     "parent": null
+    }
+   ],
+   "web/page.tsx": [
+    {
+     "name": "Comment",
+     "kind": "function",
+     "line": 3,
+     "end_line": 5,
+     "params": 1,
+     "complexity": 1,
+     "parent": null
+    },
+    {
+     "name": "render",
+     "kind": "function",
+     "line": 7,
+     "end_line": 14,
+     "params": 2,
+     "complexity": 2,
+     "parent": null
+    }
+   ],
+   "web/server.js": [
+    {
+     "name": "<callback:app.get>",
+     "kind": "arrow",
+     "line": 5,
+     "end_line": 8,
+     "params": 2,
+     "complexity": 1,
+     "parent": null
+    }
+   ]
+  },
+  "architecture": {
+   "edges": 2,
+   "cycles": [
+    [
+     "server/app.py",
+     "server/models.py",
+     "server/app.py"
+    ]
+   ],
+   "external_dependencies": [
+    {
+     "name": "os",
+     "imports": 1
+    },
+    {
+     "name": "pickle",
+     "imports": 1
+    },
+    {
+     "name": "sqlite3",
+     "imports": 1
+    },
+    {
+     "name": "subprocess",
+     "imports": 1
+    },
+    {
+     "name": "requests",
+     "imports": 1
+    },
+    {
+     "name": "yaml",
+     "imports": 1
+    },
+    {
+     "name": "flask",
+     "imports": 1
+    },
+    {
+     "name": "express",
+     "imports": 1
+    }
+   ],
+   "graph": {
+    "directories": {
+     "nodes": [
+      {
+       "id": "server",
+       "files": 2
+      },
+      {
+       "id": "web",
+       "files": 2
+      }
+     ],
+     "edges": []
+    },
+    "files": {
+     "truncated": false,
+     "nodes": [
+      {
+       "id": "server/app.py",
+       "group": "server",
+       "test": false
+      },
+      {
+       "id": "server/models.py",
+       "group": "server",
+       "test": false
+      },
+      {
+       "id": "web/page.tsx",
+       "group": "web",
+       "test": false
+      },
+      {
+       "id": "web/server.js",
+       "group": "web",
+       "test": false
+      }
+     ],
+     "edges": [
+      {
+       "source": "server/app.py",
+       "target": "server/models.py"
+      },
+      {
+       "source": "server/models.py",
+       "target": "server/app.py"
+      }
+     ]
+    }
+   }
+  },
+  "quality": {
+   "functions": 10,
+   "classes": 0,
+   "avg_complexity": 1.2,
+   "complex_functions": 0,
+   "long_functions": 0,
+   "hotspots": [
+    {
+     "file": "server/app.py",
+     "name": "load",
+     "line": 37,
+     "complexity": 2,
+     "lines": 5
+    },
+    {
+     "file": "web/page.tsx",
+     "name": "render",
+     "line": 7,
+     "complexity": 2,
+     "lines": 8
+    },
+    {
+     "file": "server/app.py",
+     "name": "get_user",
+     "line": 17,
+     "complexity": 1,
+     "lines": 6
+    },
+    {
+     "file": "server/app.py",
+     "name": "download",
+     "line": 26,
+     "complexity": 1,
+     "lines": 3
+    },
+    {
+     "file": "server/app.py",
+     "name": "ping",
+     "line": 32,
+     "complexity": 1,
+     "lines": 3
+    },
+    {
+     "file": "server/app.py",
+     "name": "config",
+     "line": 44,
+     "complexity": 1,
+     "lines": 2
+    },
+    {
+     "file": "server/app.py",
+     "name": "fetch",
+     "line": 48,
+     "complexity": 1,
+     "lines": 2
+    },
+    {
+     "file": "server/models.py",
+     "name": "helper",
+     "line": 4,
+     "complexity": 1,
+     "lines": 2
+    },
+    {
+     "file": "web/page.tsx",
+     "name": "Comment",
+     "line": 3,
+     "complexity": 1,
+     "lines": 3
+    },
+    {
+     "file": "web/server.js",
+     "name": "<callback:app.get>",
+     "line": 5,
+     "complexity": 1,
+     "lines": 4
+    }
+   ],
+   "thresholds": {
+    "function_lines_low": 80,
+    "function_lines_medium": 150,
+    "complexity_medium": 15,
+    "complexity_high": 30,
+    "nesting": 5,
+    "params": 6,
+    "file_lines_low": 600,
+    "file_lines_medium": 1200,
+    "class_methods": 25,
+    "class_lines": 600,
+    "duplicate_window": 8
+   }
+  },
+  "testing": {
+   "test_files": 0,
+   "source_files": 4,
+   "test_lines": 0,
+   "source_lines": 92,
+   "frameworks": [],
+   "referenced_modules": 3,
+   "untested_modules": [
+    {
+     "file": "server/app.py",
+     "lines": 54
+    }
+   ],
+   "static_coverage_pct": 0,
+   "method": "static: test imports + filename matching",
+   "run": null
+  },
+  "data_flow": {
+   "routes": [
+    {
+     "method": "GET",
+     "path": "/user",
+     "file": "server/app.py",
+     "line": 16,
+     "handler": "get_user"
+    },
+    {
+     "method": "GET",
+     "path": "/download",
+     "file": "server/app.py",
+     "line": 25,
+     "handler": "download"
+    },
+    {
+     "method": "GET",
+     "path": "/ping",
+     "file": "server/app.py",
+     "line": 31,
+     "handler": "ping"
+    },
+    {
+     "method": "GET",
+     "path": "/search",
+     "file": "web/server.js",
+     "line": 5,
+     "handler": null
+    },
+    {
+     "method": "GET",
+     "path": "/go",
+     "file": "web/server.js",
+     "line": 10,
+     "handler": null
+    },
+    {
+     "method": "GET",
+     "path": "/run",
+     "file": "web/server.js",
+     "line": 14,
+     "handler": null
+    }
+   ],
+   "data_access": [
+    "server/app.py",
+    "web/server.js"
+   ],
+   "external_calls": [
+    "server/app.py"
+   ],
+   "flows": [
+    {
+     "from": "server/app.py",
+     "to": "server/app.py",
+     "path": [
+      "server/app.py"
+     ],
+     "kind": "route \u2192 data access"
+    },
+    {
+     "from": "web/server.js",
+     "to": "web/server.js",
+     "path": [
+      "web/server.js"
+     ],
+     "kind": "route \u2192 data access"
+    }
+   ],
+   "method": "Routes from framework decorators/calls; data access and external calls from call names (execute/query/fetch/requests\u2026); paths follow resolved imports."
+  },
+  "scanners": [
+   {
+    "name": "semgrep",
+    "status": "ok",
+    "version": "1.182.0",
+    "duration_s": 4.22,
+    "message": "",
+    "findings": 16
+   },
+   {
+    "name": "gitleaks",
+    "status": "ok",
+    "version": "8.30.1",
+    "duration_s": 0.1,
+    "message": "",
+    "findings": 2
+   },
+   {
+    "name": "osv-scanner",
+    "status": "ok",
+    "version": "2.7.0",
+    "duration_s": 12.51,
+    "message": "",
+    "findings": 6
+   },
+   {
+    "name": "trivy",
+    "status": "ok",
+    "version": "0.76.1",
+    "duration_s": 2.03,
+    "message": "",
+    "findings": 5
+   }
+  ],
+  "scores": {
+   "overall": 59.9,
+   "grade": "D",
+   "categories": {
+    "security": {
+     "label": "Security",
+     "score": 2.4,
+     "grade": "F",
+     "weight": 0.3,
+     "deduction": 223.4,
+     "counts": {
+      "critical": 4,
+      "high": 15,
+      "medium": 6,
+      "low": 1
+     }
+    },
+    "reliability": {
+     "label": "Testing & Reliability",
+     "score": 55.4,
+     "grade": "D",
+     "weight": 0.2,
+     "deduction": 35.4,
+     "counts": {
+      "high": 2,
+      "medium": 3
+     }
+    },
+    "architecture": {
+     "label": "Architecture",
+     "score": 90.6,
+     "grade": "A",
+     "weight": 0.2,
+     "deduction": 5.9,
+     "counts": {
+      "medium": 1,
+      "low": 2
+     }
+    },
+    "code_quality": {
+     "label": "Code Quality",
+     "score": 100.0,
+     "grade": "A",
+     "weight": 0.15,
+     "deduction": 0.0,
+     "counts": {}
+    },
+    "maintainability": {
+     "label": "Maintainability",
+     "score": 100.0,
+     "grade": "A",
+     "weight": 0.15,
+     "deduction": 0.0,
+     "counts": {}
+    }
+   },
+   "methodology": {
+    "summary": "Each category starts at 100 and loses points for findings, weighted by severity and confidence, with diminishing returns for repeated findings of the same rule. The overall score is a weighted average of the categories.",
+    "severity_points": {
+     "critical": 25.0,
+     "high": 12.0,
+     "medium": 5.0,
+     "low": 1.5,
+     "info": 0.3
+    },
+    "confidence_factor": {
+     "high": 1.0,
+     "medium": 0.7,
+     "low": 0.4
+    },
+    "weights": {
+     "security": 0.3,
+     "reliability": 0.2,
+     "architecture": 0.2,
+     "code_quality": 0.15,
+     "maintainability": 0.15
+    },
+    "formula": "category = 100 \u00d7 exp(\u2212\u03a3 points / 60); overall = \u03a3 weight \u00d7 category",
+    "limitations": [
+     "This score is a prioritisation aid, not a security certification or compliance attestation.",
+     "Static analysis cannot prove the absence of vulnerabilities; business-logic and authorisation flaws are often invisible to pattern matching.",
+     "Scanners that were skipped or failed contribute no findings, which can inflate a score \u2014 check the scanner status table.",
+     "Thresholds for size and complexity are conventions, not laws; subjective findings are labelled as such.",
+     "Dependency results reflect advisory databases at scan time."
+    ]
+   }
+  },
+  "counts": {
+   "total": 34,
+   "by_severity": {
+    "critical": 4,
+    "high": 17,
+    "medium": 10,
+    "low": 3
+   },
+   "by_category": {
+    "security": 26,
+    "reliability": 5,
+    "architecture": 3
+   }
+  },
+  "overview": {
+   "paragraphs": [
+    "This repository contains 4 analysed source files written in Python (60 lines), JavaScript (17 lines), TypeScript (15 lines), using Flask.",
+    "Execution most likely starts at `server/app.py` (Application module), `web/server.js` (Node server).",
+    "It exposes 6 HTTP route(s), for example `GET /user`, `GET /download`, `GET /ping`, `GET /search`.",
+    "1 module(s) call external HTTP services.",
+    "There are 0 test file(s).",
+    "The import graph contains 1 circular dependency group(s)."
+   ],
+   "largest_areas": [
+    {
+     "path": "server",
+     "files": 2,
+     "lines": 60
+    },
+    {
+     "path": "web",
+     "files": 2,
+     "lines": 32
+    }
+   ],
+   "generated_by": "deterministic"
+  },
+  "comparison": null
+ },
+ "findings_example": [
+  {
+   "tool": "semgrep",
+   "rule_id": "py-sql-injection-string-build",
+   "category": "security",
+   "severity": "critical",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "SQL query is built with string formatting/concatenation and passed to a database call",
+   "file": "server/app.py",
+   "line": 21,
+   "end_line": 21,
+   "evidence": "    cur = conn.cursor()\n    cur.execute(f\"SELECT * FROM users WHERE id = {uid}\")\n    return str(cur.fetchall())",
+   "explanation": "SQL query is built with string formatting/concatenation and passed to a database call. (CWE-89). Detected by Semgrep pattern matching; the code shown matched rule `py-sql-injection-string-build`.",
+   "impact": "An attacker who controls any interpolated value can read or modify arbitrary data.",
+   "remediation": "Use parameterised queries, e.g. cursor.execute(\"SELECT ... WHERE id = %s\", (user_id,)).",
+   "principle": "sql-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/89.html"
+   ],
+   "fingerprint": "006dbdd5ade8fb8b560962070f878ef7"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "js-sql-injection-string-build",
+   "category": "security",
+   "severity": "critical",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "SQL query is built with string interpolation/concatenation and passed to a database call",
+   "file": "web/server.js",
+   "line": 6,
+   "end_line": 6,
+   "evidence": "app.get(\"/search\", (req, res) => {\n  db.query(`SELECT * FROM items WHERE name = '${req.query.q}'`);\n  res.send(\"<h1>\" + req.query.q + \"</h1>\");",
+   "explanation": "SQL query is built with string interpolation/concatenation and passed to a database call. (CWE-89). Detected by Semgrep pattern matching; the code shown matched rule `js-sql-injection-string-build`.",
+   "impact": "An attacker who controls any interpolated value can read or modify arbitrary data.",
+   "remediation": "Use parameter placeholders ($1 / ?) and pass values separately, or an ORM query builder.",
+   "principle": "sql-injection",
+   "references": [
+    "https://cwe.mitre.org/data/definitions/89.html"
+   ],
+   "fingerprint": "51c8ed28c50563fa364896f079366fc5"
+  },
+  {
+   "tool": "osv-scanner",
+   "rule_id": "vulnerable-dependency",
+   "category": "security",
+   "severity": "critical",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "pyyaml 5.3.0 has 4 known vulnerabilities",
+   "file": "server/requirements.txt",
+   "line": null,
+   "end_line": null,
+   "evidence": "PyPI package pyyaml@5.3.0\n\u2022 PYSEC-2020-96 [critical] A vulnerability was discovered in the PyYAML library in versions before 5.3.1, where it is susceptible to arbi\n\u2022 PYSEC-2021-142 [critical] A vulnerability was discovered in the PyYAML library in versions before 5.4, where it is susceptible to arbitr\n\u2022 GHSA-6757-jp84-gxfx [critical] Improper Input Validation in PyYAML\n\u2022 GHSA-8q59-q68h-6hv4 [critical] Improper Input Validation in PyYAML",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used.",
+   "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
+   "remediation": "Upgrade pyyaml to 5.4 or later, then re-run the audit.",
+   "principle": null,
+   "references": [
+    "https://osv.dev/vulnerability/PYSEC-2020-96"
+   ],
+   "fingerprint": "a0b6795c92d43936856cc6908c3c599b"
+  }
+ ]
+}

@@ -1,0 +1,206 @@
+{
+ "itsdangerous": [
+  {
+   "tool": "osv-scanner",
+   "rule_id": "vulnerable-dependency",
+   "severity": "high",
+   "confidence": "medium",
+   "file": "uv.lock",
+   "line": null,
+   "title": "virtualenv 20.31.2 has 25 known vulnerabilities (transitive)",
+   "evidence": "PyPI package virtualenv@20.31.2\n\u2022 PYSEC-2026-2009 [medium] virtualenv Has TOCTOU Vulnerabilities in Directory Creation\n\u2022 PYSEC-2026-4011 [high] Downloaded seed wheels (pip/setuptools) are not integrity-checked before use\n\u2022 PYSEC-2026-4012 [medium] virtualenv writes prompt values into pyvenv.cfg without sanitizing line boundaries, allowing configuration inj\n\u2022 PYSEC-2026-4013 [high] virtualenv bash and fish activation scripts execute commands embedded in paths\n\u2022 PYSEC-2026-4014 [high] Command injection via --prompt in activate.bat (batch activator)\n\u2022 GHSA-394h-qwmc-48pf [high] virtualenv: Xonsh activation literals depend on the script decoding codec\n\u2022 GHSA-43mp-35q3-x3fq [medium] virtualenv: Deletion recovery can change a symlink target's mode\n\u2022 GHSA-494p-63j8-28p3 [low] virtualenv: Downloaded wheel selection and caching precede verification\n\u2022 GHSA-558c-9hv2-4prj [medium] virtualenv: Generated files can follow existing destination links\n\u2022 GHSA-597g-3phw-6986 [medium] virtualenv Has TOCTOU Vulnerabilities in Directory Creation\n\u2022 GHSA-5vjq-rrrf-7h2q [high] virtualenv activate runs commands from the environment name in zsh with PROMPT_SUBST\n\u2022 GHSA-6w3r-xr62-4xcp [high] virtualenv: Bash prompt values can change meaning under older compatibility modes\n\u2026 and 13 more"
+  },
+  {
+   "tool": "quality",
+   "rule_id": "broad-except",
+   "severity": "low",
+   "confidence": "medium",
+   "file": "src/itsdangerous/url_safe.py",
+   "line": 38,
+   "title": "Catches broad `Exception`",
+   "evidence": "            json = base64_decode(payload)\n        except Exception as e:\n            raise BadPayload("
+  },
+  {
+   "tool": "quality",
+   "rule_id": "duplicate-code",
+   "severity": "low",
+   "confidence": "high",
+   "file": "src/itsdangerous/serializer.py",
+   "line": 115,
+   "title": "9 duplicated lines within the file",
+   "evidence": "src/itsdangerous/serializer.py:115-126 \u2248 src/itsdangerous/serializer.py:131-142\n\nsigner_kwargs: dict[str, t.Any] | None = None,\nfallback_signers: list[\ndict[str, t.Any] | tuple[type[Signer], dict[str, t.Any]] | type[Signer]\n| None = None,\n): ...\n@t.overload"
+  },
+  {
+   "tool": "quality",
+   "rule_id": "long-function",
+   "severity": "low",
+   "confidence": "high",
+   "file": "src/itsdangerous/timed.py",
+   "line": 72,
+   "title": "`unsign` is 87 lines long",
+   "evidence": "    def unsign("
+  },
+  {
+   "tool": "quality",
+   "rule_id": "many-parameters",
+   "severity": "low",
+   "confidence": "high",
+   "file": "src/itsdangerous/serializer.py",
+   "line": 108,
+   "title": "`__init__` takes 8 parameters",
+   "evidence": "    def __init__("
+  },
+  {
+   "tool": "quality",
+   "rule_id": "swallowed-exception",
+   "severity": "medium",
+   "confidence": "high",
+   "file": "src/itsdangerous/timed.py",
+   "line": 114,
+   "title": "Exception is caught and ignored",
+   "evidence": "            ts_int = bytes_to_int(base64_decode(ts_bytes))\n        except Exception:\n            pass"
+  },
+  {
+   "tool": "semgrep",
+   "rule_id": "py-weak-hash",
+   "severity": "low",
+   "confidence": "low",
+   "file": "src/itsdangerous/signer.py",
+   "line": 45,
+   "title": "MD5/SHA-1 used",
+   "evidence": "    \"\"\"\n    return hashlib.sha1(string)\n"
+  },
+  {
+   "tool": "testing",
+   "rule_id": "untested-modules",
+   "severity": "low",
+   "confidence": "medium",
+   "file": "docs/conf.py",
+   "line": null,
+   "title": "1 source modules are not referenced by any test (14%)",
+   "evidence": "Largest untested modules:\n\u2022 docs/conf.py (56 lines)"
+  },
+  {
+   "tool": "osv-scanner",
+   "rule_id": "vulnerable-dependency",
+   "severity": "critical",
+   "confidence": "medium",
+   "file": "uv.lock",
+   "line": null,
+   "title": "uv 0.7.8 has 9 known vulnerabilities (transitive)",
+   "evidence": "PyPI package uv@0.7.8\n\u2022 PYSEC-2026-2001 [medium] uv allows ZIP payload obfuscation through parsing differentials\n\u2022 PYSEC-2026-2295 [medium] A flaw was found in uv. This vulnerability allows an attacker to execute malicious code during package resolut\n\u2022 PYSEC-2026-4321 [critical] uv's bundled CA store trusts an emSign root whose intermediate CA keys are compromised\n\u2022 GHSA-4gg8-gxpx-9rph [medium] uv is vulnerable to arbitrary file write through entry point names\n\u2022 GHSA-8qf3-x8v5-2pj8 [medium] uv allows ZIP payload obfuscation through parsing differentials\n\u2022 GHSA-hq85-5cpj-mr62 [critical] uv's bundled CA store trusts an emSign root whose intermediate CA keys are compromised\n\u2022 GHSA-pjjw-68hj-v9mw [low] uv vulnerable to arbitrary file deletion through RECORD entries\n\u2022 GHSA-pqhf-p39g-3x64 [medium] uv allows ZIP payload obfuscation through parsing differentials\n\u2022 GHSA-w476-p2h3-79g9 [medium] uv has differential in tar extraction with PAX headers"
+  },
+  {
+   "tool": "quality",
+   "rule_id": "broad-except",
+   "severity": "low",
+   "confidence": "medium",
+   "file": "src/itsdangerous/serializer.py",
+   "line": 264,
+   "title": "Catches broad `Exception`",
+   "evidence": "            return use_serializer.loads(payload)  # type: ignore[arg-type]\n        except Exception as e:\n            raise BadPayload("
+  }
+ ],
+ "full-stack-fastapi-template": [
+  {
+   "tool": "design",
+   "rule_id": "api-unauthenticated-mutation",
+   "severity": "medium",
+   "confidence": "low",
+   "file": "backend/app/api/routes/private.py",
+   "line": 23,
+   "title": "`POST /private/users` changes state with no visible authentication",
+   "evidence": "@router.post(\"/users/\", response_model=UserPublic)\ndef create_user(user_in: PrivateUserCreate, session: SessionDep) -> Any:\n    \"\"\"\n    Create a new user."
+  },
+  {
+   "tool": "osv-scanner",
+   "rule_id": "vulnerable-dependency",
+   "severity": "high",
+   "confidence": "medium",
+   "file": "bun.lock",
+   "line": null,
+   "title": "engine.io 6.6.9 has 1 known vulnerability (transitive)",
+   "evidence": "npm package engine.io@6.6.9\n\u2022 GHSA-2gc4-cqfq-p2gv [high] Socket.IO: Engine.IO Protocol Revision Mismatch DoS"
+  },
+  {
+   "tool": "quality",
+   "rule_id": "deep-nesting",
+   "severity": "low",
+   "confidence": "high",
+   "file": "frontend/src/client/client/utils.gen.ts",
+   "line": 17,
+   "title": "`querySerializer` nests control flow 5 levels deep",
+   "evidence": "  const querySerializer = (queryParams: T) => {"
+  },
+  {
+   "tool": "quality",
+   "rule_id": "duplicate-code",
+   "severity": "low",
+   "confidence": "high",
+   "file": "frontend/src/components/Admin/AddUser.tsx",
+   "line": 85,
+   "title": "8 duplicated lines also in frontend/src/components/Items/AddItem.tsx",
+   "evidence": "frontend/src/components/Admin/AddUser.tsx:85-95 \u2248 frontend/src/components/Items/AddItem.tsx:66-76\n\n})\nconst onSubmit = (data: FormData) => {\nmutation.mutate(data)\nreturn (\n<Dialog open={isOpen} onOpenChange={setIsOpen}>\n<DialogTrigger asChild>"
+  },
+  {
+   "tool": "quality",
+   "rule_id": "empty-catch",
+   "severity": "medium",
+   "confidence": "high",
+   "file": "frontend/src/client/core/serverSentEvents.gen.ts",
+   "line": 146,
+   "title": "Empty catch block",
+   "evidence": "            reader.cancel();\n          } catch {\n            // noop"
+  },
+  {
+   "tool": "quality",
+   "rule_id": "high-complexity",
+   "severity": "high",
+   "confidence": "high",
+   "file": "frontend/src/client/core/serverSentEvents.gen.ts",
+   "line": 82,
+   "title": "`createSseClient` has cyclomatic complexity 32",
+   "evidence": "export function createSseClient<TData = unknown>({"
+  },
+  {
+   "tool": "quality",
+   "rule_id": "large-file",
+   "severity": "low",
+   "confidence": "high",
+   "file": "frontend/src/components/ui/sidebar.tsx",
+   "line": null,
+   "title": "File has 738 lines",
+   "evidence": "738 lines, 30 functions, 0 classes."
+  },
+  {
+   "tool": "quality",
+   "rule_id": "long-function",
+   "severity": "medium",
+   "confidence": "high",
+   "file": "frontend/src/components/Admin/EditUser.tsx",
+   "line": 59,
+   "title": "`EditUser` is 179 lines long",
+   "evidence": "const EditUser = ({ user, onSuccess }: EditUserProps) => {"
+  },
+  {
+   "tool": "quality",
+   "rule_id": "naming-convention",
+   "severity": "info",
+   "confidence": "medium",
+   "file": "frontend/src/client/client/client.gen.ts",
+   "line": 131,
+   "title": "1 function name(s) break naming conventions",
+   "evidence": "`_buildUrl` (line 131) is not camelCase"
+  },
+  {
+   "tool": "testing",
+   "rule_id": "untested-modules",
+   "severity": "medium",
+   "confidence": "medium",
+   "file": "frontend/src/components/ui/sidebar.tsx",
+   "line": null,
+   "title": "84 source modules are not referenced by any test (76%)",
+   "evidence": "Largest untested modules:\n\u2022 frontend/src/components/ui/sidebar.tsx (738 lines)\n\u2022 frontend/src/client/sdk.gen.ts (385 lines)\n\u2022 frontend/src/components/ui/dropdown-menu.tsx (258 lines)\n\u2022 frontend/src/client/core/serverSentEvents.gen.ts (243 lines)\n\u2022 frontend/src/components/Admin/EditUser.tsx (240 lines)\n\u2022 frontend/src/components/Admin/AddUser.tsx (238 lines)\n\u2022 frontend/src/routeTree.gen.ts (236 lines)\n\u2022 frontend/src/components/Common/DataTable.tsx (201 lines)\n\u2022 frontend/src/routes/signup.tsx (188 lines)\n\u2022 frontend/src/components/ui/select.tsx (186 lines)\n\u2022 scripts/prepare_release.py (176 lines)\n\u2022 frontend/src/client/core/pathSerializer.gen.ts (172 lines)"
+  }
+ ]
+}

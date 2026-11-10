@@ -1,0 +1,47 @@
+vuln_py 34 planted 13 safe
+vuln_js 23 planted 7 safe
+secrets_repo 10 planted 6 safe
+arch_repo 19 planted 0 safe
+clean_repo 0 planted 0 safe
+vuln_py 48 findings 65.4 [('semgrep', 'ok'), ('gitleaks', 'ok'), ('osv-scanner', 'ok'), ('trivy', 'ok')] 10.3 s
+vuln_js 22 findings 70.2 [('semgrep', 'ok'), ('gitleaks', 'ok'), ('osv-scanner', 'ok'), ('trivy', 'ok')] 4.6 s
+secrets_repo 12 findings 68.4 [('semgrep', 'ok'), ('gitleaks', 'ok'), ('osv-scanner', 'ok'), ('trivy', 'ok')] 4.1 s
+arch_repo 19 findings 79.2 [('semgrep', 'ok'), ('gitleaks', 'ok'), ('osv-scanner', 'ok'), ('trivy', 'ok')] 5.5 s
+clean_repo 0 findings 100.0 [('semgrep', 'ok'), ('gitleaks', 'ok'), ('osv-scanner', 'ok'), ('trivy', 'ok')] 6.8 s
+probe_alias_root 2 findings 94.2 [('semgrep', 'ok'), ('gitleaks', 'ok'), ('osv-scanner', 'ok'), ('trivy', 'ok')] 5.5 s
+probe_sqli_concat 4 findings 79.9 [('semgrep', 'ok'), ('gitleaks', 'ok'), ('osv-scanner', 'ok'), ('trivy', 'ok')] 7.6 s
+itsdangerous 25 findings 81.4 [('semgrep', 'ok'), ('gitleaks', 'ok'), ('osv-scanner', 'ok'), ('trivy', 'ok')] 6.1 s
+full-stack-fastapi-template 87 findings 68.3 [('semgrep', 'ok'), ('gitleaks', 'ok'), ('osv-scanner', 'ok'), ('trivy', 'ok')] 7.2 s
+vuln_py: planted(expected)=34 detected=32 | unmatched=16 unlabeled=0
+   MISS sqli_plus app/main.py 48 (expected)
+   MISS sqli_intermediate app/main.py 67 (expected)
+vuln_js: planted(expected)=20 detected=16 | unmatched=6 unlabeled=0
+   MISS sqli_concat src/server.js 28 (expected)
+   MISS path_readfile src/server.js 75 (expected)
+   MISS proto_pollution_merge src/server.js 119 (known gap)
+   MISS proto_pollution_assign src/server.js 126 (known gap)
+   MISS nosql_injection src/server.js 133 (known gap)
+   MISS noauth_delete src/server.js 138 (expected)
+   MISS insecure_cookie src/server.js 145 (expected)
+secrets_repo: planted(expected)=10 detected=9 | unmatched=3 unlabeled=0
+   MISS py_dburl config/settings.py 7 (expected)
+arch_repo: planted(expected)=19 detected=18 | unmatched=1 unlabeled=0
+   MISS py_hub pypkg/hub.py 2 (expected)
+clean_repo: planted(expected)=0 detected=0 | unmatched=0 unlabeled=0
+{} []
+vuln_py: planted(expected)=34 detected=32 | unmatched=16 unlabeled=0
+   MISS sqli_plus app/main.py 48 (expected)
+   MISS sqli_intermediate app/main.py 67 (expected)
+vuln_js: planted(expected)=20 detected=16 | unmatched=6 unlabeled=0
+   MISS sqli_concat src/server.js 28 (expected)
+   MISS path_readfile src/server.js 75 (expected)
+   MISS proto_pollution_merge src/server.js 119 (known gap)
+   MISS proto_pollution_assign src/server.js 126 (known gap)
+   MISS nosql_injection src/server.js 133 (known gap)
+   MISS noauth_delete src/server.js 138 (expected)
+   MISS insecure_cookie src/server.js 145 (expected)
+secrets_repo: planted(expected)=10 detected=9 | unmatched=3 unlabeled=0
+   MISS py_dburl config/settings.py 7 (expected)
+arch_repo: planted(expected)=19 detected=18 | unmatched=1 unlabeled=0
+   MISS py_hub pypkg/hub.py 2 (expected)
+clean_repo: planted(expected)=0 detected=0 | unmatched=0 unlabeled=0
