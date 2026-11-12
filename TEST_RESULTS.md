@@ -167,3 +167,24 @@ throwaway development `.env`.
 | Security PoCs | `AUDITOR_OFFLINE=true .venv/bin/python ../docs/audit-evidence/security_pocs.py` | `security_pocs_output_public_release.txt`. **P1 still reproduces** (victim on a *new* browser gets 429 during an attack, the documented SEC-02 residual); **P1b holds** (victim's known browser: 200); **P2 reproduces** (registration 409, SEC-10, low); P3a–P6c hold |
 | Detection benchmark | `bash benchmarks/run_all.sh` (log `logs/benchmark-public-release.txt`) | recall **75/83 → 78/83 (94%)**; the 3 new findings are the planted 3-operand SQLi items; FP unchanged (1); clean repo 0 findings; security recall 60/64, strict precision 86% |
 | Not run | live clone of a repo over 300 MB; live quota exhaustion; load test; real GitHub PR; real LLM | covered by unit tests only (clone watchdog with a real growing process, quotas), or out of scope |
+
+## v0.2.0 release candidate (2026-11-12)
+
+The full record, milestone by milestone, is in [docs/ENGINEERING_LOG.md](docs/ENGINEERING_LOG.md). Summary:
+
+| Check | Where | Result |
+|---|---|---|
+| Backend suite | CI `backend` job, run 43186974018 on `e290f82` (Ubuntu, Semgrep 1.182.0, Gitleaks v8.30.1) | **152 passed, 0 skipped**, including the real Docker sandbox test |
+| Backend suite | local, `pytest -m "not docker"` | 151 passed, 1 deselected (local Docker engine wedged, see below) |
+| Frontend | CI `frontend` job and locally | lint, `tsc`, **102 passed**, production build |
+| Deployment config | CI `deployment-config` | both Compose files and the Caddyfile valid |
+| Production overlay, live | CI `e2e-production` (runs 43186085694 and 43186974018) | 7 services healthy; HTTP→HTTPS 308; HSTS; port 3000 closed; **31/31** live flows and **9/9** abuse checks over HTTPS (incl. a new browser on a second IP signing in during an attack); production guard refuses insecure cookies; API restarts and is healthy after SIGTERM |
+| Restart and health (default Compose) | local Docker, M1 | all services healthy; api, worker and web each restarted (RestartCount 0 → 1) and healthy again ~7 s after their main process exited |
+| Detection benchmark | local `run_all.sh` | synthetic recall 78/83 unchanged; itsdangerous dependency criticals 3 → 0 (all dev tooling); FastAPI template 4 of 14 advisories reclassified |
+
+**Local Docker blocker (not a product defect).** On this machine a `caddy validate` container that
+bind-mounted a file from `~/Desktop` left Docker Desktop unable to start containers. The likely cause
+is a pending macOS permission. Stuck containers are still in `Created`, including `beautiful_boyd`
+and two `auditor-sbx-*`. The overlay now builds the Caddyfile into an image instead of mounting it,
+and the live verification ran in CI instead. Restarting Docker Desktop and removing those containers
+is left to the machine owner.

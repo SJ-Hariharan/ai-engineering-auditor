@@ -4,8 +4,26 @@
 **private beta with trusted users** on a single instance, provided the P1 items in [PRIORITIZED_FIXES.md](PRIORITIZED_FIXES.md) are
 tracked and users are told the score is not comparable across repositories.
 
-**Current status (2026-11-10): ready for a public v0.1.0 beta of the self-hosted tool.** This supersedes the
-verdict above.
+**Current status (2026-11-12): v0.2.0 release candidate — deployable for a self-hosted, single-instance
+deployment using the production overlay.** This supersedes both earlier verdicts. The record of each milestone,
+with commands and results, is in [docs/ENGINEERING_LOG.md](docs/ENGINEERING_LOG.md).
+
+- **New since v0.1.0:**
+  - Restart policies and health checks for every service.
+  - HTTPS production overlay (Caddy).
+  - SEC-02 closed when that overlay is used: a trusted client IP, verified live with a second IP.
+  - E-01, E-05, DET-11, the SEC-03 residual, and part of E-03.
+  - CI that runs every suite and deploys the overlay and runs the live checks on every push (AC1–AC6 in
+    the engineering log).
+- **Still open:**
+  - SEC-02 without the overlay, SEC-09/10;
+  - Trivy inline ignores;
+  - pnpm/yarn/poetry lockfile reachability;
+  - E-03 (one full summary per view), E-04;
+  - SC-04 to SC-07.
+- **Not done:** no external penetration test and no load test. This is not a security certification.
+
+**Previous status (2026-11-10): public v0.1.0 beta.**
 
 - **Fixed since that assessment:** SEC-01, SEC-03, SEC-04, SEC-05, SEC-06, SEC-07, SEC-08, DET-01, DET-10,
   DET-16, SC-01, SC-02 and SC-03.

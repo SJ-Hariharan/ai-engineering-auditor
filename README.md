@@ -5,11 +5,12 @@
 AI Engineering Auditor reviews a Python, JavaScript or TypeScript codebase and explains what it
 contains, what is wrong with it, and what to fix first, with evidence for every finding.
 
-> **Status: v0.1.0 public beta.** A self-hosted tool for one instance. The release-blocking
-> security issues found in review are fixed or mitigated and were re-tested on the Docker
-> Compose stack. Known limitations are listed below. The score is a prioritisation aid, not a
-> security certification. See [Release status](#release-status) and
-> [RELEASE_READINESS.md](RELEASE_READINESS.md).
+> **Status: v0.2.0 release candidate** of a self-hosted tool for one instance (v0.1.0 was the
+> public beta). It ships an HTTPS production deployment, and CI deploys it and runs the live checks
+> on every push. Known limitations are listed below. The score is a prioritisation aid, not a
+> security certification. See [Release status](#release-status),
+> [RELEASE_READINESS.md](RELEASE_READINESS.md) and the
+> [engineering log](docs/ENGINEERING_LOG.md).
 
 ## The problem
 
@@ -79,11 +80,12 @@ Measured results, with the commands and raw output in the linked documents:
     development tooling.
   - `fastapi/full-stack-fastapi-template`: 89 findings, down from 295 after a monorepo
     import-resolution fix.
-- **Tests** ([TEST_RESULTS.md](TEST_RESULTS.md)):
-  - Backend: 126 tests pass, including a real Docker sandbox run.
-  - Frontend: 97 tests pass.
-  - Live checks against the Docker Compose stack, through the web proxy: 31/31 end-to-end flows
-    and 7/7 abuse-protection checks pass.
+- **Tests and CI** ([TEST_RESULTS.md](TEST_RESULTS.md), [.github/workflows/ci.yml](.github/workflows/ci.yml)):
+  - Every push runs CI: backend lint and 152 tests (including a real Docker sandbox run), and
+    frontend lint, type-check, 102 tests and production build.
+  - CI also deploys the production overlay (Caddy HTTPS, production mode) and runs live checks
+    against it: 31/31 end-to-end flows and 9/9 abuse-protection checks, the production guard, and
+    crash recovery.
   - Security proof-of-concept scripts are saved in `docs/audit-evidence/`.
 
 ## Quick start (Docker Compose)
@@ -174,45 +176,65 @@ prove the absence of vulnerabilities, and skipped scanners contribute no finding
 
 ## Release status
 
-**v0.1.0 public beta.** The full assessment is in [RELEASE_READINESS.md](RELEASE_READINESS.md),
-and every issue with its evidence is in [PRIORITIZED_FIXES.md](PRIORITIZED_FIXES.md).
+**v0.2.0 release candidate** (branch `rc/0.2.0`). The full assessment is in
+[RELEASE_READINESS.md](RELEASE_READINESS.md); the milestone-by-milestone record with test results is
+in [docs/ENGINEERING_LOG.md](docs/ENGINEERING_LOG.md); every issue with its evidence is in
+[PRIORITIZED_FIXES.md](PRIORITIZED_FIXES.md).
 
-Fixed and re-tested (unit tests, saved proof-of-concept scripts, and live on Docker Compose):
+New since v0.1.0, each verified by tests and by CI:
+
+- **Deployment:**
+  - Production overlay with Caddy: automatic TLS, HSTS, an edge body limit, and no plain-HTTP app port.
+  - Every service restarts on failure and reports health.
+  - CI deploys the overlay on every push and runs the live checks against it.
+- **Login lockout closed with the production overlay:**
+  - Caddy supplies a trustworthy client IP, so a new browser on another IP signs in even during an
+    attack.
+  - Distributed guessing and password spraying are capped.
+- **Re-run comparison:** identical defects are all reported, and a new copy counts as new. A moved
+  secret is no longer "resolved + new".
+- **Dependency severity:** advisories for packages reachable only through development tooling
+  (`uv.lock`, `package-lock.json`, `bun.lock`) are lowered one level and labelled.
+- **Privacy:** the file viewer and older audits also redact secrets.
+- **Performance:** the report polls a small status endpoint instead of the full multi-megabyte summary.
+
+Already in v0.1.0:
 
 - **Reliability:**
-  - Worker database connections are fork-safe. Previously, every audit after the first failed
-    in Compose.
-  - Failed or killed jobs no longer leave a project locked.
+  - fork-safe worker database connections;
+  - failed jobs never lock a project.
 - **Result integrity:**
-  - Repository-controlled scanner suppression is ignored.
-  - Monorepo import false positives are fixed (208 to 0 on the FastAPI template).
-  - OSV-Scanner no longer honours `.gitignore`.
-  - Three-operand SQL string concatenation is now detected (recall 90% to 94%).
+  - repository-controlled scanner suppression is ignored;
+  - monorepo import false positives are fixed;
+  - OSV-Scanner no longer honours `.gitignore`;
+  - three-operand SQL concatenation is detected.
 - **Privacy:**
-  - Secrets are redacted in all stored finding evidence and in the Markdown export.
-  - Source copies are purged hourly, including orphans left by crashed jobs.
+  - secrets are redacted in stored evidence and in the export;
+  - source copies are purged hourly.
 - **Abuse resistance:**
-  - Request bodies over the upload limit are refused before they are parsed.
-  - A clone is stopped as soon as it passes the size limit.
-  - Each user is limited to 2 concurrent and 50 daily audits.
-  - Login throttling counts only failures and protects browsers the user has already signed in
-    with.
-- **Deployment:** production mode refuses insecure cookies, in-process jobs or a missing secret.
-  A production `.env` template ships with registration closed, and the sandbox is off by default.
+  - body-size limit before parsing;
+  - clone size watchdog;
+  - per-user audit limits;
+  - failure-only login throttling with device cookies.
+- **Deployment:** the production guard; a production `.env` template; the sandbox off by default.
 - **Scoring:**
-  - categories that were not analysed are N/A;
-  - critical findings and incomplete results are capped;
-  - one issue is counted once;
-  - the result no longer depends on input order.
+  - N/A for categories that were not analysed;
+  - caps for critical findings and incomplete scans;
+  - one penalty per root cause;
+  - independent of input order.
 
-Known issues (none of these is a blocker for a self-hosted beta; all are documented):
+Known issues (documented, not blocking a self-hosted deployment):
 
-- **Login from a new browser** can be delayed while someone is actively guessing that account's
-  password. Browsers the user has already signed in with are not affected (SEC-02, mitigated).
-  Registration also reveals whether an email is taken (SEC-10).
-- **Trivy suppressions:** Trivy honours inline `trivy:ignore` comments; they are listed in the report.
+- **Without the production overlay** (plain `docker compose up`), client IPs are not trusted, so
+  sign-in from a new browser can still be delayed during an attack. Known browsers are never locked
+  out.
+- Registration reveals whether an email is taken (SEC-10).
+- Trivy honours inline `trivy:ignore` comments; they are listed in the report.
+- `pnpm-lock.yaml`, `yarn.lock` and `poetry.lock` are not read for dependency reachability.
+- The full audit summary (up to a few MB) is still sent once per report view. List endpoints are not
+  paginated (E-04).
 - **Scoring:** not normalised for repository size, and the constants are not calibrated (SC-04 to
-  SC-07). Use the score to track one repository over time, not to compare repositories.
+  SC-07). Use it to track one repository over time, not to compare repositories.
 - **Not reviewed:**
   - Not load-tested.
   - No external penetration test.

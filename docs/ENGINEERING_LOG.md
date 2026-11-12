@@ -14,7 +14,7 @@ works end to end. Older history: [TEST_RESULTS.md](../TEST_RESULTS.md),
 | AC3 | Login lockout is not possible from another client, including for a brand-new browser (SEC-02 residual) | **met** with the production ingress (M2, verified in CI) |
 | AC4 | Re-run comparison counts new copies of identical defects and does not churn on moved secrets (E-01, E-05) | **met** (M3) |
 | AC5 | CI runs backend lint and tests and frontend lint, type-check, tests and build on every push | **met** (M4) |
-| AC6 | All suites green; live Compose checks green; docs match the code | open |
+| AC6 | All suites green; live Compose checks green; docs match the code | **met** (CI run 43186974018; docs pass below) |
 
 ## Milestones
 
@@ -249,3 +249,74 @@ _(newest last)_
       runtime `react-email` workspace.
 - **Known issues:** `pnpm-lock.yaml`, `yarn.lock` and `poetry.lock` are not read yet; their packages
   keep the previous "transitive, medium confidence" treatment.
+
+### Release-candidate check — 2026-11-12
+
+- **CI run 43186974018 on `e290f82`** (contains M1–M7), all four jobs green:
+  - backend: lint clean, **152 passed, 0 skipped** (real Docker sandbox test included);
+  - frontend: lint, `tsc`, **102 passed**, production build;
+  - deployment-config: both Compose files and the Caddyfile valid;
+  - e2e-production: live flows **31/31** and abuse checks **9/9** over HTTPS, plus the production guard
+    and crash recovery.
+- **Docs pass:** README (status, evidence, production deployment, release status, known issues),
+  RELEASE_READINESS, SECURITY, SECURITY_REVIEW, PRIORITIZED_FIXES, DETECTION_BENCHMARK, TEST_RESULTS
+  and docs/API were updated to match the code.
+
+## Changed files (v0.1.0 → release candidate)
+
+- **Deployment:**
+  - `docker-compose.yml`
+  - `docker-compose.prod.yml`, `deploy/Caddyfile`, `deploy/Dockerfile.caddy` (new)
+  - `.env.production.example`
+  - `.github/workflows/ci.yml` (new)
+- **Backend:**
+  - `app/api/auth.py`, `app/api/audits.py`
+  - `app/core/config.py`, `app/schemas.py`
+  - `app/analysis/pipeline.py`, `app/analysis/inventory.py`
+  - `app/analysis/scanners/gitleaks.py`, `app/analysis/scanners/deps.py`
+- **Backend tests:**
+  - `tests/test_deployment_config.py`, `tests/test_fingerprints.py`, `tests/test_dependency_lockfiles.py` (new)
+  - `tests/test_abuse_limits.py`, `tests/test_release_hardening.py`, `tests/test_api.py`
+- **Frontend:** `src/lib/audit-poll.ts` and its test (new), `src/lib/api.ts`, `src/lib/types.ts`,
+  `src/components/report/audit-report.tsx`.
+- **Evidence:** `docs/audit-evidence/live_flows.py`, `live_abuse_checks.py`, and logs in
+  `docs/audit-evidence/logs/`.
+- **Docs:** listed above.
+
+## Known issues
+
+- **SEC-02 without the production overlay:** with plain `docker compose up`, client IPs are not trusted,
+  so a user's first sign-in on a new browser can be delayed during an attack. Known browsers are never
+  locked out.
+- **SEC-10:** registration reveals whether an email is taken.
+- **Trivy:** inline `trivy:ignore` comments are honoured; they are listed in the report.
+- **Dependency reachability:** `pnpm-lock.yaml`, `yarn.lock` and `poetry.lock` are not read.
+- **E-03 / E-04:**
+  - the full summary (up to a few MB) is still sent once per report view and stored as one JSON column;
+  - list endpoints are not paginated.
+- **Re-run comparison:** occurrence numbering follows line order, so a copy inserted above existing ones
+  re-labels them. Gitleaks fingerprints change once on the first re-run after upgrading.
+- **Redis** runs without persistence: jobs queued at the moment Redis restarts are lost and marked
+  failed by the stale-audit sweep.
+- **Scoring:** not normalised for size; constants uncalibrated (SC-04 to SC-07).
+- **This machine:** Docker Desktop is wedged (see TEST_RESULTS). Live checks ran in CI instead.
+
+## Security concerns
+
+- `AUDITOR_TRUST_CLIENT_IP_HEADER=true` must only be used with an ingress that overwrites the header,
+  as `docker-compose.prod.yml` does. Behind another load balancer, switch Caddy to
+  `trusted_proxies` + `{client_ip}`.
+- Login throttling counters are in memory per API process. Running several API processes needs Redis
+  counters first.
+- Secret redaction is pattern-based.
+- Sandboxed test execution, if enabled, gives the worker Docker access: keep it on a dedicated host
+  (see SECURITY.md).
+- No external penetration test and no load test have been done.
+
+## Remaining acceptance criteria
+
+- **AC1–AC6:** met (see the table at the top).
+- **Before calling this v0.2.0 final, outside this log's scope:**
+  - the owner reviews and merges `rc/0.2.0` into `main`;
+  - a deployment on a real domain (Let's Encrypt), since CI uses `localhost` with Caddy's local CA;
+  - a decision on tagging and releasing.

@@ -16,7 +16,7 @@ Status legend: **VERIFIED** = reproduced. **SUSPECTED** = from code reading only
 | ID | Severity | Title | Status |
 |---|---|---|---|
 | SEC-01 | High | A scanned repository can suppress its own findings (`.semgrepignore`, `# nosemgrep`, `.gitleaks.toml`) | VERIFIED → **FIXED** (residual: Trivy inline comments) |
-| SEC-02 | Medium | Anyone can lock any user out of login (rate-limit key is shared behind the proxy) | VERIFIED → **MITIGATED** (known browsers protected, P1b holds; a new browser can still be delayed during an attack, P1) |
+| SEC-02 | Medium | Anyone can lock any user out of login (rate-limit key is shared behind the proxy) | VERIFIED → **FIXED with the production overlay** (trusted client IP via Caddy; verified live in CI); MITIGATED without it (known browsers protected) |
 | SEC-03 | Medium | Secret values stored and exported verbatim when found by a non-Gitleaks rule | VERIFIED → **FIXED** (evidence redacted before storage and in the export; residual: file viewer, pre-fix audits, pattern coverage) |
 | SEC-04 | Medium | Upload size limit is checked only after the whole body has been received and spooled | SUSPECTED → **FIXED** (ASGI body limit before parsing) |
 | SEC-05 | Medium | No size cap while cloning; limits are enforced only after the clone finishes | SUSPECTED → **FIXED** (clone killed when it passes the size limit) |
