@@ -98,10 +98,10 @@ sandbox disabled for this reason).
   same masked evidence for Gitleaks findings.
 - Evidence from every other rule (Semgrep, Trivy, built-in analyzers) passes through
   `llm/redact.py` before it is stored, and the Markdown export redacts it again (SEC-03).
-  Remaining gaps: redaction is pattern-based (common key formats, quoted secret assignments,
-  connection strings, private keys), so unusual formats can still appear; audits stored before
-  this change keep their original evidence in the API until re-run; and the file viewer shows
-  raw source except for Gitleaks-detected lines.
+  The findings API redacts evidence again on read, which also covers audits stored before this
+  change. The file viewer redacts line by line, so line numbers stay aligned. Remaining gap:
+  redaction is pattern-based (common key formats, quoted secret assignments, connection strings,
+  private keys), so unusual formats can still appear.
 - Text sent to an LLM passes through `llm/redact.py` (common key formats, credential
   assignments, connection strings, private keys) and Gitleaks-flagged lines are blanked.
 - Server secrets come from environment variables only; `.env` is git-ignored.

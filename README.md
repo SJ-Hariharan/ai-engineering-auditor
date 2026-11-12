@@ -226,8 +226,7 @@ Known issues (none of these is a blocker for a self-hosted beta; all are documen
 - Only Python, JavaScript and TypeScript are analysed; other files are counted but not analysed.
 - Design checks are static heuristics. Auth or pagination enforced elsewhere (middleware,
   gateways) may not be visible, so those findings are marked subjective with low confidence.
-- The file viewer shows source as-is, except lines Gitleaks flagged. Secret redaction in evidence
-  is pattern-based.
+- Secret redaction in evidence and the file viewer is pattern-based; unusual formats can still appear.
 - PR creation and AI output are tested with mocks and fakes, not live services.
 - Sandbox coverage numbers are Python-only.
 - No MFA or password reset. Login throttling is in memory per API process (Compose runs one).

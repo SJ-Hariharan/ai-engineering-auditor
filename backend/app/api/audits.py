@@ -28,6 +28,9 @@ MAX_VIEW_BYTES = 400_000
 
 def finding_out(f: Finding, fixed_ids: set[str] | None = None) -> FindingOut:
     out = FindingOut.model_validate(f)
+    # Evidence is redacted before storage; redacting again on read also covers audits stored before
+    # that change (SEC-03). Idempotent for already-redacted text.
+    out.evidence = redact(out.evidence or "")
     out.has_fix = bool(fixed_ids and f.id in fixed_ids)
     out.fixable = f.rule_id in FIXERS and bool(f.line) and f.tool != "gitleaks"
     return out
@@ -102,6 +105,9 @@ def get_file(audit_id: str, path: str, db: Session = Depends(get_db), user: User
     content = raw.decode("utf-8", "replace")
     if any(f.tool == "gitleaks" for f in findings):
         content = _mask_secrets(content, [f for f in findings if f.tool == "gitleaks"])
+    # SEC-03: also hide secrets other scanners would not report. Line by line, so line numbers (and
+    # the finding markers on them) stay aligned with the file.
+    content = "".join(redact(line) for line in content.splitlines(keepends=True))
     return FileContent(path=rel, language=LANG_BY_EXT.get(target.suffix.lower()), content=content,
                        truncated=target.stat().st_size > MAX_VIEW_BYTES,
                        symbols=(audit.summary.get("symbols") or {}).get(rel, []),

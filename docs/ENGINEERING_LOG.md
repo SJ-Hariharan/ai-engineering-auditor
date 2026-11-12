@@ -13,7 +13,7 @@ works end to end. Older history: [TEST_RESULTS.md](../TEST_RESULTS.md),
 | AC2 | A documented production deployment serves HTTPS, exposes no plain-HTTP app port, and passes the live checks | open |
 | AC3 | Login lockout is not possible from another client, including for a brand-new browser (SEC-02 residual) | open |
 | AC4 | Re-run comparison counts new copies of identical defects and does not churn on moved secrets (E-01, E-05) | **met** (M3) |
-| AC5 | CI runs backend lint and tests and frontend lint, type-check, tests and build on every push | open |
+| AC5 | CI runs backend lint and tests and frontend lint, type-check, tests and build on every push | **met** (M4) |
 | AC6 | All suites green; live Compose checks green; docs match the code | open |
 
 ## Milestones
@@ -130,6 +130,22 @@ _(newest last)_
   - Gitleaks findings change fingerprint once on the first re-run after this upgrade, showing as
     resolved + new for that one comparison.
 
+### M4 — Continuous integration (AC5) — done, 2026-11-12
+
+- **Problem:** there was no CI (HYG-01), so every result in this repository came from one developer machine.
+- **Change:** `.github/workflows/ci.yml`, running on every push and pull request:
+  - **backend:** `uv sync --frozen`, Semgrep 1.182.0, and Gitleaks v8.30.1 copied out of the same image the
+    Dockerfile uses; then `ruff` and the full pytest suite, including the real Docker sandbox test.
+  - **frontend:** `npm ci`, lint, `tsc`, Vitest, production build.
+  - **deployment-config:** `docker compose config` for both the default and production files, and
+    `caddy validate` on the built Caddy image.
+- **Changed files:** `.github/workflows/ci.yml` (new).
+- **Tests:** branch `rc/0.2.0`, commit `64e5f50`, run 43185639407, **all three jobs succeeded**:
+  - backend: lint clean, **143 passed, 0 skipped** (the Docker sandbox test ran on the runner);
+  - frontend: lint clean, `tsc` clean, 97 passed, production build compiled;
+  - deployment-config: both Compose files and the Caddyfile valid.
+- **Known issues:** actions are pinned to major versions (`@v4`, `@v5`), not commit SHAs.
+
 ### M5 — Small polling payload (E-03) — done in tests; live UI check pending
 
 - **Problem:** the report page re-fetched `GET /api/audits/{id}`, including the whole summary (~2.6 MB
@@ -153,3 +169,23 @@ _(newest last)_
   blocked, see M2).
 - **Known issue:** the full summary is still sent once per report view and stored as one JSON column;
   splitting symbols and the graph out of it is a larger change, not done.
+
+### M7 — Secrets in the file viewer and in older audits (SEC-03 residual) — done, 2026-11-12
+
+- **Problem:**
+  - The file viewer showed raw source except for lines Gitleaks flagged, so, for example, a hard-coded
+    Flask `secret_key` was visible there although its finding evidence was redacted.
+  - Audits stored before storage-time redaction still returned raw evidence.
+- **Change:**
+  - `finding_out` redacts evidence on read. This is idempotent on already-redacted text.
+  - The file viewer applies `redact()` line by line after Gitleaks masking, so the line count and the
+    finding markers stay aligned.
+- **Changed files:** `backend/app/api/audits.py`, `backend/tests/test_release_hardening.py` (+2 tests),
+  `SECURITY.md`, `README.md`, `PRIORITIZED_FIXES.md`.
+- **Tests:**
+  - viewer test: the secret is absent, `app.secret_key = "[REDACTED]"` is shown, and the line count
+    equals the original's;
+  - old-row test: the storage redaction is disabled to simulate an earlier row, and the findings API
+    still returns no secret;
+  - `pytest -m "not docker"`: **151 passed** (log `logs/pytest-m6-m7.txt`, which also covers M6).
+- **Security concern:** redaction is pattern-based; formats it does not know are still shown.

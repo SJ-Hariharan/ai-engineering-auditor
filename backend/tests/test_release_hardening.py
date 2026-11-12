@@ -67,3 +67,26 @@ def test_production_template_must_be_filled_in(monkeypatch, tmp_path):
     filled.write_text(template.read_text().replace(
         "CHANGE-ME-run-python-c-import-secrets-print-secrets-token-urlsafe-48", "k" * 48))
     assert Settings(_env_file=filled).is_production  # filled in, it is accepted
+
+
+def test_file_viewer_redacts_non_gitleaks_secrets_and_keeps_line_numbers(client, vuln_zip):
+    register(client)
+    project = client.post("/api/projects/upload", files={"file": ("v.zip", vuln_zip)}).json()
+    audit_id = project["audits"][0]["id"]
+    r = client.get(f"/api/audits/{audit_id}/files/server/app.py")
+    assert r.status_code == 200
+    content = r.json()["content"]
+    assert SECRET not in content and 'app.secret_key = "[REDACTED]"' in content
+    from pathlib import Path
+    original = (Path(__file__).parent / "fixtures/vulnerable_app/server/app.py").read_text()
+    assert content.count("\\n") == original.count("\\n")  # same number of lines
+
+
+def test_findings_api_redacts_evidence_stored_before_the_fix(client, monkeypatch, vuln_zip):
+    """Audits stored before storage-time redaction still return redacted evidence."""
+    monkeypatch.setattr(jobs, "redact", lambda text: text)  # simulate an old, unredacted row
+    monkeypatch.setattr(jobs, "run_analysis", _fake_analysis)
+    register(client)
+    project = client.post("/api/projects/upload", files={"file": ("v.zip", vuln_zip)}).json()
+    findings = client.get(f"/api/audits/{project['audits'][0]['id']}/findings").text
+    assert SECRET not in findings and KEY not in findings
