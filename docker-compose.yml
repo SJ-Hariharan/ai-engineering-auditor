@@ -8,6 +8,7 @@ services:
       POSTGRES_USER: auditor
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
     volumes: [pgdata:/var/lib/postgresql/data]
+    restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U auditor"]
       interval: 5s
@@ -16,6 +17,11 @@ services:
   redis:
     image: redis:7-alpine
     command: ["redis-server", "--save", "", "--appendonly", "no"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 10
 
   api:
     build: ./backend
@@ -28,7 +34,14 @@ services:
     volumes: [workspaces:/data/workspaces]
     depends_on:
       db: {condition: service_healthy}
-      redis: {condition: service_started}
+      redis: {condition: service_healthy}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=4).status == 200 else 1)"]
+      interval: 15s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
     read_only: true
     tmpfs: [/tmp]
     security_opt: [no-new-privileges:true]
@@ -50,7 +63,15 @@ services:
       - trivycache:/home/auditor/.cache
     depends_on:
       db: {condition: service_healthy}
-      redis: {condition: service_started}
+      redis: {condition: service_healthy}
+    restart: unless-stopped
+    healthcheck:
+      # Healthy when this container's RQ worker is registered in Redis.
+      test: ["CMD", "python", "-c", "import os,socket,sys; from redis import Redis; from rq import Worker; r = Redis.from_url(os.environ['AUDITOR_REDIS_URL']); sys.exit(0 if any(w.hostname == socket.gethostname() for w in Worker.all(connection=r)) else 1)"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3
     tmpfs: [/tmp]
     security_opt: [no-new-privileges:true]
     cap_drop: [ALL]
@@ -79,7 +100,15 @@ services:
       context: ./frontend
       args: {AUDITOR_API_URL: "http://api:8000"}
     ports: ["127.0.0.1:3000:3000"]
-    depends_on: [api]
+    depends_on:
+      api: {condition: service_healthy}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/login').then(r => process.exit(r.status < 500 ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
     read_only: true
     security_opt: [no-new-privileges:true]
     cap_drop: [ALL]
