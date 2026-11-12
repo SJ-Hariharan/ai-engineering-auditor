@@ -95,6 +95,16 @@ class AuditOut(ORM):
     summary: dict[str, Any]
 
 
+class AuditStatusOut(BaseModel):
+    """Small payload for polling (E-03): the full summary can be megabytes."""
+    id: str
+    status: str
+    stage: str | None
+    error: str | None
+    finished_at: datetime | None
+    test_run: dict[str, Any] | None
+
+
 class FindingOut(ORM):
     id: str
     fingerprint: str

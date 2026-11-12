@@ -174,3 +174,18 @@ def test_delete_project_removes_workspace(client, audited, tmp_path):
     assert client.delete(f"/api/projects/{project['id']}").status_code == 204
     assert not ws.exists()
     assert client.get(f"/api/audits/{audit['id']}").status_code == 404
+
+
+def test_status_endpoint_is_small_and_owner_scoped(client, audited):
+    """E-03: polling uses a payload of a few hundred bytes instead of the full summary."""
+    _, audit = audited
+    r = client.get(f"/api/audits/{audit['id']}/status")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["status"] == "completed" and set(body) == {"id", "status", "stage", "error", "finished_at", "test_run"}
+    full = client.get(f"/api/audits/{audit['id']}").content
+    assert len(r.content) < 1000 < len(full)
+    client.post("/api/auth/logout")
+    from tests.conftest import register as reg
+    reg(client, "mallory@example.com")
+    assert client.get(f"/api/audits/{audit['id']}/status").status_code == 404

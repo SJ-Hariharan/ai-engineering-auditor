@@ -2,6 +2,7 @@ import type {
   AIArtifact,
   AIStatus,
   Audit,
+  AuditStatusInfo,
   ExplainKind,
   FileContent,
   Finding,
@@ -135,6 +136,7 @@ export const api = {
 
   // audits
   getAudit: (id: string) => request<Audit>("GET", `/audits/${enc(id)}`),
+  getAuditStatus: (id: string) => request<AuditStatusInfo>("GET", `/audits/${enc(id)}/status`),
   getFindings: (
     id: string,
     q: { category?: string; severity?: string; kind?: string; file?: string; sort?: string } = {},

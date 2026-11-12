@@ -129,3 +129,27 @@ _(newest last)_
     location of an older copy.
   - Gitleaks findings change fingerprint once on the first re-run after this upgrade, showing as
     resolved + new for that one comparison.
+
+### M5 — Small polling payload (E-03) — done in tests; live UI check pending
+
+- **Problem:** the report page re-fetched `GET /api/audits/{id}`, including the whole summary (~2.6 MB
+  measured on a 529-file repo), every 2 s for as long as a sandboxed test run was in progress. While an
+  audit is still running the summary is empty, so that phase was already small.
+- **Change:**
+  - New `GET /api/audits/{id}/status` returns `{id, status, stage, error, finished_at, test_run}`.
+  - The report page (`refreshAudit` in `frontend/src/lib/audit-poll.ts`) polls it and fetches the full
+    audit only on the first load, when the status or test run changes, or when an action explicitly
+    reloads.
+- **Changed files:**
+  - backend: `app/api/audits.py`, `app/schemas.py`, `tests/test_api.py` (+1 test)
+  - frontend: `src/lib/audit-poll.ts` (new), `src/lib/audit-poll.test.ts` (new, 5 tests),
+    `src/lib/api.ts`, `src/lib/types.ts`, `src/components/report/audit-report.tsx`
+  - docs: `docs/API.md`, `PRIORITIZED_FIXES.md`
+- **Tests:**
+  - backend `test_status_endpoint_is_small_and_owner_scoped`: passed. The status response is under
+    1,000 bytes while the full audit is larger, and another user gets 404.
+  - frontend: `tsc` exit 0, lint exit 0, **102 passed** (11 files).
+- **Not verified:** the polling behaviour in a running browser against the stack (Docker engine
+  blocked, see M2).
+- **Known issue:** the full summary is still sent once per report view and stored as one JSON column;
+  splitting symbols and the graph out of it is a larger change, not done.

@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { ArrowLeft, Download } from "lucide-react";
 import { api } from "@/lib/api";
+import { refreshAudit } from "@/lib/audit-poll";
 import { useResource } from "@/hooks/use-api";
-import type { AuditSummary, Finding } from "@/lib/types";
+import type { Audit, AuditSummary, Finding } from "@/lib/types";
 import { useApp } from "@/components/app/app-context";
 import { ErrorNote, PageLoading } from "@/components/app/common";
 import { StatusBadge, Pill } from "@/components/app/badges";
@@ -48,7 +49,15 @@ export function AuditReport() {
   const [pollingTests, setPollingTests] = useState(false);
   const [openFindingState, setOpenFinding] = useState<Finding | null>(null);
 
-  const audit = useResource(id, () => api.getAudit(id), (a) =>
+  // Poll the small status endpoint; fetch the full audit only when something changed (E-03).
+  const lastAudit = useRef<Audit | null>(null);
+  const forceFull = useRef(false);
+  const audit = useResource(id, async () => {
+    const next = await refreshAudit(id, lastAudit.current, api, forceFull.current);
+    forceFull.current = false;
+    lastAudit.current = next;
+    return next;
+  }, (a) =>
     !a || a.status === "queued" || a.status === "running" || a.summary?.testing?.run?.status === "running" || pollingTests
       ? 2000
       : null,
@@ -141,7 +150,10 @@ export function AuditReport() {
         openFinding: setOpenFinding,
         closeFinding: () => setOpenFinding(null),
         aiDisabledReason,
-        reloadAudit: audit.reload,
+        reloadAudit: () => {
+          forceFull.current = true;
+          audit.reload();
+        },
         setPollingTests,
         goTab,
       }}

@@ -334,6 +334,16 @@ export interface Audit {
   summary: Partial<AuditSummary>;
 }
 
+/** Small polling payload from GET /api/audits/{id}/status. */
+export interface AuditStatusInfo {
+  id: string;
+  status: AuditStatus;
+  stage: string | null;
+  error: string | null;
+  finished_at: string | null;
+  test_run: TestRun | null;
+}
+
 export type FixStatus = "pending" | "approved" | "rejected";
 
 export interface Fix {

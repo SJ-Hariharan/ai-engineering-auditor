@@ -165,3 +165,13 @@ PullRequest = { id, url, branch, fix_ids: string[], created_at }
 ## Health
 
 `GET /api/health` → `{status: "ok"}`
+
+### `GET /api/audits/{id}/status`
+
+A small payload for polling while an audit or a sandboxed test run is in progress (the full
+`GET /api/audits/{id}` includes the summary, which can be megabytes). Owner-scoped like every
+audit route (404 for others).
+
+```
+{ id, status, stage, error, finished_at, test_run: TestRun | null }
+```

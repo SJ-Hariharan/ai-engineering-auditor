@@ -20,7 +20,7 @@ from app.jobs import enqueue
 from app.llm.redact import redact
 from app.models import Finding, FixProposal, User
 from app.remediation.fixers import FIXERS
-from app.schemas import SEVERITY_ORDER, AuditOut, FileContent, FindingOut
+from app.schemas import SEVERITY_ORDER, AuditOut, AuditStatusOut, FileContent, FindingOut
 
 router = APIRouter(prefix="/api/audits", tags=["audits"])
 MAX_VIEW_BYTES = 400_000
@@ -36,6 +36,15 @@ def finding_out(f: Finding, fixed_ids: set[str] | None = None) -> FindingOut:
 @router.get("/{audit_id}", response_model=AuditOut)
 def get_audit_detail(audit_id: str, db: Session = Depends(get_db), user: User = Depends(current_user)):
     return audit_out(get_audit(db, user, audit_id))
+
+
+@router.get("/{audit_id}/status", response_model=AuditStatusOut)
+def get_audit_status(audit_id: str, db: Session = Depends(get_db), user: User = Depends(current_user)):
+    """What the report page polls while an audit or a test run is in progress (E-03)."""
+    a = get_audit(db, user, audit_id)
+    run = ((a.summary or {}).get("testing") or {}).get("run")
+    return AuditStatusOut(id=a.id, status=a.status, stage=a.stage, error=a.error,
+                          finished_at=a.finished_at, test_run=run)
 
 
 @router.get("/{audit_id}/findings", response_model=list[FindingOut])
