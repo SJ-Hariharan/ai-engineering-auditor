@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.12.6"
+      - name: Install dependencies
+        run: uv sync --frozen
+      - name: Install scanners (same versions as backend/Dockerfile)
+        run: |
+          uv pip install --python .venv/bin/python semgrep==1.182.0
+          docker run --rm --entrypoint cat zricethezav/gitleaks:v8.30.1 /usr/bin/gitleaks > "$RUNNER_TEMP/gitleaks"
+          sudo install -m 0755 "$RUNNER_TEMP/gitleaks" /usr/local/bin/gitleaks
+          gitleaks version
+      - name: Lint
+        run: .venv/bin/ruff check app tests migrations
+      - name: Tests (including the real Docker sandbox test)
+        run: PATH="$PWD/.venv/bin:$PATH" .venv/bin/pytest -p no:warnings -rs
+
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npx tsc --noEmit
+      - run: npm test
+      - run: npm run build
+
+  deployment-config:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Compose files
+        run: |
+          cp .env.example .env
+          docker compose config -q
+          cp .env.production.example .env
+          sed -i 's/^AUDITOR_DOMAIN=.*/AUDITOR_DOMAIN=example.org/' .env
+          docker compose -f docker-compose.yml -f docker-compose.prod.yml config -q
+      - name: Validate Caddyfile
+        run: |
+          docker build -q -t auditor-caddy -f deploy/Dockerfile.caddy deploy
+          docker run --rm -e AUDITOR_DOMAIN=example.org auditor-caddy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
