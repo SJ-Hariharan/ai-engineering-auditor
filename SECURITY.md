@@ -70,8 +70,14 @@ sandbox disabled for this reason).
   (HMAC with `AUDITOR_SECRET_KEY`) and gets its own budget, so failures from anyone else cannot
   lock it out. Clients without a valid device cookie share one budget per email, so a user signing
   in from a new browser can still be delayed by an ongoing attack on their address. Client IPs
-  are not used: behind the bundled Next.js proxy they are not trustworthy (a client-supplied
-  `X-Forwarded-For` is passed through). Counters are in memory per API process.
+  are not used by default: behind the bundled Next.js proxy they are not trustworthy (a
+  client-supplied `X-Forwarded-For` is passed through). With the production overlay
+  (`docker-compose.prod.yml`), Caddy is the only entry point and overwrites
+  `X-Auditor-Client-IP` with the real peer address, and the API trusts it
+  (`AUDITOR_TRUST_CLIENT_IP_HEADER=true`). Each IP then has its own budget per email (10), with
+  caps of 100 failures per email across all IPs and 50 per IP across all emails. Never enable
+  that setting without an ingress that overwrites the header. Counters are in memory per API
+  process.
 - Registration attempts are limited per email address.
 - **CSRF**: every non-GET `/api` request must carry `X-Auditor-Client: 1`. Browsers cannot
   send custom headers cross-origin without a CORS preflight, and CORS only allows the

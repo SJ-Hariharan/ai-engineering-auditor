@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import hmac
+import ipaddress
 import secrets
 import time
 from collections import defaultdict, deque
@@ -24,16 +25,23 @@ router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 # Brute-force protection without letting anyone lock a user out (SEC-02).
 #
-# Client IPs cannot be trusted here: behind the Next.js proxy every request comes from the web
-# container, and the proxy passes a client-supplied X-Forwarded-For through unchanged. So:
-#   * only FAILED logins are counted, per email;
-#   * a browser that has signed in to an account gets a signed "device cookie" and its own
+#   * Only FAILED logins are counted.
+#   * A browser that has signed in to an account gets a signed "device cookie" and its own
 #     failure budget for that account (OWASP "device cookies"). Failures from other clients,
-#     e.g. an attacker hammering the email, never block a known device;
-#   * clients without a valid device cookie share one budget per email.
+#     e.g. an attacker hammering the email, never block a known device.
+#   * Other clients: by default every request reaches the API from the Next.js container and the
+#     proxy passes a client-supplied X-Forwarded-For through, so IPs are not trusted and these
+#     clients share one budget per email. When the production ingress (deploy/Caddyfile) is in
+#     front, it overwrites X-Auditor-Client-IP with the real peer address and
+#     AUDITOR_TRUST_CLIENT_IP_HEADER=true; each IP then has its own budget per email, with a much
+#     larger cap per email across all IPs (distributed guessing) and a cap per IP across all
+#     emails (password spraying).
 # Counters are per process and in memory (the API runs as one process in Compose).
 _attempts: dict[str, deque[float]] = defaultdict(deque)
 MAX_ATTEMPTS, WINDOW_SECONDS = 10, 300
+MAX_PER_EMAIL_ALL_IPS = 100  # unknown clients, all IPs together, per email
+MAX_PER_IP_ALL_EMAILS = 50  # unknown clients, one IP, all emails
+CLIENT_IP_HEADER = "x-auditor-client-ip"
 DEVICE_COOKIE = "auditor_device"
 DEVICE_TTL_DAYS = 180
 _PROCESS_SECRET = secrets.token_bytes(32)  # used when AUDITOR_SECRET_KEY is unset (dev/test)
@@ -69,9 +77,27 @@ def _set_device_cookie(response: Response, email: str) -> None:
                         samesite="lax", max_age=DEVICE_TTL_DAYS * 86400, path="/api/auth")
 
 
-def _bucket(request: Request, email: str) -> str:
+def _client_ip(request: Request) -> str | None:
+    """The client IP set by the trusted ingress, or None when it is not configured or not valid."""
+    if not get_settings().trust_client_ip_header:
+        return None
+    try:
+        return str(ipaddress.ip_address(request.headers.get(CLIENT_IP_HEADER, "").strip()))
+    except ValueError:
+        return None
+
+
+def _buckets(request: Request, email: str) -> list[tuple[str, int]]:
+    """Failure counters a login attempt is checked against, as (key, limit); the first is personal."""
     nonce = _device_nonce(request, email)
-    return f"login|{email}|device:{nonce}" if nonce else f"login|{email}|unknown"
+    if nonce:
+        return [(f"login|{email}|device:{nonce}", MAX_ATTEMPTS)]
+    ip = _client_ip(request)
+    if ip is None:
+        return [(f"login|{email}|unknown", MAX_ATTEMPTS)]
+    return [(f"login|{email}|ip:{ip}", MAX_ATTEMPTS),
+            (f"login|{email}|all-ips", MAX_PER_EMAIL_ALL_IPS),
+            (f"login-ip|{ip}", MAX_PER_IP_ALL_EMAILS)]
 
 
 def _recent(key: str) -> deque[float]:
@@ -82,8 +108,8 @@ def _recent(key: str) -> deque[float]:
     return q
 
 
-def _check(key: str) -> None:
-    if len(_recent(key)) >= MAX_ATTEMPTS:
+def _check(key: str, limit: int = MAX_ATTEMPTS) -> None:
+    if len(_recent(key)) >= limit:
         raise HTTPException(status.HTTP_429_TOO_MANY_REQUESTS, "Too many attempts; try again later")
 
 
@@ -123,14 +149,17 @@ def register(body: Credentials, request: Request, response: Response, db: Sessio
 @router.post("/login", response_model=UserOut)
 def login(body: Credentials, request: Request, response: Response, db: Session = Depends(get_db)):
     email = body.email.lower()
-    bucket = _bucket(request, email)
-    _check(bucket)
+    buckets = _buckets(request, email)
+    for key, limit in buckets:
+        _check(key, limit)
     user = db.scalar(select(User).where(User.email == email))
     ok = verify_password(user.password_hash if user else _DUMMY_HASH, body.password) and user is not None
     if not ok:
-        _attempts[bucket].append(time.monotonic())
+        now = time.monotonic()
+        for key, _ in buckets:
+            _attempts[key].append(now)
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid email or password")
-    _attempts.pop(bucket, None)
+    _attempts.pop(buckets[0][0], None)  # success clears this client's own counter only
     db.execute(delete(AuthSession).where(AuthSession.user_id == user.id,
                                          AuthSession.expires_at < datetime.now(UTC)))
     _start_session(db, user, response)

@@ -56,6 +56,9 @@ class Settings(BaseSettings):
     allow_registration: bool = True
     # Signs login "device cookies" (SEC-02). Required in production; random per process otherwise.
     secret_key: str = ""
+    # Trust X-Auditor-Client-IP as the client address. Only safe when an ingress that overwrites it
+    # (deploy/Caddyfile) is the only way in; docker-compose.prod.yml sets it.
+    trust_client_ip_header: bool = False
 
     # LLM (optional). Keys come from the server environment only.
     llm_provider: str = "anthropic"  # "anthropic" | "openai" | "none"

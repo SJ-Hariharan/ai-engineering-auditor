@@ -1,0 +1,29 @@
+# Production ingress for AI Engineering Auditor (used by docker-compose.prod.yml).
+# Caddy obtains and renews a TLS certificate for AUDITOR_DOMAIN automatically (Let's Encrypt for
+# a public domain; its own local CA for "localhost").
+{
+	# Admin API reachable only inside the container (used by the health check).
+	admin 127.0.0.1:2019
+}
+
+{$AUDITOR_DOMAIN} {
+	encode zstd gzip
+
+	# Refuse oversized uploads at the edge too (the API allows 50 MiB + 1 MiB of multipart overhead).
+	request_body {
+		max_size 52MiB
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		-Server
+	}
+
+	reverse_proxy web:3000 {
+		# The API uses this as the client address for login throttling
+		# (AUDITOR_TRUST_CLIENT_IP_HEADER=true). header_up replaces any value the client sent.
+		# If another proxy or load balancer sits in front of Caddy, {remote_host} is that proxy:
+		# configure Caddy's trusted_proxies and use {client_ip} instead.
+		header_up X-Auditor-Client-IP {remote_host}
+	}
+}

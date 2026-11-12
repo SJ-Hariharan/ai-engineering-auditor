@@ -202,3 +202,64 @@ def test_quota_is_per_user(client, vuln_zip):
         register(other, "bob@example.com")
         r = other.post("/api/projects/upload", files={"file": ("v.zip", vuln_zip)})
         assert r.status_code == 201
+
+
+# ---------------------------------------------------------------- SEC-02 with the trusted ingress (AC3)
+
+def _trust_ip(monkeypatch):
+    monkeypatch.setenv("AUDITOR_TRUST_CLIENT_IP_HEADER", "true")
+    from app.core.config import get_settings
+    get_settings.cache_clear()
+
+
+def _login_from(c, ip, password=PASSWORD, email=EMAIL):
+    return c.post("/api/auth/login", json={"email": email, "password": password},
+                  headers={"X-Auditor-Client-IP": ip}).status_code
+
+
+def test_with_trusted_ip_a_new_browser_elsewhere_is_not_locked_out(client, monkeypatch):
+    _trust_ip(monkeypatch)
+    register(client)
+    with _new_client() as attacker:
+        codes = [_login_from(attacker, "203.0.113.7", "wrong-password-x") for _ in range(12)]
+        assert codes[-1] == 429
+    with _new_client() as new_browser:  # no device cookie, different IP
+        assert _login_from(new_browser, "198.51.100.20") == 200
+
+
+def test_ip_header_is_ignored_unless_trusted(client):
+    register(client)
+    with _new_client() as attacker:
+        for i in range(10):  # rotating a spoofed header gains nothing by default
+            _login_from(attacker, f"203.0.113.{i}", "wrong-password-x")
+        assert _login_from(attacker, "203.0.113.99") == 429
+
+
+def test_invalid_ip_header_falls_back_to_the_shared_budget(client, monkeypatch):
+    _trust_ip(monkeypatch)
+    register(client)
+    with _new_client() as attacker:
+        for _ in range(10):
+            _login_from(attacker, "not-an-ip", "wrong-password-x")
+        assert _login_from(attacker, "also-not-an-ip") == 429
+
+
+def test_distributed_guessing_is_capped_per_email(client, monkeypatch):
+    _trust_ip(monkeypatch)
+    from app.api import auth
+    register(client)
+    with _new_client() as botnet:
+        for i in range(auth.MAX_PER_EMAIL_ALL_IPS):
+            _login_from(botnet, f"10.0.{i // 250}.{i % 250 + 1}", "wrong-password-x")
+        assert _login_from(botnet, "192.0.2.200", "wrong-password-x") == 429
+    assert _login(client) == 200  # the known device is still unaffected
+
+
+def test_password_spraying_from_one_ip_is_capped(client, monkeypatch):
+    _trust_ip(monkeypatch)
+    from app.api import auth
+    with _new_client() as sprayer:
+        for i in range(auth.MAX_PER_IP_ALL_EMAILS):
+            _login_from(sprayer, "203.0.113.50", "wrong-password-x", email=f"user{i}@example.com")
+        assert _login_from(sprayer, "203.0.113.50", "wrong-password-x", email="fresh@example.com") == 429
+        assert _login_from(sprayer, "203.0.113.51", "wrong-password-x", email="fresh@example.com") == 401

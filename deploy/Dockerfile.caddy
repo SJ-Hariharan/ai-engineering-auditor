@@ -1,0 +1,4 @@
+# Caddy with this project's Caddyfile baked in (no host bind mount needed).
+FROM caddy:2.11.9-alpine
+COPY Caddyfile /etc/caddy/Caddyfile
+RUN caddy fmt --diff /etc/caddy/Caddyfile >/dev/null 2>&1 || true

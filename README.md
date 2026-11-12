@@ -94,9 +94,17 @@ docker compose up --build
 
 Open http://localhost:3000, create an account, and import a repository. The stack runs the
 API, a worker, an hourly cleanup job, PostgreSQL, Redis and the web UI; the web UI is bound to
-`127.0.0.1`. For anything beyond your own machine, start from `.env.production.example` (fill in every
-`CHANGE-ME`) and serve the UI only through an HTTPS reverse proxy. In production mode the
-services refuse to start with insecure settings.
+`127.0.0.1`. ### Production deployment
+
+```bash
+cp .env.production.example .env   # fill in every CHANGE-ME, including AUDITOR_DOMAIN
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build --wait
+```
+
+- The overlay adds Caddy (`deploy/Caddyfile`), which obtains and renews a TLS certificate for
+  `AUDITOR_DOMAIN`. Point the domain's DNS at the host and open ports 80 and 443.
+- The web UI is no longer published on port 3000, so HTTPS through Caddy is the only way in.
+- In production mode the services refuse to start with insecure settings.
 
 Running repository tests in the sandbox is **disabled** in Compose by default, because it needs
 Docker access from the worker. See *Running tests* in [SECURITY.md](SECURITY.md) before enabling it.

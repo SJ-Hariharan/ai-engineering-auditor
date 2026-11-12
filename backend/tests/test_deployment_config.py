@@ -34,3 +34,30 @@ def test_only_the_web_ui_is_published_and_only_on_loopback():
             assert ports == ["127.0.0.1:3000:3000"]
         else:
             assert ports == [], name
+
+
+class _ComposeLoader(yaml.SafeLoader):
+    """Understands Compose's !reset / !override tags."""
+
+
+_ComposeLoader.add_constructor("!reset", lambda loader, node: None)
+_ComposeLoader.add_constructor("!override", lambda loader, node: loader.construct_object(node.value[0])
+                               if isinstance(node.value, list) and node.value else None)
+
+
+def test_production_overlay_exposes_only_https_ingress():
+    prod = yaml.load((ROOT / "docker-compose.prod.yml").read_text(), Loader=_ComposeLoader)["services"]
+    assert prod["web"]["ports"] is None  # !reset: the plain-HTTP UI port is not published
+    assert prod["caddy"]["ports"] == ["80:80", "443:443", "443:443/udp"]
+    assert prod["caddy"]["restart"] == "unless-stopped" and "healthcheck" in prod["caddy"]
+    assert prod["caddy"]["depends_on"]["web"]["condition"] == "service_healthy"
+    assert prod["caddy"]["cap_drop"] == ["ALL"] and prod["caddy"]["cap_add"] == ["NET_BIND_SERVICE"]
+
+
+def test_client_ip_is_trusted_only_with_the_ingress_that_overwrites_it():
+    prod = yaml.load((ROOT / "docker-compose.prod.yml").read_text(), Loader=_ComposeLoader)["services"]
+    assert prod["api"]["environment"]["AUDITOR_TRUST_CLIENT_IP_HEADER"] == "true"
+    assert "AUDITOR_TRUST_CLIENT_IP_HEADER" not in str(_compose()["api"].get("environment", {}))
+    caddyfile = (ROOT / "deploy" / "Caddyfile").read_text()
+    assert "header_up X-Auditor-Client-IP {remote_host}" in caddyfile
+    assert "COPY Caddyfile" in (ROOT / "deploy" / "Dockerfile.caddy").read_text()
