@@ -71,3 +71,66 @@ jobs:
         run: |
           docker build -q -t auditor-caddy -f deploy/Dockerfile.caddy deploy
           docker run --rm -e AUDITOR_DOMAIN=example.org auditor-caddy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+
+  e2e-production:
+    # Deploys the production overlay (Caddy HTTPS on https://localhost, production mode) and runs the
+    # live checks against it. Throwaway secrets are generated per run.
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    needs: [backend, frontend, deployment-config]
+    env:
+      COMPOSE: docker compose -p rc -f docker-compose.yml -f docker-compose.prod.yml
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.12.6"
+      - name: Install the live-check client
+        working-directory: backend
+        run: uv sync --frozen
+      - name: Production .env (domain localhost, random secrets)
+        run: |
+          cp .env.production.example .env
+          sed -i "s/^AUDITOR_DOMAIN=.*/AUDITOR_DOMAIN=localhost/" .env
+          sed -i "s/^POSTGRES_PASSWORD=.*/POSTGRES_PASSWORD=$(openssl rand -hex 24)/" .env
+          sed -i "s/^AUDITOR_SECRET_KEY=.*/AUDITOR_SECRET_KEY=$(openssl rand -hex 32)/" .env
+          sed -i "s/^AUDITOR_ALLOW_REGISTRATION=.*/AUDITOR_ALLOW_REGISTRATION=true/" .env
+          ! grep -v '^#' .env | grep -q CHANGE-ME
+      - name: Build and start (waits for every health check)
+        run: $COMPOSE up -d --build --wait --wait-timeout 600
+      - name: Ingress checks
+        run: |
+          set -x
+          curl -s -o /dev/null -w '%{http_code} %{redirect_url}\n' http://localhost/login | grep -E '^30[18] https://localhost/login'
+          if curl -s --max-time 5 -o /dev/null http://localhost:3000/login; then echo "port 3000 must not be published"; exit 1; fi
+          test "$(curl -sk -o /dev/null -w '%{http_code}' https://localhost/login)" = 200
+          curl -skI https://localhost/login | grep -i '^strict-transport-security: max-age=31536000'
+          test "$(curl -sk -o /dev/null -w '%{http_code}' https://localhost/api/health)" = 200
+      - name: Live end-to-end flows over HTTPS
+        working-directory: backend
+        run: LIVE_TLS_VERIFY=0 .venv/bin/python -u ../docs/audit-evidence/live_flows.py https://localhost
+      - name: Live abuse checks (lockout, spoofed client IP, new browser on another IP, upload limit)
+        working-directory: backend
+        run: |
+          LIVE_TLS_VERIFY=0 LIVE_COMPOSE="docker compose -p rc -f ../docker-compose.yml -f ../docker-compose.prod.yml" \
+            .venv/bin/python -u ../docs/audit-evidence/live_abuse_checks.py https://localhost
+      - name: Production guard refuses insecure settings
+        run: |
+          if $COMPOSE run --rm --no-deps -e AUDITOR_COOKIE_SECURE=false api python -c "from app.main import app"; then
+            echo "API started with insecure cookies in production"; exit 1
+          fi
+      - name: Recovery after the API process exits
+        run: |
+          c=$($COMPOSE ps -q api)
+          docker exec "$c" python -c "import os,signal; os.kill(1, signal.SIGTERM)"
+          for i in $(seq 1 40); do
+            sleep 3
+            [ "$(docker inspect -f '{{.RestartCount}} {{.State.Health.Status}}' "$c")" = "1 healthy" ] && exit 0
+          done
+          docker inspect -f '{{.RestartCount}} {{.State.Health.Status}}' "$c"; exit 1
+      - name: Logs on failure
+        if: failure()
+        run: $COMPOSE logs --no-color --tail 200
+      - name: Tear down
+        if: always()
+        run: $COMPOSE down -v

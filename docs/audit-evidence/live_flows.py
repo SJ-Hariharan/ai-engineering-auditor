@@ -33,8 +33,12 @@ def zipped(src, prefix="vulnerable_app-main/"):
     return buf.getvalue()
 
 
+# LIVE_TLS_VERIFY=0 accepts a self-signed certificate (Caddy's local CA for https://localhost).
+VERIFY = __import__("os").environ.get("LIVE_TLS_VERIFY", "1") != "0"
+
+
 def client():
-    return httpx.Client(base_url=BASE, headers={"X-Auditor-Client": "1"}, timeout=120)
+    return httpx.Client(base_url=BASE, headers={"X-Auditor-Client": "1"}, timeout=120, verify=VERIFY)
 
 
 def wait(c, aid, limit=300):
