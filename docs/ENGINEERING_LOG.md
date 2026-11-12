@@ -12,7 +12,7 @@ works end to end. Older history: [TEST_RESULTS.md](../TEST_RESULTS.md),
 | AC1 | Every service restarts on failure and reports health; the stack recovers from a killed container | **met** (M1) |
 | AC2 | A documented production deployment serves HTTPS, exposes no plain-HTTP app port, and passes the live checks | open |
 | AC3 | Login lockout is not possible from another client, including for a brand-new browser (SEC-02 residual) | open |
-| AC4 | Re-run comparison counts new copies of identical defects and does not churn on moved secrets (E-01, E-05) | open |
+| AC4 | Re-run comparison counts new copies of identical defects and does not churn on moved secrets (E-01, E-05) | **met** (M3) |
 | AC5 | CI runs backend lint and tests and frontend lint, type-check, tests and build on every push | open |
 | AC6 | All suites green; live Compose checks green; docs match the code | open |
 
@@ -95,3 +95,37 @@ _(newest last)_
     own IP and bypass per-IP limits. The per-email cap of 100 still bounds guessing.
   - If another load balancer sits in front of Caddy, `{remote_host}` is that balancer. The Caddyfile
     comment says how to switch to `{client_ip}` with `trusted_proxies`.
+
+### M3 — Re-run comparison integrity (AC4) — done, 2026-11-12
+
+- **Problem:**
+  - E-01: the fingerprint ignores line numbers, so identical defects in one file got the same
+    fingerprint, and `_dedupe` kept only the first. Copies were missing from the report, and a newly
+    added copy showed "0 new".
+  - E-05: the Gitleaks fingerprint included the line number, so a secret that moved showed as
+    "resolved" plus "new".
+- **Change:**
+  - `_dedupe` collapses only true repeats (same rule at the same location, most severe kept), as before.
+  - Remaining findings that share a fingerprint are distinct occurrences. In line order, the first
+    keeps the base fingerprint (compatible with existing audits); later ones get `sha256(base#i)`.
+  - The Gitleaks key is now `path|rule`.
+  - No schema change: fingerprints were never unique per audit.
+- **Changed files:**
+  - `backend/app/analysis/pipeline.py`, `backend/app/analysis/scanners/gitleaks.py`
+  - `backend/tests/test_fingerprints.py` (new, 7 tests)
+  - `PRIORITIZED_FIXES.md`, `README.md`
+- **Tests:**
+  - `pytest tests/test_fingerprints.py`: 7 passed.
+  - Mutation check: with the occurrence suffix removed, 4 of the 7 fail. File restored and verified
+    identical.
+  - `pytest -m "not docker"`: **142 passed**, 1 deselected (log `logs/pytest-m3.txt`).
+  - Evidence `scoring_fingerprint_output_after_e01_e05.txt`:
+    - F1: two identical bare-excepts are 2 findings (was 1).
+    - F2: adding a third gives 2 new fingerprints, one each for `bare-except` and
+      `swallowed-exception`, which both fire on the new block (was 0).
+- **Known issues:**
+  - Occurrence numbers follow line order. Inserting a new copy *above* existing ones re-labels the
+    identities: the count of new findings is still right (1), but the "new" one may be reported at the
+    location of an older copy.
+  - Gitleaks findings change fingerprint once on the first re-run after this upgrade, showing as
+    resolved + new for that one comparison.

@@ -212,8 +212,6 @@ Known issues (none of these is a blocker for a self-hosted beta; all are documen
 - **Dependency severity:** advisories for development tooling that is only in a lockfile can be
   rated critical (DET-11).
 - **Trivy suppressions:** Trivy honours inline `trivy:ignore` comments; they are listed in the report.
-- **Re-run comparison:** identical defects in one file share a fingerprint, so a new copy of an
-  existing defect shows as "0 new" (E-01).
 - **Scoring:** not normalised for repository size, and the constants are not calibrated (SC-04 to
   SC-07). Use the score to track one repository over time, not to compare repositories.
 - **Not reviewed:**

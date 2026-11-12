@@ -89,4 +89,6 @@ def _to_finding(root: Path, item: dict) -> RawFinding:
                     "load it from environment variables or a secret manager, and add the file to "
                     ".gitignore. Rewriting git history alone does not make a leaked key safe.",
         references=["https://github.com/gitleaks/gitleaks"],
-        fingerprint_key=f"{path}|{item.get('RuleID')}|{item.get('StartLine')}")
+        # No line number (E-05): a secret that moves is the same finding. Several identical
+        # matches in one file are told apart by occurrence order in pipeline._dedupe.
+        fingerprint_key=f"{path}|{item.get('RuleID')}")

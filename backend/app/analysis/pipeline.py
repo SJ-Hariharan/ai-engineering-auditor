@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import logging
 from collections import defaultdict, deque
 from collections.abc import Callable
@@ -129,24 +130,31 @@ def run_analysis(root: Path, settings: Settings, on_stage: StageCallback | None 
 
 
 def _dedupe(findings: list[RawFinding]) -> list[dict]:
-    """Drop exact repeats; never merge different rules.
+    """Drop exact repeats, keep every distinct occurrence, never merge different rules.
 
-    * Same fingerprint → keep the first.
-    * Same category, file, line *and rule* (e.g. one rule matching twice on a line) → keep the most severe.
-
-    Different rules or tools at the same location stay separate findings, so the report shows
-    every tool that flagged it. Scoring counts them once (``scoring.scored_findings``, SC-02).
+    * Same category, file, line *and rule* (e.g. one rule matching twice on a line) → one finding,
+      the most severe. Line-less findings collapse only when their fingerprints are equal.
+    * Identical defects at *different* lines of a file share a base fingerprint (it ignores line
+      numbers so edits don't move findings). They are distinct occurrences (E-01): each is kept,
+      and the 2nd, 3rd … in line order get the fingerprint suffixed with their index. The first
+      keeps the base fingerprint, so comparisons with audits made before this change still match.
+    * Different rules or tools at the same location stay separate findings; scoring counts them
+      once (``scoring.scored_findings``, SC-02).
     """
-    by_fp: dict[str, dict] = {}
+    out: dict[tuple, dict] = {}
     for f in findings:
         d = f.to_dict()
-        by_fp.setdefault(d["fingerprint"], d)
-    out: dict[tuple, dict] = {}
-    for d in by_fp.values():
         key = (d["category"], d["file"], d["line"], d["rule_id"]) if d["line"] else (d["fingerprint"],)
         cur = out.get(key)
         if cur is None or SEVERITY_POINTS[d["severity"]] > SEVERITY_POINTS[cur["severity"]]:
             out[key] = d
+    by_fp: dict[str, list[dict]] = defaultdict(list)
+    for d in out.values():
+        by_fp[d["fingerprint"]].append(d)
+    for base, group in by_fp.items():
+        group.sort(key=lambda d: (d["line"] or 0, d["end_line"] or 0, d["evidence"]))
+        for i, d in enumerate(group[1:], start=1):
+            d["fingerprint"] = hashlib.sha256(f"{base}#{i}".encode()).hexdigest()[:32]
     return list(out.values())
 
 
