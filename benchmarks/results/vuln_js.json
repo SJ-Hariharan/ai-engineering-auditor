@@ -82,7 +82,7 @@
    "references": [
     "https://github.com/gitleaks/gitleaks"
    ],
-   "fingerprint": "76ff7c9dcb7024d6fe919b53495b4dad"
+   "fingerprint": "dd35f911f5828aa1af9c7818a95413ec"
   },
   {
    "tool": "testing",
@@ -502,7 +502,7 @@
    "name": "semgrep",
    "status": "ok",
    "version": "1.182.0",
-   "duration_s": 2.29,
+   "duration_s": 1.86,
    "message": "",
    "findings": 19
   },
@@ -510,7 +510,7 @@
    "name": "gitleaks",
    "status": "ok",
    "version": "8.30.1",
-   "duration_s": 0.05,
+   "duration_s": 0.03,
    "message": "",
    "findings": 1
   },
@@ -518,7 +518,7 @@
    "name": "osv-scanner",
    "status": "ok",
    "version": "2.7.0",
-   "duration_s": 0.12,
+   "duration_s": 0.06,
    "message": "",
    "findings": 0
   },
@@ -526,7 +526,7 @@
    "name": "trivy",
    "status": "ok",
    "version": "0.76.1",
-   "duration_s": 1.18,
+   "duration_s": 0.58,
    "message": "",
    "findings": 0
   }
@@ -545,5 +545,5 @@
    "architecture": 2
   }
  },
- "seconds": 4.2
+ "seconds": 2.9
 }

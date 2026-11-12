@@ -75,8 +75,9 @@ Measured results, with the commands and raw output in the linked documents:
   - Zero findings on the clean repository.
   - No security rule fired on 26 safe look-alikes, such as parameterised SQL and `safe_load`.
 - **Real repositories:**
-  - `pallets/itsdangerous`: 25 findings.
-  - `fastapi/full-stack-fastapi-template`: 87 findings, down from 295 after a monorepo
+  - `pallets/itsdangerous`: 32 findings. All dependency advisories are correctly identified as
+    development tooling.
+  - `fastapi/full-stack-fastapi-template`: 89 findings, down from 295 after a monorepo
     import-resolution fix.
 - **Tests** ([TEST_RESULTS.md](TEST_RESULTS.md)):
   - Backend: 126 tests pass, including a real Docker sandbox run.
@@ -209,8 +210,6 @@ Known issues (none of these is a blocker for a self-hosted beta; all are documen
 - **Login from a new browser** can be delayed while someone is actively guessing that account's
   password. Browsers the user has already signed in with are not affected (SEC-02, mitigated).
   Registration also reveals whether an email is taken (SEC-10).
-- **Dependency severity:** advisories for development tooling that is only in a lockfile can be
-  rated critical (DET-11).
 - **Trivy suppressions:** Trivy honours inline `trivy:ignore` comments; they are listed in the report.
 - **Scoring:** not normalised for repository size, and the constants are not calibrated (SC-04 to
   SC-07). Use the score to track one repository over time, not to compare repositories.

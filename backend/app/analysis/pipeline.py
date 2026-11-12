@@ -87,7 +87,7 @@ def run_analysis(root: Path, settings: Settings, on_stage: StageCallback | None 
         findings += results["semgrep"].findings + results["gitleaks"].findings
         dep_findings = results["osv"].findings + deps.merge_dependency_findings(
             results["osv"].findings, results["trivy"].findings)
-        deps.classify_dependency_findings(dep_findings, inv.runtime_deps, inv.dev_deps)
+        deps.classify_dependency_findings(dep_findings, inv.runtime_deps, inv.dev_deps, inv.dev_only_transitive)
         findings += dep_findings
         findings += [f for f in results["trivy"].findings if f.rule_id != "vulnerable-dependency"]
         scanner_summaries = [r.summary() for r in results.values()]

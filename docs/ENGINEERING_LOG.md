@@ -10,8 +10,8 @@ works end to end. Older history: [TEST_RESULTS.md](../TEST_RESULTS.md),
 | # | Criterion | Status |
 |---|---|---|
 | AC1 | Every service restarts on failure and reports health; the stack recovers from a killed container | **met** (M1) |
-| AC2 | A documented production deployment serves HTTPS, exposes no plain-HTTP app port, and passes the live checks | open |
-| AC3 | Login lockout is not possible from another client, including for a brand-new browser (SEC-02 residual) | open |
+| AC2 | A documented production deployment serves HTTPS, exposes no plain-HTTP app port, and passes the live checks | **met** (M2, verified in CI) |
+| AC3 | Login lockout is not possible from another client, including for a brand-new browser (SEC-02 residual) | **met** with the production ingress (M2, verified in CI) |
 | AC4 | Re-run comparison counts new copies of identical defects and does not churn on moved secrets (E-01, E-05) | **met** (M3) |
 | AC5 | CI runs backend lint and tests and frontend lint, type-check, tests and build on every push | **met** (M4) |
 | AC6 | All suites green; live Compose checks green; docs match the code | open |
@@ -44,7 +44,7 @@ _(newest last)_
   lost. Their audits are marked failed by the stale-audit sweep at the next worker start or rerun
   attempt (REL-02), and the user re-runs them.
 
-### M2 — Production HTTPS ingress and trusted client IP (AC2, AC3) — code done; live check blocked
+### M2 — Production HTTPS ingress and trusted client IP (AC2, AC3) — done; verified live in CI
 
 - **Problem:**
   - The only documented production advice was "put it behind an HTTPS reverse proxy". None shipped.
@@ -189,3 +189,63 @@ _(newest last)_
     still returns no secret;
   - `pytest -m "not docker"`: **151 passed** (log `logs/pytest-m6-m7.txt`, which also covers M6).
 - **Security concern:** redaction is pattern-based; formats it does not know are still shown.
+
+### M2 (continued) — Live verification of the production overlay in CI — done, 2026-11-12
+
+- **Why CI:** the local Docker engine is still wedged (see M2 above). GitHub's runners have Docker, so
+  CI job `e2e-production` deploys the overlay there exactly as the README describes:
+  - it uses `.env.production.example` with `AUDITOR_DOMAIN=localhost` and secrets generated per run;
+  - it runs `up --build --wait`, then the checks below, then tears the stack down.
+- **Result:** branch `rc/0.2.0`, commit `3d47287`, run 43186085694 — **all 4 jobs succeeded**.
+  - All 7 services healthy (db, redis, api, worker, cleanup, web, caddy).
+  - Ingress:
+    - `http://localhost/login` answers `308 https://localhost/login`;
+    - HSTS `max-age=31536000; includeSubDomains` is set;
+    - port 3000 is not reachable;
+    - `/login` and `/api/health` answer 200 over HTTPS.
+  - `live_flows.py` over HTTPS: **31/31** (4 audits in one worker, all 4 scanners ok, isolation,
+    masking, fixes, rerun comparison).
+  - `live_abuse_checks.py`: **9/9**:
+    - attacker throttled after 10 failures;
+    - spoofed `X-Forwarded-For` and spoofed `X-Auditor-Client-IP` are both ineffective, the latter
+      overwritten by Caddy;
+    - the victim's known browser logs in during the attack;
+    - **a victim on a new browser from another IP (a request from inside the Caddy container) logs in
+      during the attack: 200**;
+    - a 60 MB upload gets 413 and creates nothing.
+  - The production guard refuses `AUDITOR_COOKIE_SECURE=false` (`Unsafe production configuration`).
+  - Crash recovery: after SIGTERM to the API's PID 1, `RestartCount` is 1 and the API is healthy again.
+- **Changed files:** `.github/workflows/ci.yml` (job `e2e-production`); `docs/audit-evidence/live_flows.py`
+  and `live_abuse_checks.py` (`LIVE_TLS_VERIFY=0` for Caddy's local CA; ingress checks with `LIVE_COMPOSE`).
+
+### M6 — Dependency severity from lockfiles (DET-11) — done, 2026-11-12
+
+- **Problem:** advisories for development tooling found only in a lockfile were rated at full severity
+  (itsdangerous, a zero-dependency library, had 3 criticals for `uv`/`virtualenv`-type tooling). Only
+  manifests were read, and every undeclared package was treated as an unknown transitive.
+- **Change:**
+  - `inventory.py` computes reachability from `uv.lock` (the project's runtime dependencies and extras
+    vs dev groups and dev-like extras, followed transitively), `package-lock.json` (npm's `dev: true`)
+    and `bun.lock` (workspace dependencies vs `devDependencies`, with nested copies resolved).
+  - Packages reachable only through dev roots form `dev_only_transitive`. Runtime reachability is
+    over-approximated (all extras count), so a package with any runtime path is never lowered.
+  - `classify_dependency_findings` lowers those advisories one level, sets medium confidence, and says why.
+- **Changed files:**
+  - `backend/app/analysis/inventory.py`, `backend/app/analysis/scanners/deps.py`,
+    `backend/app/analysis/pipeline.py`
+  - `backend/tests/test_dependency_lockfiles.py` (new, 6 tests)
+  - `benchmarks/make_report.py`, `DETECTION_BENCHMARK.md`, `README.md`, `PRIORITIZED_FIXES.md`
+- **Tests:**
+  - 6 new tests: the uv/npm/bun closures; runtime paths win (e.g. `certifi` via `requests`; `seroval`
+    via `react-router`); a malformed lockfile is ignored; the classification text.
+  - `pytest -m "not docker"`: 151 passed.
+  - Benchmark `run_all.sh` (log `logs/benchmark-det11.txt`; before/after in `logs/det11-before.txt`,
+    `logs/det11-after.txt`):
+    - Synthetic detection unchanged: 78/83, FP 1, clean repo 0.
+    - itsdangerous dependency severities went from {critical 3, high 3, medium 3, low 2} to
+      {high 3, medium 3, low 4, info 1}: all 11 are dev tooling, score 81.4 → 87.2.
+    - FastAPI template: 4 of 14 advisories became dev tooling. The critical `seroval` stays, because it
+      is reached at runtime via `@tanstack/react-router`; `glob`/`minimatch` stay, reached via the
+      runtime `react-email` workspace.
+- **Known issues:** `pnpm-lock.yaml`, `yarn.lock` and `poetry.lock` are not read yet; their packages
+  keep the previous "transitive, medium confidence" treatment.

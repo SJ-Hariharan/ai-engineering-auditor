@@ -188,60 +188,60 @@ Reading: these are different concerns (injection plus select-star; XSS plus eval
 | secrets_repo | 68.4 | D | 68.4 | critical | 0 | 6.8 | 81.9 | 100.0 | 100.0 | 100.0 |
 | arch_repo | 79.2 | C | 79.2 | - | 0 | 100.0 | 49.3 | 84.1 | 70.2 | 79.9 |
 | clean_repo | 100.0 | A | 100.0 | - | 0 | 100.0 | 100.0 | 100.0 | 100.0 | 100.0 |
-| itsdangerous | 81.4 | B | 81.4 | - | 0 | 51.8 | 87.6 | 100.0 | 97.5 | 91.7 |
-| full-stack-fastapi-template | 68.3 | D | 68.3 | - | 2 | 32.3 | 86.8 | 100.0 | 75.4 | 66.6 |
+| itsdangerous | 87.2 | B | 87.2 | - | 0 | 73.2 | 87.2 | 100.0 | 94.1 | 91.4 |
+| full-stack-fastapi-template | 68.6 | D | 68.6 | - | 2 | 33.1 | 86.8 | 100.0 | 75.4 | 66.5 |
 
 Ordering (computed above): clean_repo 100 > itsdangerous > arch_repo > vuln_js > secrets_repo > full-stack-fastapi-template > vuln_py. Clean scores highest and the security-heavy repos score low in the *security* column (vuln_py 1.9, secrets 6.8, vuln_js 12.0), so the security category behaves sensibly. Since DET-01, the three-operand SQL concatenations are detected, which lowers vuln_py (65.4 → 65.3) and vuln_js (70.2 → 69.4). Effect of the SC-01/SC-02 fixes on these repos (before → after, same findings): vuln_js 69.7 D → 70.2 C (its eval + reflected-XSS pair on one line now counts once: security 12.8 → 14.7); full-stack-fastapi-template 68.2 → 68.3 (two complexity + deep-nesting pairs); probe_sqli_concat 82.1 B → 79.9 C (critical cap); all others unchanged. All four scanners ran on every repo, so no result is marked incomplete and no category is N/A. Weaknesses:
 - The overall score still compresses: secrets_repo (seven critical-severity secret findings; security 6.8) gets 68.4 / D, and vuln_py (five critical SQL injections plus many high findings; security 2.1) gets 65.3 / D, because the other four categories stay near 82-100 and security has weight 0.30. The critical cap (79.9) only bites when the weighted mean is above it, so it does not separate these from arch_repo. This is DET-15 / SC-04 territory, not addressed here.
 - arch_repo has no security findings and no tests but 19 structural issues and scores 79.2 / C, above vuln_js (69.4).
-- itsdangerous keeps 81.4 / B: its critical dependency advisories are transitive (confidence medium, DET-11), and the cap only applies to high-confidence criticals.
+- itsdangerous: 87.2 / B (was 81.4). Since DET-11 the lockfile shows its 10 transitive advisories are reachable only through development tooling (uv, tox, sphinx …), so each is one level lower; none is critical any more.
 - clean_repo scores 100.0 with zero findings: no false positives (n=1 small repo; says little about larger clean repos).
 
 ## 9. Real public repos (no ground truth)
 
-### itsdangerous: 25 findings, score 81.4 (B)
+### itsdangerous: 32 findings, score 87.2 (B)
 
-Counts per rule: `vulnerable-dependency`=11, `duplicate-code`=6, `broad-except`=3, `swallowed-exception`=1, `untested-modules`=1, `many-parameters`=1, `long-function`=1, `py-weak-hash`=1
+Counts per rule: `vulnerable-dependency`=11, `duplicate-code`=7, `many-parameters`=6, `broad-except`=4, `swallowed-exception`=1, `untested-modules`=1, `long-function`=1, `py-weak-hash`=1
 
 Sample of 10 (round-robin over rules, seed 7, `sample_real.py`) with my manual labels:
 
 | # | rule | location | sev | label | reason |
 |---|---|---|---|---|---|
-| 0 | vulnerable-dependency | uv.lock:None | high | debatable | virtualenv advisory is real but dev-tooling transitive in uv.lock, rated high |
-| 1 | broad-except | src/itsdangerous/url_safe.py:38 | low | debatable | broad except that re-raises BadPayload from e; legitimate pattern |
-| 2 | duplicate-code | src/itsdangerous/serializer.py:115 | low | FP | @overload stub signatures flagged as duplicated code |
+| 0 | vulnerable-dependency | uv.lock:None | medium | debatable | virtualenv advisory is real but dev-tooling transitive in uv.lock, rated high |
+| 1 | broad-except | src/itsdangerous/signer.py:231 | low | debatable | broad except that re-raises BadPayload from e; legitimate pattern |
+| 2 | duplicate-code | src/itsdangerous/serializer.py:113 | low | FP | @overload stub signatures flagged as duplicated code |
 | 3 | long-function | src/itsdangerous/timed.py:72 | low | debatable | 87 lines incl. long docstring |
 | 4 | many-parameters | src/itsdangerous/serializer.py:108 | low | debatable | 8-param __init__ of public API; low severity |
 | 5 | swallowed-exception | src/itsdangerous/timed.py:114 | medium | TP | except Exception: pass in timestamp parsing really swallows |
 | 6 | py-weak-hash | src/itsdangerous/signer.py:45 | low | debatable | sha1 is the default digest for HMAC key derivation, not password hashing |
 | 7 | untested-modules | docs/conf.py:None | low | FP | docs/conf.py is not a module needing tests |
-| 8 | vulnerable-dependency | uv.lock:None | critical | debatable | uv 0.7.8 advisories real but dev tooling in uv.lock, rated critical |
+| 8 | vulnerable-dependency | uv.lock:None | high | debatable | uv 0.7.8 advisories real but dev tooling in uv.lock, rated critical |
 | 9 | broad-except | src/itsdangerous/serializer.py:264 | low | debatable | broad except that re-raises |
 
 Sample tally: TP=1, debatable=7, FP=2 (10 samples; round-robin over rules, so NOT proportional to rule frequency).
 
-### full-stack-fastapi-template: 87 findings, score 68.3 (D)
+### full-stack-fastapi-template: 89 findings, score 68.6 (D)
 
-Counts per rule: `duplicate-code`=42, `vulnerable-dependency`=14, `long-function`=14, `deep-nesting`=4, `DS-0002`=2, `high-complexity`=2, `DS-0026`=2, `large-file`=2, `DS-0029`=1, `empty-catch`=1, `untested-modules`=1, `api-unauthenticated-mutation`=1, `naming-convention`=1
+Counts per rule: `duplicate-code`=44, `vulnerable-dependency`=14, `long-function`=14, `deep-nesting`=4, `DS-0002`=2, `high-complexity`=2, `DS-0026`=2, `large-file`=2, `DS-0029`=1, `empty-catch`=1, `untested-modules`=1, `api-unauthenticated-mutation`=1, `naming-convention`=1
 
 Sample of 10 (round-robin over rules, seed 7, `sample_real.py`) with my manual labels:
 
 | # | rule | location | sev | label | reason |
 |---|---|---|---|---|---|
 | 0 | api-unauthenticated-mutation | backend/app/api/routes/private.py:23 | medium | debatable | POST /private/users is the template's local-only private router, intentionally unauthenticated |
-| 1 | vulnerable-dependency | bun.lock:None | high | FP | target frontend/src/components/ui/dialog.tsx exists; tsconfig is in frontend/ and uses /* */ comments |
-| 2 | deep-nesting | frontend/src/client/client/utils.gen.ts:17 | low | TP | minimatch advisory per OSV (transitive, dev tooling) |
-| 3 | duplicate-code | frontend/src/components/Admin/AddUser.tsx:85 | low | debatable | generated *.gen.ts client code |
+| 1 | vulnerable-dependency | bun.lock:None | medium | FP | target frontend/src/components/ui/dialog.tsx exists; tsconfig is in frontend/ and uses /* */ comments |
+| 2 | deep-nesting | frontend/src/client/client/utils.gen.ts:165 | low | TP | minimatch advisory per OSV (transitive, dev tooling) |
+| 3 | duplicate-code | frontend/src/components/Admin/AddUser.tsx:138 | low | debatable | generated *.gen.ts client code |
 | 4 | empty-catch | frontend/src/client/core/serverSentEvents.gen.ts:146 | medium | FP | identical import lists across two route files flagged as duplicate code |
-| 5 | high-complexity | frontend/src/client/core/serverSentEvents.gen.ts:82 | high | debatable | generated code, empty catch carries '// noop' comment |
+| 5 | high-complexity | frontend/src/client/core/params.gen.ts:105 | medium | debatable | generated code, empty catch carries '// noop' comment |
 | 6 | large-file | frontend/src/components/ui/sidebar.tsx:None | low | TP | complexity 32 is real (generated code) |
-| 7 | long-function | frontend/src/components/Admin/EditUser.tsx:59 | medium | debatable | 738-line vendored shadcn sidebar |
+| 7 | long-function | frontend/src/components/ui/sidebar.tsx:54 | low | debatable | 738-line vendored shadcn sidebar |
 | 8 | naming-convention | frontend/src/client/client/client.gen.ts:131 | info | TP | DataTable really is 155 lines |
 | 9 | untested-modules | frontend/src/components/ui/sidebar.tsx:None | medium | FP | leading-underscore private helper is a conventional name |
 
 Sample tally: TP=3, debatable=4, FP=3 (10 samples; round-robin over rules, so NOT proportional to rule frequency).
 
-Import resolution check on full-stack-fastapi-template: 0 `unresolved-import` finding(s) out of 87 (overall 68.3 / D, reliability 86.8). Before the DET-10 fix (nested tsconfig, block comments, asset and root-absolute imports) this repo had 208 `unresolved-import` findings, all verified false positives by `verify_unresolved.py`, out of 295 (overall 58.4 / D). The pre-fix report is kept as `BENCHMARK_REPORT.before-det10.md`.
+Import resolution check on full-stack-fastapi-template: 0 `unresolved-import` finding(s) out of 89 (overall 68.6 / D, reliability 86.8). Before the DET-10 fix (nested tsconfig, block comments, asset and root-absolute imports) this repo had 208 `unresolved-import` findings, all verified false positives by `verify_unresolved.py`, out of 295 (overall 58.4 / D). The pre-fix report is kept as `BENCHMARK_REPORT.before-det10.md`.
 
 ## 10. Notable observations
 

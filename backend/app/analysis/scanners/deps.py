@@ -160,11 +160,13 @@ def merge_dependency_findings(osv: list[RawFinding], trivy: list[RawFinding]) ->
             and f.fingerprint_key.split("|", 1)[1] not in seen]
 
 
-def classify_dependency_findings(findings: list[RawFinding], runtime: set[str], dev: set[str]) -> None:
+def classify_dependency_findings(findings: list[RawFinding], runtime: set[str], dev: set[str],
+                                 dev_only_transitive: set[str] | None = None) -> None:
     """Adjust severity/confidence by how the package is used, and say so in the finding.
 
-    * declared only as a dev/test dependency → one severity level lower (not shipped to users)
-    * not declared directly (transitive)     → confidence 'medium' (may only be pulled in by tooling)
+    * declared only as a dev/test dependency          → one severity level lower (not shipped to users)
+    * reachable only through dev/test deps (lockfile) → one level lower, confidence 'medium' (DET-11)
+    * other transitive packages                       → confidence 'medium'
     """
     from app.analysis.inventory import norm_pkg
 
@@ -179,6 +181,12 @@ def classify_dependency_findings(findings: list[RawFinding], runtime: set[str], 
             f.title += " (dev dependency)"
             f.explanation += (" It is declared only as a development/test dependency, so it is usually "
                               "not shipped to users; severity was lowered one level.")
+        elif name in (dev_only_transitive or set()):
+            f.severity = SEV_ORDER[min(SEV_ORDER.index(f.severity) + 1, len(SEV_ORDER) - 1)]
+            f.confidence = "medium"
+            f.title += " (dev tooling, transitive)"
+            f.explanation += (" The lockfile shows it is pulled in only by development/test dependencies, "
+                              "so it is usually not shipped to users; severity was lowered one level.")
         else:
             f.confidence = "medium"
             f.title += " (transitive)"

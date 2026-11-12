@@ -1,0 +1,2 @@
+itsdangerous after: {'high': 3, 'medium': 3, 'low': 4, 'info': 1} {'dev tooling': 10, 'dev dep': 1} overall 87.2 B findings 32
+full-stack-fastapi-template after: {'critical': 1, 'high': 5, 'medium': 6, 'low': 1, 'info': 1} {'transitive': 10, 'dev tooling': 4} overall 68.6 D findings 89

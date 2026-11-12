@@ -78,6 +78,8 @@ class Inventory:
     # Normalised names declared directly: runtime vs development/test-only.
     runtime_deps: set[str] = field(default_factory=set)
     dev_deps: set[str] = field(default_factory=set)
+    # From lockfiles (DET-11): packages reachable only through development/test dependencies.
+    dev_only_transitive: set[str] = field(default_factory=set)
 
     def source(self, include_tests: bool = True) -> list[SourceFile]:
         return [f for f in self.files if include_tests or not f.is_test]
@@ -96,7 +98,7 @@ def walk(root: Path, max_file_bytes: int) -> Inventory:
         inv.total_files += 1
         posix = rel.as_posix()
         if p.name in {"package.json", "requirements.txt", "pyproject.toml", "Pipfile", "setup.py",
-                      "package-lock.json", "pnpm-lock.yaml", "yarn.lock", "poetry.lock", "uv.lock",
+                      "package-lock.json", "pnpm-lock.yaml", "yarn.lock", "bun.lock", "poetry.lock", "uv.lock",
                       "Dockerfile", "docker-compose.yml", "docker-compose.yaml", "tsconfig.json"}:
             inv.manifests.append(posix)
         ext = p.suffix.lower()
@@ -171,6 +173,113 @@ def _read_manifests(inv: Inventory) -> None:
                 inv.dev_deps.update(norm_pkg(_py_name(d)) for d in dev if _py_name(d))
         except (OSError, ValueError, tomllib.TOMLDecodeError):
             continue
+    _read_lockfiles(inv)
+
+
+def _closure(graph: dict[str, set[str]], roots: set[str]) -> set[str]:
+    seen, stack = set(), list(roots)
+    while stack:
+        n = stack.pop()
+        if n not in seen:
+            seen.add(n)
+            stack.extend(graph.get(n, ()))
+    return seen
+
+
+def _uv_lock_reach(data: dict) -> tuple[set[str], set[str]]:
+    """(runtime-reachable, dev-reachable) package names from a uv.lock.
+
+    Runtime is over-approximated on purpose (all extras of reached packages count), so a package
+    is only ever treated as dev-only when no runtime path to it exists."""
+    graph: dict[str, set[str]] = {}
+    runtime_roots: set[str] = set()
+    dev_roots: set[str] = set()
+    for pkg in data.get("package") or []:
+        name = norm_pkg(str(pkg.get("name", "")))
+        deps = {norm_pkg(d["name"]) for d in pkg.get("dependencies") or [] if d.get("name")}
+        for group in (pkg.get("optional-dependencies") or {}).values():
+            deps |= {norm_pkg(d["name"]) for d in group if d.get("name")}
+        graph[name] = deps
+        source = pkg.get("source") or {}
+        if source.get("editable") or source.get("virtual"):  # the project itself (or a workspace member)
+            runtime_roots |= {norm_pkg(d["name"]) for d in pkg.get("dependencies") or [] if d.get("name")}
+            for gname, group in (pkg.get("optional-dependencies") or {}).items():
+                target = dev_roots if DEV_GROUP.match(gname) else runtime_roots
+                target |= {norm_pkg(d["name"]) for d in group if d.get("name")}
+            for group in (pkg.get("dev-dependencies") or {}).values():
+                dev_roots |= {norm_pkg(d["name"]) for d in group if d.get("name")}
+    return _closure(graph, runtime_roots), _closure(graph, dev_roots)
+
+
+def _npm_lock_reach(data: dict) -> tuple[set[str], set[str]]:
+    """(runtime, dev-only) from package-lock.json v2/v3, where npm marks dev-only entries."""
+    runtime, dev = set(), set()
+    for key, meta in (data.get("packages") or {}).items():
+        if not key or "node_modules/" not in key:
+            continue
+        name = norm_pkg(key.rsplit("node_modules/", 1)[1])
+        (dev if meta.get("dev") else runtime).add(name)
+    return runtime, dev
+
+
+def _bun_lock_reach(data: dict) -> tuple[set[str], set[str]]:
+    """(runtime-reachable, dev-reachable) package names from a text bun.lock."""
+    packages = data.get("packages") or {}
+    meta: dict[str, dict] = {}
+    names: dict[str, str] = {}
+    for key, entry in packages.items():
+        if isinstance(entry, list) and entry:
+            names[key] = norm_pkg(str(entry[0]).rsplit("@", 1)[0] or key)
+            meta[key] = next((e for e in entry[1:] if isinstance(e, dict)), {})
+
+    def resolve(parent: str | None, dep: str) -> str | None:
+        if parent and f"{parent}/{dep}" in packages:  # nested copy wins over the hoisted one
+            return f"{parent}/{dep}"
+        return dep if dep in packages else None
+
+    def walk(roots: set[str]) -> set[str]:
+        seen: set[str] = set()
+        stack = [k for k in (resolve(None, r) for r in roots) if k]
+        while stack:
+            k = stack.pop()
+            if k in seen:
+                continue
+            seen.add(k)
+            m = meta.get(k, {})
+            for field_ in ("dependencies", "optionalDependencies", "peerDependencies"):
+                stack += [c for c in (resolve(k, d) for d in (m.get(field_) or {})) if c]
+        return {names.get(k, norm_pkg(k)) for k in seen}
+
+    runtime_roots: set[str] = set()
+    dev_roots: set[str] = set()
+    for ws in (data.get("workspaces") or {}).values():
+        for field_ in ("dependencies", "optionalDependencies", "peerDependencies"):
+            runtime_roots |= set(ws.get(field_) or {})
+        dev_roots |= set(ws.get("devDependencies") or {})
+    return walk(runtime_roots), walk(dev_roots)
+
+
+def _read_lockfiles(inv: Inventory) -> None:
+    runtime_reach: set[str] = set()
+    dev_reach: set[str] = set()
+    for m in inv.manifests:
+        p = inv.root / m
+        try:
+            if p.name == "uv.lock":
+                r, d = _uv_lock_reach(tomllib.loads(p.read_text("utf-8", "replace")))
+            elif p.name == "package-lock.json" and "node_modules" not in m:
+                r, d = _npm_lock_reach(json.loads(p.read_text("utf-8", "replace")))
+            elif p.name == "bun.lock" and "node_modules" not in m:
+                # JSON with trailing commas
+                text = re.sub(r",(\s*[}\]])", r"\1", p.read_text("utf-8", "replace"))
+                r, d = _bun_lock_reach(json.loads(text))
+            else:
+                continue
+        except (OSError, ValueError, KeyError, TypeError, tomllib.TOMLDecodeError):
+            continue
+        runtime_reach |= r
+        dev_reach |= d
+    inv.dev_only_transitive = dev_reach - runtime_reach - inv.runtime_deps - inv.dev_deps
 
 
 def detect_stack(inv: Inventory) -> dict:

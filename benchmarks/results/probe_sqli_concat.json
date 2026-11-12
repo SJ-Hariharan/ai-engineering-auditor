@@ -147,7 +147,7 @@
    "name": "semgrep",
    "status": "ok",
    "version": "1.182.0",
-   "duration_s": 2.86,
+   "duration_s": 1.64,
    "message": "",
    "findings": 4
   },
@@ -155,7 +155,7 @@
    "name": "gitleaks",
    "status": "ok",
    "version": "8.30.1",
-   "duration_s": 0.05,
+   "duration_s": 0.04,
    "message": "",
    "findings": 0
   },
@@ -163,7 +163,7 @@
    "name": "osv-scanner",
    "status": "ok",
    "version": "2.7.0",
-   "duration_s": 0.09,
+   "duration_s": 0.14,
    "message": "",
    "findings": 0
   },
@@ -171,7 +171,7 @@
    "name": "trivy",
    "status": "ok",
    "version": "0.76.1",
-   "duration_s": 0.8,
+   "duration_s": 0.63,
    "message": "",
    "findings": 0
   }
@@ -189,5 +189,5 @@
    "architecture": 1
   }
  },
- "seconds": 4.4
+ "seconds": 2.7
 }

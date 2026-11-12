@@ -3,11 +3,11 @@
   {
    "tool": "osv-scanner",
    "rule_id": "vulnerable-dependency",
-   "severity": "high",
+   "severity": "medium",
    "confidence": "medium",
    "file": "uv.lock",
    "line": null,
-   "title": "virtualenv 20.31.2 has 25 known vulnerabilities (transitive)",
+   "title": "virtualenv 20.31.2 has 25 known vulnerabilities (dev tooling, transitive)",
    "evidence": "PyPI package virtualenv@20.31.2\n\u2022 PYSEC-2026-2009 [medium] virtualenv Has TOCTOU Vulnerabilities in Directory Creation\n\u2022 PYSEC-2026-4011 [high] Downloaded seed wheels (pip/setuptools) are not integrity-checked before use\n\u2022 PYSEC-2026-4012 [medium] virtualenv writes prompt values into pyvenv.cfg without sanitizing line boundaries, allowing configuration inj\n\u2022 PYSEC-2026-4013 [high] virtualenv bash and fish activation scripts execute commands embedded in paths\n\u2022 PYSEC-2026-4014 [high] Command injection via --prompt in activate.bat (batch activator)\n\u2022 GHSA-394h-qwmc-48pf [high] virtualenv: Xonsh activation literals depend on the script decoding codec\n\u2022 GHSA-43mp-35q3-x3fq [medium] virtualenv: Deletion recovery can change a symlink target's mode\n\u2022 GHSA-494p-63j8-28p3 [low] virtualenv: Downloaded wheel selection and caching precede verification\n\u2022 GHSA-558c-9hv2-4prj [medium] virtualenv: Generated files can follow existing destination links\n\u2022 GHSA-597g-3phw-6986 [medium] virtualenv Has TOCTOU Vulnerabilities in Directory Creation\n\u2022 GHSA-5vjq-rrrf-7h2q [high] virtualenv activate runs commands from the environment name in zsh with PROMPT_SUBST\n\u2022 GHSA-6w3r-xr62-4xcp [high] virtualenv: Bash prompt values can change meaning under older compatibility modes\n\u2026 and 13 more"
   },
   {
@@ -15,10 +15,10 @@
    "rule_id": "broad-except",
    "severity": "low",
    "confidence": "medium",
-   "file": "src/itsdangerous/url_safe.py",
-   "line": 38,
+   "file": "src/itsdangerous/signer.py",
+   "line": 231,
    "title": "Catches broad `Exception`",
-   "evidence": "            json = base64_decode(payload)\n        except Exception as e:\n            raise BadPayload("
+   "evidence": "            sig = base64_decode(sig)\n        except Exception:\n            return False"
   },
   {
    "tool": "quality",
@@ -26,9 +26,9 @@
    "severity": "low",
    "confidence": "high",
    "file": "src/itsdangerous/serializer.py",
-   "line": 115,
-   "title": "9 duplicated lines within the file",
-   "evidence": "src/itsdangerous/serializer.py:115-126 \u2248 src/itsdangerous/serializer.py:131-142\n\nsigner_kwargs: dict[str, t.Any] | None = None,\nfallback_signers: list[\ndict[str, t.Any] | tuple[type[Signer], dict[str, t.Any]] | type[Signer]\n| None = None,\n): ...\n@t.overload"
+   "line": 113,
+   "title": "8 duplicated lines within the file",
+   "evidence": "src/itsdangerous/serializer.py:113-123 \u2248 src/itsdangerous/serializer.py:129-139\n\nserializer_kwargs: dict[str, t.Any] | None = None,\nsigner: type[Signer] | None = None,\nsigner_kwargs: dict[str, t.Any] | None = None,\nfallback_signers: list[\ndict[str, t.Any] | tuple[type[Signer], dict[str, t.Any]] | type[Signer]\n| None = None,"
   },
   {
    "tool": "quality",
@@ -83,11 +83,11 @@
   {
    "tool": "osv-scanner",
    "rule_id": "vulnerable-dependency",
-   "severity": "critical",
+   "severity": "high",
    "confidence": "medium",
    "file": "uv.lock",
    "line": null,
-   "title": "uv 0.7.8 has 9 known vulnerabilities (transitive)",
+   "title": "uv 0.7.8 has 9 known vulnerabilities (dev tooling, transitive)",
    "evidence": "PyPI package uv@0.7.8\n\u2022 PYSEC-2026-2001 [medium] uv allows ZIP payload obfuscation through parsing differentials\n\u2022 PYSEC-2026-2295 [medium] A flaw was found in uv. This vulnerability allows an attacker to execute malicious code during package resolut\n\u2022 PYSEC-2026-4321 [critical] uv's bundled CA store trusts an emSign root whose intermediate CA keys are compromised\n\u2022 GHSA-4gg8-gxpx-9rph [medium] uv is vulnerable to arbitrary file write through entry point names\n\u2022 GHSA-8qf3-x8v5-2pj8 [medium] uv allows ZIP payload obfuscation through parsing differentials\n\u2022 GHSA-hq85-5cpj-mr62 [critical] uv's bundled CA store trusts an emSign root whose intermediate CA keys are compromised\n\u2022 GHSA-pjjw-68hj-v9mw [low] uv vulnerable to arbitrary file deletion through RECORD entries\n\u2022 GHSA-pqhf-p39g-3x64 [medium] uv allows ZIP payload obfuscation through parsing differentials\n\u2022 GHSA-w476-p2h3-79g9 [medium] uv has differential in tar extraction with PAX headers"
   },
   {
@@ -115,12 +115,12 @@
   {
    "tool": "osv-scanner",
    "rule_id": "vulnerable-dependency",
-   "severity": "high",
+   "severity": "medium",
    "confidence": "medium",
    "file": "bun.lock",
    "line": null,
-   "title": "engine.io 6.6.9 has 1 known vulnerability (transitive)",
-   "evidence": "npm package engine.io@6.6.9\n\u2022 GHSA-2gc4-cqfq-p2gv [high] Socket.IO: Engine.IO Protocol Revision Mismatch DoS"
+   "title": "js-yaml 4.1.1 has 4 known vulnerabilities (dev tooling, transitive)",
+   "evidence": "npm package js-yaml@4.1.1\n\u2022 GHSA-2883-xcg3-v3hh [high] js-yaml: maxTotalMergeKeys does not limit CPU use for empty merge sources\n\u2022 GHSA-52cp-r559-cp3m [high] js-yaml: YAML merge-key chains can force quadratic CPU consumption\n\u2022 GHSA-5p4m-2wfm-xmqj [high] JS-YAML: Quadratic CPU consumption in !!omap resolution (3.x and 4.x) \u2014 CVE-2026-59870 fix not backported\n\u2022 GHSA-h67p-54hq-rp68 [medium] JS-YAML: Quadratic-complexity DoS in merge key handling via repeated aliases"
   },
   {
    "tool": "quality",
@@ -128,9 +128,9 @@
    "severity": "low",
    "confidence": "high",
    "file": "frontend/src/client/client/utils.gen.ts",
-   "line": 17,
-   "title": "`querySerializer` nests control flow 5 levels deep",
-   "evidence": "  const querySerializer = (queryParams: T) => {"
+   "line": 165,
+   "title": "`mergeHeaders` nests control flow 6 levels deep",
+   "evidence": "export const mergeHeaders = ("
   },
   {
    "tool": "quality",
@@ -138,9 +138,9 @@
    "severity": "low",
    "confidence": "high",
    "file": "frontend/src/components/Admin/AddUser.tsx",
-   "line": 85,
-   "title": "8 duplicated lines also in frontend/src/components/Items/AddItem.tsx",
-   "evidence": "frontend/src/components/Admin/AddUser.tsx:85-95 \u2248 frontend/src/components/Items/AddItem.tsx:66-76\n\n})\nconst onSubmit = (data: FormData) => {\nmutation.mutate(data)\nreturn (\n<Dialog open={isOpen} onOpenChange={setIsOpen}>\n<DialogTrigger asChild>"
+   "line": 138,
+   "title": "10 duplicated lines also in frontend/src/routes/signup.tsx",
+   "evidence": "frontend/src/components/Admin/AddUser.tsx:138-148 \u2248 frontend/src/routes/signup.tsx:126-136\n\n</FormControl>\n<FormMessage />\n</FormItem>\n)}\n/>\n<FormField"
   },
   {
    "tool": "quality",
@@ -155,12 +155,12 @@
   {
    "tool": "quality",
    "rule_id": "high-complexity",
-   "severity": "high",
+   "severity": "medium",
    "confidence": "high",
-   "file": "frontend/src/client/core/serverSentEvents.gen.ts",
-   "line": 82,
-   "title": "`createSseClient` has cyclomatic complexity 32",
-   "evidence": "export function createSseClient<TData = unknown>({"
+   "file": "frontend/src/client/core/params.gen.ts",
+   "line": 105,
+   "title": "`buildClientParams` has cyclomatic complexity 18",
+   "evidence": "export const buildClientParams = (args: ReadonlyArray<unknown>, fields: FieldsConfig) => {"
   },
   {
    "tool": "quality",
@@ -175,12 +175,12 @@
   {
    "tool": "quality",
    "rule_id": "long-function",
-   "severity": "medium",
+   "severity": "low",
    "confidence": "high",
-   "file": "frontend/src/components/Admin/EditUser.tsx",
-   "line": 59,
-   "title": "`EditUser` is 179 lines long",
-   "evidence": "const EditUser = ({ user, onSuccess }: EditUserProps) => {"
+   "file": "frontend/src/components/ui/sidebar.tsx",
+   "line": 54,
+   "title": "`SidebarProvider` is 109 lines long",
+   "evidence": "function SidebarProvider({"
   },
   {
    "tool": "quality",

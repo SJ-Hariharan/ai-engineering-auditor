@@ -1,0 +1,2 @@
+itsdangerous before: {'critical': 3, 'high': 3, 'medium': 3, 'low': 2} overall 81.4
+full-stack-fastapi-template before: {'critical': 1, 'high': 7, 'medium': 5, 'low': 1} overall 68.3

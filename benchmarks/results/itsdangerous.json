@@ -4,15 +4,15 @@
    "tool": "osv-scanner",
    "rule_id": "vulnerable-dependency",
    "category": "security",
-   "severity": "critical",
+   "severity": "high",
    "confidence": "medium",
    "kind": "objective",
-   "title": "anyio 4.9.0 has 4 known vulnerabilities (transitive)",
+   "title": "anyio 4.9.0 has 4 known vulnerabilities (dev tooling, transitive)",
    "file": "uv.lock",
    "line": null,
    "end_line": null,
    "evidence": "PyPI package anyio@4.9.0\n\u2022 PYSEC-2026-4024 [medium] AnyIO process-pool workers can block indefinitely on undrained stderr\n\u2022 PYSEC-2026-4025 [critical] AnyIO: TLSStream IDNA 2003 host name encoding enables potential TLS certificate spoofing\n\u2022 GHSA-5p39-cfhj-2xmp [medium] AnyIO process-pool workers can block indefinitely on undrained stderr\n\u2022 GHSA-82r6-8w77-94w6 [critical] AnyIO: TLSStream IDNA 2003 host name encoding enables potential TLS certificate spoofing",
-   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. It is not declared directly; it is pulled in by another package and may only be used by development tooling. Confidence is medium.",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. The lockfile shows it is pulled in only by development/test dependencies, so it is usually not shipped to users; severity was lowered one level.",
    "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
    "remediation": "Upgrade anyio to 4.14.2 or later, then re-run the audit.",
    "principle": null,
@@ -25,15 +25,15 @@
    "tool": "osv-scanner",
    "rule_id": "vulnerable-dependency",
    "category": "security",
-   "severity": "critical",
+   "severity": "high",
    "confidence": "medium",
    "kind": "objective",
-   "title": "certifi 2025.4.26 has 2 known vulnerabilities (transitive)",
+   "title": "certifi 2025.4.26 has 2 known vulnerabilities (dev tooling, transitive)",
    "file": "uv.lock",
    "line": null,
    "end_line": null,
    "evidence": "PyPI package certifi@2025.4.26\n\u2022 PYSEC-2026-4320 [critical] certifi bundles emSign root CAs with compromised intermediate CA keys\n\u2022 GHSA-6q48-6c7w-9gw2 [critical] certifi bundles emSign root CAs with compromised intermediate CA keys",
-   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. It is not declared directly; it is pulled in by another package and may only be used by development tooling. Confidence is medium.",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. The lockfile shows it is pulled in only by development/test dependencies, so it is usually not shipped to users; severity was lowered one level.",
    "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
    "remediation": "Upgrade certifi to 2026.10.18 or later, then re-run the audit.",
    "principle": null,
@@ -46,15 +46,15 @@
    "tool": "osv-scanner",
    "rule_id": "vulnerable-dependency",
    "category": "security",
-   "severity": "critical",
+   "severity": "high",
    "confidence": "medium",
    "kind": "objective",
-   "title": "uv 0.7.8 has 9 known vulnerabilities (transitive)",
+   "title": "uv 0.7.8 has 9 known vulnerabilities (dev tooling, transitive)",
    "file": "uv.lock",
    "line": null,
    "end_line": null,
    "evidence": "PyPI package uv@0.7.8\n\u2022 PYSEC-2026-2001 [medium] uv allows ZIP payload obfuscation through parsing differentials\n\u2022 PYSEC-2026-2295 [medium] A flaw was found in uv. This vulnerability allows an attacker to execute malicious code during package resolut\n\u2022 PYSEC-2026-4321 [critical] uv's bundled CA store trusts an emSign root whose intermediate CA keys are compromised\n\u2022 GHSA-4gg8-gxpx-9rph [medium] uv is vulnerable to arbitrary file write through entry point names\n\u2022 GHSA-8qf3-x8v5-2pj8 [medium] uv allows ZIP payload obfuscation through parsing differentials\n\u2022 GHSA-hq85-5cpj-mr62 [critical] uv's bundled CA store trusts an emSign root whose intermediate CA keys are compromised\n\u2022 GHSA-pjjw-68hj-v9mw [low] uv vulnerable to arbitrary file deletion through RECORD entries\n\u2022 GHSA-pqhf-p39g-3x64 [medium] uv allows ZIP payload obfuscation through parsing differentials\n\u2022 GHSA-w476-p2h3-79g9 [medium] uv has differential in tar extraction with PAX headers",
-   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. It is not declared directly; it is pulled in by another package and may only be used by development tooling. Confidence is medium.",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. The lockfile shows it is pulled in only by development/test dependencies, so it is usually not shipped to users; severity was lowered one level.",
    "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
    "remediation": "Upgrade uv to 0.13.4 or later, then re-run the audit.",
    "principle": null,
@@ -62,69 +62,6 @@
     "https://osv.dev/vulnerability/PYSEC-2026-2001"
    ],
    "fingerprint": "32823d8eac61058c1041f4752bf26892"
-  },
-  {
-   "tool": "osv-scanner",
-   "rule_id": "vulnerable-dependency",
-   "category": "security",
-   "severity": "high",
-   "confidence": "medium",
-   "kind": "objective",
-   "title": "starlette 0.46.2 has 14 known vulnerabilities (transitive)",
-   "file": "uv.lock",
-   "line": null,
-   "end_line": null,
-   "evidence": "PyPI package starlette@0.46.2\n\u2022 PYSEC-2026-161 [medium] BadHost: Missing Host header validation poisons request.url.path, bypassing path-based security checks\n\u2022 PYSEC-2026-1941 [medium] Starlette has possible denial-of-service vector when parsing large files in multipart forms\n\u2022 PYSEC-2026-1942 [high] Starlette vulnerable to O(n^2) DoS via Range header merging in ``starlette.responses.FileResponse``\n\u2022 PYSEC-2026-2280 [medium] Starlette is a lightweight ASGI framework/toolkit. In versions 1.0.1 and below, when dispatching a request, HT\n\u2022 PYSEC-2026-2281 [high] Starlette is a lightweight ASGI framework/toolkit. In versions 1.0.1 and earlier, StaticFiles on Windows is vu\n\u2022 PYSEC-2026-248 [medium] Starlette is a lightweight ASGI framework/toolkit. Prior to 1.3.0, the HTTP request path is not validated befo\n\u2022 PYSEC-2026-249 [high] Starlette is a lightweight ASGI framework/toolkit. From 0.4.1 until 1.3.1, request.form() accepts max_fields a\n\u2022 GHSA-2c2j-9gv5-cj73 [medium] Starlette has possible denial-of-service vector when parsing large files in multipart forms\n\u2022 GHSA-7f5h-v6xp-fcq8 [high] Starlette vulnerable to O(n^2) DoS via Range header merging in ``starlette.responses.FileResponse``\n\u2022 GHSA-82w8-qh3p-5jfq [high] Starlette: request.form() limits silently ignored for application/x-www-form-urlencoded enable DoS\n\u2022 GHSA-86qp-5c8j-p5mr [medium] Starlette has missing Host header validation that poisons request.url.path, bypassing path-based security chec\n\u2022 GHSA-jp82-jpqv-5vv3 [medium] Starlette: Unvalidated request path concatenated into authority poisons request.url.hostname\n\u2026 and 2 more",
-   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. It is not declared directly; it is pulled in by another package and may only be used by development tooling. Confidence is medium.",
-   "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
-   "remediation": "Upgrade starlette to 1.3.1 or later, then re-run the audit.",
-   "principle": null,
-   "references": [
-    "https://osv.dev/vulnerability/PYSEC-2026-161"
-   ],
-   "fingerprint": "e7bc0caf8e08ec3dab868d694299047f"
-  },
-  {
-   "tool": "osv-scanner",
-   "rule_id": "vulnerable-dependency",
-   "category": "security",
-   "severity": "high",
-   "confidence": "medium",
-   "kind": "objective",
-   "title": "urllib3 2.4.0 has 16 known vulnerabilities (transitive)",
-   "file": "uv.lock",
-   "line": null,
-   "end_line": null,
-   "evidence": "PyPI package urllib3@2.4.0\n\u2022 PYSEC-2026-141 [high] urllib3 is an HTTP client library for Python. From 1.23 to before 2.7.0, cross-origin redirects followed from \n\u2022 PYSEC-2026-1994 [high] urllib3 streaming API improperly handles highly compressed data\n\u2022 PYSEC-2026-1996 [high] Decompression-bomb safeguards bypassed when following HTTP redirects (streaming API)\n\u2022 PYSEC-2026-1997 [medium] urllib3 does not control redirects in browsers and Node.js\n\u2022 PYSEC-2026-1998 [high] urllib3 allows an unbounded number of links in the decompression chain\n\u2022 PYSEC-2026-1999 [medium] urllib3 redirects are not disabled when retries are disabled on PoolManager instantiation\n\u2022 PYSEC-2026-4175 [high] urllib3: HTTPS proxy TLS configuration may be ignored or overridden\n\u2022 PYSEC-2026-4177 [high] urllib3: HTTPResponse.stream()/read_chunked() buffers an unbounded chunk-size line into memory\n\u2022 GHSA-2xpw-w6gg-jr37 [high] urllib3 streaming API improperly handles highly compressed data\n\u2022 GHSA-38jv-5279-wg99 [high] Decompression-bomb safeguards bypassed when following HTTP redirects (streaming API)\n\u2022 GHSA-48p4-8xcf-vxj5 [medium] urllib3 does not control redirects in browsers and Node.js\n\u2022 GHSA-8988-9cw3-xx77 [high] urllib3: HTTPS proxy TLS configuration may be ignored or overridden\n\u2026 and 4 more",
-   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. It is not declared directly; it is pulled in by another package and may only be used by development tooling. Confidence is medium.",
-   "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
-   "remediation": "Upgrade urllib3 to 2.8.0 or later, then re-run the audit.",
-   "principle": null,
-   "references": [
-    "https://osv.dev/vulnerability/PYSEC-2026-141"
-   ],
-   "fingerprint": "24be2703a2655eddc6891bb4f436499b"
-  },
-  {
-   "tool": "osv-scanner",
-   "rule_id": "vulnerable-dependency",
-   "category": "security",
-   "severity": "high",
-   "confidence": "medium",
-   "kind": "objective",
-   "title": "virtualenv 20.31.2 has 25 known vulnerabilities (transitive)",
-   "file": "uv.lock",
-   "line": null,
-   "end_line": null,
-   "evidence": "PyPI package virtualenv@20.31.2\n\u2022 PYSEC-2026-2009 [medium] virtualenv Has TOCTOU Vulnerabilities in Directory Creation\n\u2022 PYSEC-2026-4011 [high] Downloaded seed wheels (pip/setuptools) are not integrity-checked before use\n\u2022 PYSEC-2026-4012 [medium] virtualenv writes prompt values into pyvenv.cfg without sanitizing line boundaries, allowing configuration inj\n\u2022 PYSEC-2026-4013 [high] virtualenv bash and fish activation scripts execute commands embedded in paths\n\u2022 PYSEC-2026-4014 [high] Command injection via --prompt in activate.bat (batch activator)\n\u2022 GHSA-394h-qwmc-48pf [high] virtualenv: Xonsh activation literals depend on the script decoding codec\n\u2022 GHSA-43mp-35q3-x3fq [medium] virtualenv: Deletion recovery can change a symlink target's mode\n\u2022 GHSA-494p-63j8-28p3 [low] virtualenv: Downloaded wheel selection and caching precede verification\n\u2022 GHSA-558c-9hv2-4prj [medium] virtualenv: Generated files can follow existing destination links\n\u2022 GHSA-597g-3phw-6986 [medium] virtualenv Has TOCTOU Vulnerabilities in Directory Creation\n\u2022 GHSA-5vjq-rrrf-7h2q [high] virtualenv activate runs commands from the environment name in zsh with PROMPT_SUBST\n\u2022 GHSA-6w3r-xr62-4xcp [high] virtualenv: Bash prompt values can change meaning under older compatibility modes\n\u2026 and 13 more",
-   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. It is not declared directly; it is pulled in by another package and may only be used by development tooling. Confidence is medium.",
-   "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
-   "remediation": "Upgrade virtualenv to 21.14.9 or later, then re-run the audit.",
-   "principle": null,
-   "references": [
-    "https://osv.dev/vulnerability/PYSEC-2026-2009"
-   ],
-   "fingerprint": "5bdbb45da4fa12434916694191c90cbe"
   },
   {
    "tool": "quality",
@@ -152,19 +89,19 @@
    "severity": "medium",
    "confidence": "medium",
    "kind": "objective",
-   "title": "filelock 3.18.0 has 6 known vulnerabilities (transitive)",
+   "title": "starlette 0.46.2 has 14 known vulnerabilities (dev tooling, transitive)",
    "file": "uv.lock",
    "line": null,
    "end_line": null,
-   "evidence": "PyPI package filelock@3.18.0\n\u2022 PYSEC-2026-1374 [medium] filelock Time-of-Check-Time-of-Use (TOCTOU) Symlink Vulnerability in SoftFileLock\n\u2022 PYSEC-2026-1375 [medium] filelock has a TOCTOU race condition which allows symlink attacks during lock file creation\n\u2022 GHSA-69hj-f68j-2879 [medium] filelock: UnixFileLock truncates and chmods any regular file another user renames or hard-links onto the lock \n\u2022 GHSA-8mx5-7m5m-r77g [medium] filelock: WindowsFileLock ignores mode: a 0o600 lock file and the ReadWriteLock database inherit the directory\n\u2022 GHSA-qmgc-5h2g-mvrw [medium] filelock Time-of-Check-Time-of-Use (TOCTOU) Symlink Vulnerability in SoftFileLock\n\u2022 GHSA-w853-jp5j-5j7f [medium] filelock has a TOCTOU race condition which allows symlink attacks during lock file creation",
-   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. It is not declared directly; it is pulled in by another package and may only be used by development tooling. Confidence is medium.",
+   "evidence": "PyPI package starlette@0.46.2\n\u2022 PYSEC-2026-161 [medium] BadHost: Missing Host header validation poisons request.url.path, bypassing path-based security checks\n\u2022 PYSEC-2026-1941 [medium] Starlette has possible denial-of-service vector when parsing large files in multipart forms\n\u2022 PYSEC-2026-1942 [high] Starlette vulnerable to O(n^2) DoS via Range header merging in ``starlette.responses.FileResponse``\n\u2022 PYSEC-2026-2280 [medium] Starlette is a lightweight ASGI framework/toolkit. In versions 1.0.1 and below, when dispatching a request, HT\n\u2022 PYSEC-2026-2281 [high] Starlette is a lightweight ASGI framework/toolkit. In versions 1.0.1 and earlier, StaticFiles on Windows is vu\n\u2022 PYSEC-2026-248 [medium] Starlette is a lightweight ASGI framework/toolkit. Prior to 1.3.0, the HTTP request path is not validated befo\n\u2022 PYSEC-2026-249 [high] Starlette is a lightweight ASGI framework/toolkit. From 0.4.1 until 1.3.1, request.form() accepts max_fields a\n\u2022 GHSA-2c2j-9gv5-cj73 [medium] Starlette has possible denial-of-service vector when parsing large files in multipart forms\n\u2022 GHSA-7f5h-v6xp-fcq8 [high] Starlette vulnerable to O(n^2) DoS via Range header merging in ``starlette.responses.FileResponse``\n\u2022 GHSA-82w8-qh3p-5jfq [high] Starlette: request.form() limits silently ignored for application/x-www-form-urlencoded enable DoS\n\u2022 GHSA-86qp-5c8j-p5mr [medium] Starlette has missing Host header validation that poisons request.url.path, bypassing path-based security chec\n\u2022 GHSA-jp82-jpqv-5vv3 [medium] Starlette: Unvalidated request path concatenated into authority poisons request.url.hostname\n\u2026 and 2 more",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. The lockfile shows it is pulled in only by development/test dependencies, so it is usually not shipped to users; severity was lowered one level.",
    "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
-   "remediation": "Upgrade filelock to 4.2.1 or later, then re-run the audit.",
+   "remediation": "Upgrade starlette to 1.3.1 or later, then re-run the audit.",
    "principle": null,
    "references": [
-    "https://osv.dev/vulnerability/PYSEC-2026-1374"
+    "https://osv.dev/vulnerability/PYSEC-2026-161"
    ],
-   "fingerprint": "cbd2b7097befee6dd2b321c16713fa1c"
+   "fingerprint": "e7bc0caf8e08ec3dab868d694299047f"
   },
   {
    "tool": "osv-scanner",
@@ -173,19 +110,19 @@
    "severity": "medium",
    "confidence": "medium",
    "kind": "objective",
-   "title": "idna 3.10 has 2 known vulnerabilities (transitive)",
+   "title": "urllib3 2.4.0 has 16 known vulnerabilities (dev tooling, transitive)",
    "file": "uv.lock",
    "line": null,
    "end_line": null,
-   "evidence": "PyPI package idna@3.10\n\u2022 PYSEC-2026-215 [medium] Internationalized Domain Names in Applications (IDNA) for Python provides support for Internationalized Domain\n\u2022 GHSA-65pc-fj4g-8rjx [medium] Internationalized Domain Names in Applications (IDNA): Specially crafted inputs to idna.encode() can bypass CV",
-   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. It is not declared directly; it is pulled in by another package and may only be used by development tooling. Confidence is medium.",
+   "evidence": "PyPI package urllib3@2.4.0\n\u2022 PYSEC-2026-141 [high] urllib3 is an HTTP client library for Python. From 1.23 to before 2.7.0, cross-origin redirects followed from \n\u2022 PYSEC-2026-1994 [high] urllib3 streaming API improperly handles highly compressed data\n\u2022 PYSEC-2026-1996 [high] Decompression-bomb safeguards bypassed when following HTTP redirects (streaming API)\n\u2022 PYSEC-2026-1997 [medium] urllib3 does not control redirects in browsers and Node.js\n\u2022 PYSEC-2026-1998 [high] urllib3 allows an unbounded number of links in the decompression chain\n\u2022 PYSEC-2026-1999 [medium] urllib3 redirects are not disabled when retries are disabled on PoolManager instantiation\n\u2022 PYSEC-2026-4175 [high] urllib3: HTTPS proxy TLS configuration may be ignored or overridden\n\u2022 PYSEC-2026-4177 [high] urllib3: HTTPResponse.stream()/read_chunked() buffers an unbounded chunk-size line into memory\n\u2022 GHSA-2xpw-w6gg-jr37 [high] urllib3 streaming API improperly handles highly compressed data\n\u2022 GHSA-38jv-5279-wg99 [high] Decompression-bomb safeguards bypassed when following HTTP redirects (streaming API)\n\u2022 GHSA-48p4-8xcf-vxj5 [medium] urllib3 does not control redirects in browsers and Node.js\n\u2022 GHSA-8988-9cw3-xx77 [high] urllib3: HTTPS proxy TLS configuration may be ignored or overridden\n\u2026 and 4 more",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. The lockfile shows it is pulled in only by development/test dependencies, so it is usually not shipped to users; severity was lowered one level.",
    "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
-   "remediation": "Upgrade idna to 3.15 or later, then re-run the audit.",
+   "remediation": "Upgrade urllib3 to 2.8.0 or later, then re-run the audit.",
    "principle": null,
    "references": [
-    "https://osv.dev/vulnerability/PYSEC-2026-215"
+    "https://osv.dev/vulnerability/PYSEC-2026-141"
    ],
-   "fingerprint": "ed6394cd6c86baaefa2870ace49824fa"
+   "fingerprint": "24be2703a2655eddc6891bb4f436499b"
   },
   {
    "tool": "osv-scanner",
@@ -194,19 +131,19 @@
    "severity": "medium",
    "confidence": "medium",
    "kind": "objective",
-   "title": "requests 2.32.3 has 4 known vulnerabilities (transitive)",
+   "title": "virtualenv 20.31.2 has 25 known vulnerabilities (dev tooling, transitive)",
    "file": "uv.lock",
    "line": null,
    "end_line": null,
-   "evidence": "PyPI package requests@2.32.3\n\u2022 PYSEC-2026-1872 [medium] Requests vulnerable to .netrc credentials leak via malicious URLs\n\u2022 PYSEC-2026-2275 [medium] Requests is a HTTP library. Prior to version 2.33.0, the `requests.utils.extract_zipped_paths()` utility funct\n\u2022 GHSA-9hjg-9r4m-mvj7 [medium] Requests vulnerable to .netrc credentials leak via malicious URLs\n\u2022 GHSA-gc5v-m9x4-r6x2 [medium] Requests has Insecure Temp File Reuse in its extract_zipped_paths() utility function",
-   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. It is not declared directly; it is pulled in by another package and may only be used by development tooling. Confidence is medium.",
+   "evidence": "PyPI package virtualenv@20.31.2\n\u2022 PYSEC-2026-2009 [medium] virtualenv Has TOCTOU Vulnerabilities in Directory Creation\n\u2022 PYSEC-2026-4011 [high] Downloaded seed wheels (pip/setuptools) are not integrity-checked before use\n\u2022 PYSEC-2026-4012 [medium] virtualenv writes prompt values into pyvenv.cfg without sanitizing line boundaries, allowing configuration inj\n\u2022 PYSEC-2026-4013 [high] virtualenv bash and fish activation scripts execute commands embedded in paths\n\u2022 PYSEC-2026-4014 [high] Command injection via --prompt in activate.bat (batch activator)\n\u2022 GHSA-394h-qwmc-48pf [high] virtualenv: Xonsh activation literals depend on the script decoding codec\n\u2022 GHSA-43mp-35q3-x3fq [medium] virtualenv: Deletion recovery can change a symlink target's mode\n\u2022 GHSA-494p-63j8-28p3 [low] virtualenv: Downloaded wheel selection and caching precede verification\n\u2022 GHSA-558c-9hv2-4prj [medium] virtualenv: Generated files can follow existing destination links\n\u2022 GHSA-597g-3phw-6986 [medium] virtualenv Has TOCTOU Vulnerabilities in Directory Creation\n\u2022 GHSA-5vjq-rrrf-7h2q [high] virtualenv activate runs commands from the environment name in zsh with PROMPT_SUBST\n\u2022 GHSA-6w3r-xr62-4xcp [high] virtualenv: Bash prompt values can change meaning under older compatibility modes\n\u2026 and 13 more",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. The lockfile shows it is pulled in only by development/test dependencies, so it is usually not shipped to users; severity was lowered one level.",
    "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
-   "remediation": "Upgrade requests to 2.33.0 or later, then re-run the audit.",
+   "remediation": "Upgrade virtualenv to 21.14.9 or later, then re-run the audit.",
    "principle": null,
    "references": [
-    "https://osv.dev/vulnerability/PYSEC-2026-1872"
+    "https://osv.dev/vulnerability/PYSEC-2026-2009"
    ],
-   "fingerprint": "5d34837dd1f0cb3d4bae37f756376eda"
+   "fingerprint": "5bdbb45da4fa12434916694191c90cbe"
   },
   {
    "tool": "osv-scanner",
@@ -236,19 +173,61 @@
    "severity": "low",
    "confidence": "medium",
    "kind": "objective",
-   "title": "pygments 2.19.1 has 2 known vulnerabilities (transitive)",
+   "title": "filelock 3.18.0 has 6 known vulnerabilities (dev tooling, transitive)",
    "file": "uv.lock",
    "line": null,
    "end_line": null,
-   "evidence": "PyPI package pygments@2.19.1\n\u2022 PYSEC-2026-2987 [low] Pygments has Regular Expression Denial of Service (ReDoS) due to Inefficient Regex for GUID Matching\n\u2022 GHSA-5239-wwwm-4pmq [low] Pygments has Regular Expression Denial of Service (ReDoS) due to Inefficient Regex for GUID Matching",
-   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. It is not declared directly; it is pulled in by another package and may only be used by development tooling. Confidence is medium.",
+   "evidence": "PyPI package filelock@3.18.0\n\u2022 PYSEC-2026-1374 [medium] filelock Time-of-Check-Time-of-Use (TOCTOU) Symlink Vulnerability in SoftFileLock\n\u2022 PYSEC-2026-1375 [medium] filelock has a TOCTOU race condition which allows symlink attacks during lock file creation\n\u2022 GHSA-69hj-f68j-2879 [medium] filelock: UnixFileLock truncates and chmods any regular file another user renames or hard-links onto the lock \n\u2022 GHSA-8mx5-7m5m-r77g [medium] filelock: WindowsFileLock ignores mode: a 0o600 lock file and the ReadWriteLock database inherit the directory\n\u2022 GHSA-qmgc-5h2g-mvrw [medium] filelock Time-of-Check-Time-of-Use (TOCTOU) Symlink Vulnerability in SoftFileLock\n\u2022 GHSA-w853-jp5j-5j7f [medium] filelock has a TOCTOU race condition which allows symlink attacks during lock file creation",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. The lockfile shows it is pulled in only by development/test dependencies, so it is usually not shipped to users; severity was lowered one level.",
    "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
-   "remediation": "Upgrade pygments to 2.20.0 or later, then re-run the audit.",
+   "remediation": "Upgrade filelock to 4.2.1 or later, then re-run the audit.",
    "principle": null,
    "references": [
-    "https://osv.dev/vulnerability/PYSEC-2026-2987"
+    "https://osv.dev/vulnerability/PYSEC-2026-1374"
    ],
-   "fingerprint": "4db89147b13dcd51b6081f0a1ea32a71"
+   "fingerprint": "cbd2b7097befee6dd2b321c16713fa1c"
+  },
+  {
+   "tool": "osv-scanner",
+   "rule_id": "vulnerable-dependency",
+   "category": "security",
+   "severity": "low",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "idna 3.10 has 2 known vulnerabilities (dev tooling, transitive)",
+   "file": "uv.lock",
+   "line": null,
+   "end_line": null,
+   "evidence": "PyPI package idna@3.10\n\u2022 PYSEC-2026-215 [medium] Internationalized Domain Names in Applications (IDNA) for Python provides support for Internationalized Domain\n\u2022 GHSA-65pc-fj4g-8rjx [medium] Internationalized Domain Names in Applications (IDNA): Specially crafted inputs to idna.encode() can bypass CV",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. The lockfile shows it is pulled in only by development/test dependencies, so it is usually not shipped to users; severity was lowered one level.",
+   "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
+   "remediation": "Upgrade idna to 3.15 or later, then re-run the audit.",
+   "principle": null,
+   "references": [
+    "https://osv.dev/vulnerability/PYSEC-2026-215"
+   ],
+   "fingerprint": "ed6394cd6c86baaefa2870ace49824fa"
+  },
+  {
+   "tool": "osv-scanner",
+   "rule_id": "vulnerable-dependency",
+   "category": "security",
+   "severity": "low",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "requests 2.32.3 has 4 known vulnerabilities (dev tooling, transitive)",
+   "file": "uv.lock",
+   "line": null,
+   "end_line": null,
+   "evidence": "PyPI package requests@2.32.3\n\u2022 PYSEC-2026-1872 [medium] Requests vulnerable to .netrc credentials leak via malicious URLs\n\u2022 PYSEC-2026-2275 [medium] Requests is a HTTP library. Prior to version 2.33.0, the `requests.utils.extract_zipped_paths()` utility funct\n\u2022 GHSA-9hjg-9r4m-mvj7 [medium] Requests vulnerable to .netrc credentials leak via malicious URLs\n\u2022 GHSA-gc5v-m9x4-r6x2 [medium] Requests has Insecure Temp File Reuse in its extract_zipped_paths() utility function",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. The lockfile shows it is pulled in only by development/test dependencies, so it is usually not shipped to users; severity was lowered one level.",
+   "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
+   "remediation": "Upgrade requests to 2.33.0 or later, then re-run the audit.",
+   "principle": null,
+   "references": [
+    "https://osv.dev/vulnerability/PYSEC-2026-1872"
+   ],
+   "fingerprint": "5d34837dd1f0cb3d4bae37f756376eda"
   },
   {
    "tool": "quality",
@@ -268,6 +247,25 @@
    "principle": "DRY",
    "references": [],
    "fingerprint": "660bdc17a77f3b54724f501db5e032bf"
+  },
+  {
+   "tool": "quality",
+   "rule_id": "duplicate-code",
+   "category": "maintainability",
+   "severity": "low",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "9 duplicated lines within the file",
+   "file": "src/itsdangerous/serializer.py",
+   "line": 148,
+   "end_line": 161,
+   "evidence": "src/itsdangerous/serializer.py:148-161 \u2248 src/itsdangerous/serializer.py:166-177\n\nsigner_kwargs: dict[str, t.Any] | None = None,\nfallback_signers: list[\ndict[str, t.Any] | tuple[type[Signer], dict[str, t.Any]] | type[Signer]\n| None = None,\n): ...\n@t.overload",
+   "explanation": "These blocks are identical after normalising whitespace and ignoring comments/imports. Whether to merge them is a judgement call; small duplication is sometimes clearer than a premature abstraction.",
+   "impact": "Bug fixes must be applied in several places; copies drift apart over time.",
+   "remediation": "Extract the shared logic into a function or module used by both.",
+   "principle": "DRY",
+   "references": [],
+   "fingerprint": "4a25ff7a11415c9482086d329cc23588"
   },
   {
    "tool": "quality",
@@ -404,6 +402,101 @@
   },
   {
    "tool": "quality",
+   "rule_id": "many-parameters",
+   "category": "code_quality",
+   "severity": "low",
+   "confidence": "high",
+   "kind": "subjective",
+   "title": "`__init__` takes 8 parameters",
+   "file": "src/itsdangerous/serializer.py",
+   "line": 124,
+   "end_line": null,
+   "evidence": "    def __init__(",
+   "explanation": "More than 6 parameters often signals missing abstraction.",
+   "impact": "Call sites become error-prone (argument order mistakes).",
+   "remediation": "Group related parameters into an object/dataclass.",
+   "principle": "Readability",
+   "references": [],
+   "fingerprint": "012589a2ed6e161abd580ba905143eb8"
+  },
+  {
+   "tool": "quality",
+   "rule_id": "many-parameters",
+   "category": "code_quality",
+   "severity": "low",
+   "confidence": "high",
+   "kind": "subjective",
+   "title": "`__init__` takes 9 parameters",
+   "file": "src/itsdangerous/serializer.py",
+   "line": 140,
+   "end_line": null,
+   "evidence": "    def __init__(",
+   "explanation": "More than 6 parameters often signals missing abstraction.",
+   "impact": "Call sites become error-prone (argument order mistakes).",
+   "remediation": "Group related parameters into an object/dataclass.",
+   "principle": "Readability",
+   "references": [],
+   "fingerprint": "f0e5310995d941da80c470fe097cb432"
+  },
+  {
+   "tool": "quality",
+   "rule_id": "many-parameters",
+   "category": "code_quality",
+   "severity": "low",
+   "confidence": "high",
+   "kind": "subjective",
+   "title": "`__init__` takes 7 parameters",
+   "file": "src/itsdangerous/serializer.py",
+   "line": 159,
+   "end_line": null,
+   "evidence": "    def __init__(",
+   "explanation": "More than 6 parameters often signals missing abstraction.",
+   "impact": "Call sites become error-prone (argument order mistakes).",
+   "remediation": "Group related parameters into an object/dataclass.",
+   "principle": "Readability",
+   "references": [],
+   "fingerprint": "8a04380c9da8bf96ce4dd53fbdc8cd1c"
+  },
+  {
+   "tool": "quality",
+   "rule_id": "many-parameters",
+   "category": "code_quality",
+   "severity": "low",
+   "confidence": "high",
+   "kind": "subjective",
+   "title": "`__init__` takes 8 parameters",
+   "file": "src/itsdangerous/serializer.py",
+   "line": 175,
+   "end_line": null,
+   "evidence": "    def __init__(",
+   "explanation": "More than 6 parameters often signals missing abstraction.",
+   "impact": "Call sites become error-prone (argument order mistakes).",
+   "remediation": "Group related parameters into an object/dataclass.",
+   "principle": "Readability",
+   "references": [],
+   "fingerprint": "39b4d0e3f660e0943c9a4472794d091f"
+  },
+  {
+   "tool": "quality",
+   "rule_id": "many-parameters",
+   "category": "code_quality",
+   "severity": "low",
+   "confidence": "high",
+   "kind": "subjective",
+   "title": "`__init__` takes 7 parameters",
+   "file": "src/itsdangerous/serializer.py",
+   "line": 190,
+   "end_line": null,
+   "evidence": "    def __init__(",
+   "explanation": "More than 6 parameters often signals missing abstraction.",
+   "impact": "Call sites become error-prone (argument order mistakes).",
+   "remediation": "Group related parameters into an object/dataclass.",
+   "principle": "Readability",
+   "references": [],
+   "fingerprint": "584320d006fb2d823dac962e98a465f1"
+  },
+  {
+   "tool": "quality",
    "rule_id": "long-function",
    "category": "maintainability",
    "severity": "low",
@@ -479,6 +572,25 @@
    "fingerprint": "7a3a66a88a45a866b3c7b499739f2fd1"
   },
   {
+   "tool": "quality",
+   "rule_id": "broad-except",
+   "category": "reliability",
+   "severity": "low",
+   "confidence": "medium",
+   "kind": "subjective",
+   "title": "Catches broad `Exception`",
+   "file": "src/itsdangerous/url_safe.py",
+   "line": 47,
+   "end_line": null,
+   "evidence": "                json = zlib.decompress(json)\n            except Exception as e:\n                raise BadPayload(",
+   "explanation": "Catching `Exception` is sometimes right at process boundaries, but inside business logic it tends to mask unexpected errors.",
+   "impact": "Unexpected errors may be handled as if they were expected ones.",
+   "remediation": "Narrow the exception types, or make sure the error is logged and re-raised.",
+   "principle": "Error Handling",
+   "references": [],
+   "fingerprint": "b22a18db43dc446a46966a1d0cdc6d62"
+  },
+  {
    "tool": "semgrep",
    "rule_id": "py-weak-hash",
    "category": "security",
@@ -498,21 +610,42 @@
     "https://cwe.mitre.org/data/definitions/327.html"
    ],
    "fingerprint": "3ba53b3cdf26bfadb23fe17754f1df75"
+  },
+  {
+   "tool": "osv-scanner",
+   "rule_id": "vulnerable-dependency",
+   "category": "security",
+   "severity": "info",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "pygments 2.19.1 has 2 known vulnerabilities (dev tooling, transitive)",
+   "file": "uv.lock",
+   "line": null,
+   "end_line": null,
+   "evidence": "PyPI package pygments@2.19.1\n\u2022 PYSEC-2026-2987 [low] Pygments has Regular Expression Denial of Service (ReDoS) due to Inefficient Regex for GUID Matching\n\u2022 GHSA-5239-wwwm-4pmq [low] Pygments has Regular Expression Denial of Service (ReDoS) due to Inefficient Regex for GUID Matching",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. The lockfile shows it is pulled in only by development/test dependencies, so it is usually not shipped to users; severity was lowered one level.",
+   "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
+   "remediation": "Upgrade pygments to 2.20.0 or later, then re-run the audit.",
+   "principle": null,
+   "references": [
+    "https://osv.dev/vulnerability/PYSEC-2026-2987"
+   ],
+   "fingerprint": "4db89147b13dcd51b6081f0a1ea32a71"
   }
  ],
  "scores": {
-  "overall": 81.4,
+  "overall": 87.2,
   "grade": "B",
-  "uncapped_overall": 81.4,
+  "uncapped_overall": 87.2,
   "caps": [],
   "not_analysed": [],
   "merged_duplicates": 0,
   "categories": {
-   "security": 51.8,
-   "reliability": 87.6,
+   "security": 73.2,
+   "reliability": 87.2,
    "architecture": 100.0,
-   "code_quality": 97.5,
-   "maintainability": 91.7
+   "code_quality": 94.1,
+   "maintainability": 91.4
   }
  },
  "scanners": [
@@ -520,7 +653,7 @@
    "name": "semgrep",
    "status": "ok",
    "version": "1.182.0",
-   "duration_s": 2.73,
+   "duration_s": 1.46,
    "message": "",
    "findings": 1
   },
@@ -528,7 +661,7 @@
    "name": "gitleaks",
    "status": "ok",
    "version": "8.30.1",
-   "duration_s": 0.21,
+   "duration_s": 0.12,
    "message": "",
    "findings": 0
   },
@@ -536,7 +669,7 @@
    "name": "osv-scanner",
    "status": "ok",
    "version": "2.7.0",
-   "duration_s": 2.09,
+   "duration_s": 2.61,
    "message": "",
    "findings": 11
   },
@@ -544,25 +677,25 @@
    "name": "trivy",
    "status": "ok",
    "version": "0.76.1",
-   "duration_s": 1.82,
+   "duration_s": 0.56,
    "message": "",
    "findings": 0
   }
  ],
  "counts": {
-  "total": 25,
+  "total": 32,
   "by_severity": {
-   "critical": 3,
    "high": 3,
    "medium": 4,
-   "low": 15
+   "low": 24,
+   "info": 1
   },
   "by_category": {
    "security": 12,
-   "reliability": 5,
-   "maintainability": 7,
-   "code_quality": 1
+   "reliability": 6,
+   "maintainability": 8,
+   "code_quality": 6
   }
  },
- "seconds": 5.5
+ "seconds": 2.8
 }

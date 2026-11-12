@@ -938,7 +938,7 @@
     "architecture": 3
    }
   },
-  "seconds": 11.0
+  "seconds": 10.2
  },
  "vuln_js": {
   "rows": [
@@ -1468,7 +1468,7 @@
     "architecture": 2
    }
   },
-  "seconds": 4.2
+  "seconds": 2.9
  },
  "secrets_repo": {
   "rows": [
@@ -1736,7 +1736,7 @@
     "reliability": 1
    }
   },
-  "seconds": 4.9
+  "seconds": 2.6
  },
  "arch_repo": {
   "rows": [
@@ -2172,7 +2172,7 @@
     "maintainability": 3
    }
   },
-  "seconds": 4.2
+  "seconds": 2.7
  },
  "clean_repo": {
   "rows": [],
@@ -2198,6 +2198,6 @@
    "by_severity": {},
    "by_category": {}
   },
-  "seconds": 3.9
+  "seconds": 2.6
  }
 }

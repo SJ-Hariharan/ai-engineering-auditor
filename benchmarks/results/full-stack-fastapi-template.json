@@ -112,27 +112,6 @@
    "severity": "high",
    "confidence": "medium",
    "kind": "objective",
-   "title": "browserslist 4.28.1 has 2 known vulnerabilities (transitive)",
-   "file": "bun.lock",
-   "line": null,
-   "end_line": null,
-   "evidence": "npm package browserslist@4.28.1\n\u2022 GHSA-73wf-gq98-2v4g [high] Browserslist: Uncaught crash / prototype write via untrusted browserslist-stats.json custom stats (normalizeSt\n\u2022 GHSA-c83g-rgw3-j3cx [high] Browserslist: Unbounded memory growth (no cache eviction) via distinct query results, leading to eventual OOM",
-   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. It is not declared directly; it is pulled in by another package and may only be used by development tooling. Confidence is medium.",
-   "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
-   "remediation": "Upgrade browserslist to 4.28.7 or later, then re-run the audit.",
-   "principle": null,
-   "references": [
-    "https://osv.dev/vulnerability/GHSA-73wf-gq98-2v4g"
-   ],
-   "fingerprint": "ad007cb251336799bd2ed039a87abd07"
-  },
-  {
-   "tool": "osv-scanner",
-   "rule_id": "vulnerable-dependency",
-   "category": "security",
-   "severity": "high",
-   "confidence": "medium",
-   "kind": "objective",
    "title": "engine.io 6.6.9 has 1 known vulnerability (transitive)",
    "file": "bun.lock",
    "line": null,
@@ -188,27 +167,6 @@
     "https://osv.dev/vulnerability/GHSA-8r9p-f939-6h3c"
    ],
    "fingerprint": "15c0861a33c0d1cbcef5916ba7df1308"
-  },
-  {
-   "tool": "osv-scanner",
-   "rule_id": "vulnerable-dependency",
-   "category": "security",
-   "severity": "high",
-   "confidence": "medium",
-   "kind": "objective",
-   "title": "js-yaml 4.1.1 has 4 known vulnerabilities (transitive)",
-   "file": "bun.lock",
-   "line": null,
-   "end_line": null,
-   "evidence": "npm package js-yaml@4.1.1\n\u2022 GHSA-2883-xcg3-v3hh [high] js-yaml: maxTotalMergeKeys does not limit CPU use for empty merge sources\n\u2022 GHSA-52cp-r559-cp3m [high] js-yaml: YAML merge-key chains can force quadratic CPU consumption\n\u2022 GHSA-5p4m-2wfm-xmqj [high] JS-YAML: Quadratic CPU consumption in !!omap resolution (3.x and 4.x) \u2014 CVE-2026-59870 fix not backported\n\u2022 GHSA-h67p-54hq-rp68 [medium] JS-YAML: Quadratic-complexity DoS in merge key handling via repeated aliases",
-   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. It is not declared directly; it is pulled in by another package and may only be used by development tooling. Confidence is medium.",
-   "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
-   "remediation": "Upgrade js-yaml to 4.3.2 or later, then re-run the audit.",
-   "principle": null,
-   "references": [
-    "https://osv.dev/vulnerability/GHSA-2883-xcg3-v3hh"
-   ],
-   "fingerprint": "4c68e2289039d6d6d8393f370c379579"
   },
   {
    "tool": "osv-scanner",
@@ -276,19 +234,19 @@
    "severity": "medium",
    "confidence": "medium",
    "kind": "objective",
-   "title": "baseline-browser-mapping 2.9.16 has 1 known vulnerability (transitive)",
+   "title": "browserslist 4.28.1 has 2 known vulnerabilities (dev tooling, transitive)",
    "file": "bun.lock",
    "line": null,
    "end_line": null,
-   "evidence": "npm package baseline-browser-mapping@2.9.16\n\u2022 GHSA-w5vr-8v7q-w6rv [medium] baseline-browser-mapping process termination on invalid input causes denial of service",
-   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. It is not declared directly; it is pulled in by another package and may only be used by development tooling. Confidence is medium.",
+   "evidence": "npm package browserslist@4.28.1\n\u2022 GHSA-73wf-gq98-2v4g [high] Browserslist: Uncaught crash / prototype write via untrusted browserslist-stats.json custom stats (normalizeSt\n\u2022 GHSA-c83g-rgw3-j3cx [high] Browserslist: Unbounded memory growth (no cache eviction) via distinct query results, leading to eventual OOM",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. The lockfile shows it is pulled in only by development/test dependencies, so it is usually not shipped to users; severity was lowered one level.",
    "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
-   "remediation": "Upgrade baseline-browser-mapping to 2.11.0 or later, then re-run the audit.",
+   "remediation": "Upgrade browserslist to 4.28.7 or later, then re-run the audit.",
    "principle": null,
    "references": [
-    "https://osv.dev/vulnerability/GHSA-w5vr-8v7q-w6rv"
+    "https://osv.dev/vulnerability/GHSA-73wf-gq98-2v4g"
    ],
-   "fingerprint": "8c4460451b4c28775d04821308c6a620"
+   "fingerprint": "ad007cb251336799bd2ed039a87abd07"
   },
   {
    "tool": "osv-scanner",
@@ -331,6 +289,27 @@
     "https://osv.dev/vulnerability/GHSA-3g3m-2fjr-6pw4"
    ],
    "fingerprint": "4e880da80c4ac5e91b0bcdae5a9842cb"
+  },
+  {
+   "tool": "osv-scanner",
+   "rule_id": "vulnerable-dependency",
+   "category": "security",
+   "severity": "medium",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "js-yaml 4.1.1 has 4 known vulnerabilities (dev tooling, transitive)",
+   "file": "bun.lock",
+   "line": null,
+   "end_line": null,
+   "evidence": "npm package js-yaml@4.1.1\n\u2022 GHSA-2883-xcg3-v3hh [high] js-yaml: maxTotalMergeKeys does not limit CPU use for empty merge sources\n\u2022 GHSA-52cp-r559-cp3m [high] js-yaml: YAML merge-key chains can force quadratic CPU consumption\n\u2022 GHSA-5p4m-2wfm-xmqj [high] JS-YAML: Quadratic CPU consumption in !!omap resolution (3.x and 4.x) \u2014 CVE-2026-59870 fix not backported\n\u2022 GHSA-h67p-54hq-rp68 [medium] JS-YAML: Quadratic-complexity DoS in merge key handling via repeated aliases",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. The lockfile shows it is pulled in only by development/test dependencies, so it is usually not shipped to users; severity was lowered one level.",
+   "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
+   "remediation": "Upgrade js-yaml to 4.3.2 or later, then re-run the audit.",
+   "principle": null,
+   "references": [
+    "https://osv.dev/vulnerability/GHSA-2883-xcg3-v3hh"
+   ],
+   "fingerprint": "4c68e2289039d6d6d8393f370c379579"
   },
   {
    "tool": "osv-scanner",
@@ -391,7 +370,7 @@
    "remediation": "Extract the shared logic into a function or module used by both.",
    "principle": "DRY",
    "references": [],
-   "fingerprint": "90181642f273866d8d9983a6ec684d06"
+   "fingerprint": "407b28c50a075747df81730546c387bd"
   },
   {
    "tool": "testing",
@@ -577,19 +556,19 @@
    "severity": "low",
    "confidence": "medium",
    "kind": "objective",
-   "title": "@babel/core 7.28.6 has 1 known vulnerability (transitive)",
+   "title": "baseline-browser-mapping 2.9.16 has 1 known vulnerability (dev tooling, transitive)",
    "file": "bun.lock",
    "line": null,
    "end_line": null,
-   "evidence": "npm package @babel/core@7.28.6\n\u2022 GHSA-4x5r-pxfx-6jf8 [low] @babel/core: Arbitrary File Read via sourceMappingURL Comment",
-   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. It is not declared directly; it is pulled in by another package and may only be used by development tooling. Confidence is medium.",
+   "evidence": "npm package baseline-browser-mapping@2.9.16\n\u2022 GHSA-w5vr-8v7q-w6rv [medium] baseline-browser-mapping process termination on invalid input causes denial of service",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. The lockfile shows it is pulled in only by development/test dependencies, so it is usually not shipped to users; severity was lowered one level.",
    "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
-   "remediation": "Upgrade @babel/core to 8.0.0-rc.6 or later, then re-run the audit.",
+   "remediation": "Upgrade baseline-browser-mapping to 2.11.0 or later, then re-run the audit.",
    "principle": null,
    "references": [
-    "https://osv.dev/vulnerability/GHSA-4x5r-pxfx-6jf8"
+    "https://osv.dev/vulnerability/GHSA-w5vr-8v7q-w6rv"
    ],
-   "fingerprint": "4161c477fcc6e42c9694ccbb9b67043e"
+   "fingerprint": "8c4460451b4c28775d04821308c6a620"
   },
   {
    "tool": "quality",
@@ -609,6 +588,25 @@
    "principle": "DRY",
    "references": [],
    "fingerprint": "6e7c65a34118053d72894afed2030e45"
+  },
+  {
+   "tool": "quality",
+   "rule_id": "duplicate-code",
+   "category": "maintainability",
+   "severity": "low",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "21 duplicated lines also in frontend/src/components/Admin/EditUser.tsx",
+   "file": "frontend/src/components/Admin/AddUser.tsx",
+   "line": 191,
+   "end_line": 212,
+   "evidence": "frontend/src/components/Admin/AddUser.tsx:191-212 \u2248 frontend/src/components/Admin/EditUser.tsx:193-214\n\n<FormItem className=\"flex items-center gap-3 space-y-0\">\n<FormControl>\n<Checkbox\nchecked={field.value}\nonCheckedChange={field.onChange}\n/>",
+   "explanation": "These blocks are identical after normalising whitespace and ignoring comments/imports. Whether to merge them is a judgement call; small duplication is sometimes clearer than a premature abstraction.",
+   "impact": "Bug fixes must be applied in several places; copies drift apart over time.",
+   "remediation": "Extract the shared logic into a function or module used by both.",
+   "principle": "DRY",
+   "references": [],
+   "fingerprint": "90181642f273866d8d9983a6ec684d06"
   },
   {
    "tool": "quality",
@@ -723,6 +721,25 @@
    "principle": "DRY",
    "references": [],
    "fingerprint": "8a4f2c56df4ca5aadbffd37639c05a7c"
+  },
+  {
+   "tool": "quality",
+   "rule_id": "duplicate-code",
+   "category": "maintainability",
+   "severity": "low",
+   "confidence": "high",
+   "kind": "objective",
+   "title": "16 duplicated lines also in frontend/src/components/Admin/EditUser.tsx",
+   "file": "frontend/src/components/Admin/AddUser.tsx",
+   "line": 181,
+   "end_line": 197,
+   "evidence": "frontend/src/components/Admin/AddUser.tsx:181-197 \u2248 frontend/src/components/Admin/EditUser.tsx:183-199\n\n</FormControl>\n<FormMessage />\n</FormItem>\n)}\n/>\n<FormField",
+   "explanation": "These blocks are identical after normalising whitespace and ignoring comments/imports. Whether to merge them is a judgement call; small duplication is sometimes clearer than a premature abstraction.",
+   "impact": "Bug fixes must be applied in several places; copies drift apart over time.",
+   "remediation": "Extract the shared logic into a function or module used by both.",
+   "principle": "DRY",
+   "references": [],
+   "fingerprint": "0bce5d382943b862f07c18aa135e07a9"
   },
   {
    "tool": "quality",
@@ -940,6 +957,25 @@
    "severity": "low",
    "confidence": "high",
    "kind": "objective",
+   "title": "10 duplicated lines also in frontend/src/components/Admin/EditUser.tsx",
+   "file": "frontend/src/components/Admin/AddUser.tsx",
+   "line": 159,
+   "end_line": 169,
+   "evidence": "frontend/src/components/Admin/AddUser.tsx:159-169 \u2248 frontend/src/components/Admin/EditUser.tsx:165-175\n\n</FormControl>\n<FormMessage />\n</FormItem>\n)}\n/>\n<FormField",
+   "explanation": "These blocks are identical after normalising whitespace and ignoring comments/imports. Whether to merge them is a judgement call; small duplication is sometimes clearer than a premature abstraction.",
+   "impact": "Bug fixes must be applied in several places; copies drift apart over time.",
+   "remediation": "Extract the shared logic into a function or module used by both.",
+   "principle": "DRY",
+   "references": [],
+   "fingerprint": "12e7b3b82f02a409b1c3d81fcd8a4f5a"
+  },
+  {
+   "tool": "quality",
+   "rule_id": "duplicate-code",
+   "category": "maintainability",
+   "severity": "low",
+   "confidence": "high",
+   "kind": "objective",
    "title": "10 duplicated lines also in frontend/src/routes/signup.tsx",
    "file": "frontend/src/components/Admin/AddUser.tsx",
    "line": 22,
@@ -989,25 +1025,6 @@
    "principle": "DRY",
    "references": [],
    "fingerprint": "73dd673607c11679c602693da6956b1b"
-  },
-  {
-   "tool": "quality",
-   "rule_id": "duplicate-code",
-   "category": "maintainability",
-   "severity": "low",
-   "confidence": "high",
-   "kind": "objective",
-   "title": "10 duplicated lines also in frontend/src/routes/reset-password.tsx",
-   "file": "frontend/src/components/Admin/AddUser.tsx",
-   "line": 159,
-   "end_line": 169,
-   "evidence": "frontend/src/components/Admin/AddUser.tsx:159-169 \u2248 frontend/src/routes/reset-password.tsx:123-133\n\n</FormControl>\n<FormMessage />\n</FormItem>\n)}\n/>\n<FormField",
-   "explanation": "These blocks are identical after normalising whitespace and ignoring comments/imports. Whether to merge them is a judgement call; small duplication is sometimes clearer than a premature abstraction.",
-   "impact": "Bug fixes must be applied in several places; copies drift apart over time.",
-   "remediation": "Extract the shared logic into a function or module used by both.",
-   "principle": "DRY",
-   "references": [],
-   "fingerprint": "504dcc9dda8584f7940ce1ebb3861d50"
   },
   {
    "tool": "quality",
@@ -1675,6 +1692,27 @@
    "fingerprint": "e6e3e8e5e68929acc354c99dd177cd71"
   },
   {
+   "tool": "osv-scanner",
+   "rule_id": "vulnerable-dependency",
+   "category": "security",
+   "severity": "info",
+   "confidence": "medium",
+   "kind": "objective",
+   "title": "@babel/core 7.28.6 has 1 known vulnerability (dev tooling, transitive)",
+   "file": "bun.lock",
+   "line": null,
+   "end_line": null,
+   "evidence": "npm package @babel/core@7.28.6\n\u2022 GHSA-4x5r-pxfx-6jf8 [low] @babel/core: Arbitrary File Read via sourceMappingURL Comment",
+   "explanation": "The installed version matches published advisories in the OSV/GitHub/NVD databases. Whether each one is exploitable depends on how the package is used. The lockfile shows it is pulled in only by development/test dependencies, so it is usually not shipped to users; severity was lowered one level.",
+   "impact": "Known, documented vulnerabilities are the easiest for attackers to exploit at scale.",
+   "remediation": "Upgrade @babel/core to 8.0.0-rc.6 or later, then re-run the audit.",
+   "principle": null,
+   "references": [
+    "https://osv.dev/vulnerability/GHSA-4x5r-pxfx-6jf8"
+   ],
+   "fingerprint": "4161c477fcc6e42c9694ccbb9b67043e"
+  },
+  {
    "tool": "quality",
    "rule_id": "naming-convention",
    "category": "code_quality",
@@ -1695,18 +1733,18 @@
   }
  ],
  "scores": {
-  "overall": 68.3,
+  "overall": 68.6,
   "grade": "D",
-  "uncapped_overall": 68.3,
+  "uncapped_overall": 68.6,
   "caps": [],
   "not_analysed": [],
   "merged_duplicates": 2,
   "categories": {
-   "security": 32.3,
+   "security": 33.1,
    "reliability": 86.8,
    "architecture": 100.0,
    "code_quality": 75.4,
-   "maintainability": 66.6
+   "maintainability": 66.5
   }
  },
  "scanners": [
@@ -1714,7 +1752,7 @@
    "name": "semgrep",
    "status": "ok",
    "version": "1.182.0",
-   "duration_s": 2.83,
+   "duration_s": 1.72,
    "message": "",
    "findings": 0
   },
@@ -1722,7 +1760,7 @@
    "name": "gitleaks",
    "status": "ok",
    "version": "8.30.1",
-   "duration_s": 0.41,
+   "duration_s": 0.26,
    "message": "",
    "findings": 0
   },
@@ -1730,7 +1768,7 @@
    "name": "osv-scanner",
    "status": "ok",
    "version": "2.7.0",
-   "duration_s": 2.34,
+   "duration_s": 4.45,
    "message": "",
    "findings": 14
   },
@@ -1738,26 +1776,26 @@
    "name": "trivy",
    "status": "ok",
    "version": "0.76.1",
-   "duration_s": 1.2,
+   "duration_s": 0.64,
    "message": "",
    "findings": 5
   }
  ],
  "counts": {
-  "total": 87,
+  "total": 89,
   "by_severity": {
    "critical": 1,
-   "high": 11,
-   "medium": 14,
-   "low": 60,
-   "info": 1
+   "high": 9,
+   "medium": 15,
+   "low": 62,
+   "info": 2
   },
   "by_category": {
    "security": 20,
    "code_quality": 7,
    "reliability": 2,
-   "maintainability": 58
+   "maintainability": 60
   }
  },
- "seconds": 5.2
+ "seconds": 4.9
 }
